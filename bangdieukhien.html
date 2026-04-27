@@ -190,8 +190,7 @@
 </div>
 
 <script>
-    // ==================== API KẾT NỐI BACKEND ====================
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     const getToken = () => localStorage.getItem('token');
     
@@ -238,7 +237,6 @@
         return await response.json();
     }
     
-    // ==================== BIẾN TOÀN CỤC ====================
     let currentAccount = null;
     let currentUserName = null;
     let userStats = { score: 0, hours: 0, progress: 0, rank: 100 };
@@ -276,13 +274,6 @@
         return `${d}/${m}/${y} - ${h}:${min}`;
     }
     
-    function updateStatsDisplay() {
-        document.getElementById('scoreValue').innerText = userStats.score.toLocaleString();
-        document.getElementById('hoursValue').innerText = userStats.hours;
-        document.getElementById('progressValue').innerText = userStats.progress;
-        document.getElementById('rankValue').innerText = '#' + userStats.rank;
-    }
-    
     function escapeHtml(str) {
         if (!str) return '';
         return String(str).replace(/[&<>]/g, function(m) {
@@ -293,18 +284,21 @@
         });
     }
     
-    // ==================== HIỂN THỊ HOẠT ĐỘNG (5 CÁI GẦN NHẤT) ====================
+    function updateStatsDisplay() {
+        document.getElementById('scoreValue').innerText = userStats.score.toLocaleString();
+        document.getElementById('hoursValue').innerText = userStats.hours;
+        document.getElementById('progressValue').innerText = userStats.progress;
+        document.getElementById('rankValue').innerText = '#' + userStats.rank;
+    }
+    
     function renderActivities() {
         const container = document.getElementById('activityContainer');
         if (!container) return;
-        
         const latestActivities = activities.slice(0, 5);
-        
         if (latestActivities.length === 0) {
             container.innerHTML = `<div class="empty-state"><i class="fas fa-book-open"></i><br>Chưa có hoạt động nào<br><span style="font-size:0.85rem;">Hãy làm bài tập để hiển thị hoạt động</span></div>`;
             return;
         }
-        
         container.innerHTML = '';
         latestActivities.forEach(act => {
             const div = document.createElement('div');
@@ -314,7 +308,6 @@
         });
     }
     
-    // ==================== THÊM HOẠT ĐỘNG (CÓ THỂ BỎ QUA CỘNG ĐIỂM) ====================
     async function addActivityLocal(title, score, skipScoreUpdate = false) {
         try {
             const result = await addActivityAPI(title, score);
@@ -322,7 +315,6 @@
                 userStats.score += score;
                 updateStatsDisplay();
             }
-            
             const newActivity = {
                 id: result.activity?.id || Date.now(),
                 title: title,
@@ -330,9 +322,7 @@
                 time: new Date(result.activity?.time || new Date())
             };
             activities.unshift(newActivity);
-            
             if (activities.length > 50) activities.pop();
-            
             renderActivities();
             if (!skipScoreUpdate && score > 0) {
                 showToast(`✅ +${score} điểm!`);
@@ -350,7 +340,6 @@
         }
     }
     
-    // ==================== SỰ KIỆN ====================
     async function addEventLocal(title, dateTimeStr) {
         let eventDate = new Date(dateTimeStr);
         if (isNaN(eventDate)) { showToast("⚠️ Ngày giờ không hợp lệ!", false); return; }
@@ -402,7 +391,6 @@
         });
     }
     
-    // ==================== TIN TỨC ====================
     function renderNews() {
         const container = document.getElementById('newsListContainer');
         if (!container) return;
@@ -444,7 +432,6 @@
         if (deletedNews) await addActivityLocal(`Đã xóa tin tức: ${deletedNews.title.substring(0, 30)}...`, 0, true);
     }
     
-    // ==================== THÔNG BÁO ====================
     function getUpcomingEvents() {
         const now = new Date();
         const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000);
@@ -476,13 +463,11 @@
         document.getElementById('notificationModal').style.display = 'flex';
     }
     
-    // ==================== UPLOAD ẢNH (KHÔNG CỘNG ĐIỂM) ====================
     function setupImageUpload() {
         const centerAvatar = document.getElementById('centerAvatar');
         const leftAvatar = document.getElementById('leftAvatar');
         const coverImage = document.getElementById('coverImage');
         
-        // Upload avatar - KHÔNG cộng điểm
         const avatarInput = document.createElement('input');
         avatarInput.type = 'file';
         avatarInput.accept = 'image/*';
@@ -502,7 +487,6 @@
         };
         centerAvatar.addEventListener('click', (e) => { e.stopPropagation(); avatarInput.click(); });
         
-        // Upload ảnh bìa - KHÔNG cộng điểm
         const coverInput = document.createElement('input');
         coverInput.type = 'file';
         coverInput.accept = 'image/*';
@@ -526,7 +510,6 @@
         coverImage.addEventListener('click', (e) => { e.stopPropagation(); coverInput.click(); });
     }
     
-    // ==================== ĐỔI TÊN (KHÔNG CỘNG ĐIỂM) ====================
     async function renameUser(newName) {
         if (newName.trim()) {
             try {
@@ -539,7 +522,6 @@
         }
     }
     
-    // ==================== LOGOUT ====================
     function logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -547,7 +529,6 @@
         setTimeout(() => { window.location.href = 'dndk.html'; }, 500);
     }
     
-    // ==================== LOAD DỮ LIỆU ====================
     async function loadAllData() {
         try {
             const profile = await getProfile();
@@ -558,20 +539,15 @@
             document.getElementById('leftName').innerText = currentUserName;
             updateStatsDisplay();
             
-            // Tải sự kiện
             const eventsData = await getEventsAPI();
             events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
             events.sort((a,b) => a.date - b.date);
             renderEvents();
             updateNotificationBadge();
             
-            // Tải lịch sử hoạt động từ server
             try {
                 const activitiesData = await getActivities();
-                activities = activitiesData.map(act => ({ 
-                    ...act, 
-                    time: new Date(act.time) 
-                })).sort((a, b) => b.time - a.time);
+                activities = activitiesData.map(act => ({ ...act, time: new Date(act.time) })).sort((a, b) => b.time - a.time);
                 renderActivities();
             } catch (error) {
                 console.error('Lỗi tải activities:', error);
@@ -579,11 +555,9 @@
                 renderActivities();
             }
             
-            // Tin tức
             newsItems = [];
             renderNews();
             
-            // Avatar
             if (profile.avatar) {
                 const centerAvatar = document.getElementById('centerAvatar');
                 const leftAvatar = document.getElementById('leftAvatar');
@@ -591,7 +565,6 @@
                 leftAvatar.innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
             }
             
-            // Ảnh bìa
             if (profile.cover) {
                 const coverImage = document.getElementById('coverImage');
                 coverImage.style.backgroundImage = `url(${profile.cover}?t=${Date.now()})`;
@@ -608,7 +581,6 @@
         }
     }
     
-    // ==================== KHỞI TẠO ====================
     async function init() {
         const token = localStorage.getItem('token');
         if (!token) { window.location.href = 'dndk.html'; return; }
@@ -616,7 +588,6 @@
         await loadAllData();
         setupImageUpload();
         
-        // Điều hướng menu
         document.querySelector('.menu-item[data-page="home"]').onclick = () => { window.location.href = 'trangchu.html'; };
         document.querySelector('.menu-item[data-page="dashboard"]').onclick = () => { window.location.href = 'bangdieukhien.html'; };
         document.querySelector('.menu-item[data-page="profile"]').onclick = () => { window.location.href = 'trangcanhan.html'; };
@@ -629,7 +600,6 @@
         document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
         document.getElementById('leftProfile').onclick = () => { window.location.href = 'trangcanhan.html'; };
         
-        // Nút làm bài tập - CÓ cộng điểm
         document.getElementById('quizUpdateBtn').onclick = async () => {
             const scoreInc = Math.floor(Math.random() * 60) + 40;
             const subjects = ["Toán 12 - Giải tích", "Vật lý - Điện từ", "Hóa học - Este", "Ngữ văn - Phân tích thơ", "Tiếng Anh - Đọc hiểu", "Sinh học - Di truyền", "Lịch sử - Chiến tranh thế giới"];
@@ -637,7 +607,6 @@
             await addActivityLocal(`Hoàn thành bài tập: ${randomSubject}`, scoreInc, false);
         };
         
-        // Modal sự kiện
         const calendarModal = document.getElementById('calendarModal');
         const openCalendarBtn = document.getElementById('openCalendarBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -656,7 +625,6 @@
             calendarModal.style.display = 'none';
         };
         
-        // Modal xóa
         const confirmDeleteModal = document.getElementById('confirmDeleteModal');
         const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -673,14 +641,12 @@
             confirmDeleteModal.style.display = 'none';
         };
         
-        // Thông báo
         const notificationBtn = document.getElementById('notificationBtn');
         const notificationModal = document.getElementById('notificationModal');
         const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');
         notificationBtn.onclick = showNotificationModal;
         closeNotiModalBtn.onclick = () => { notificationModal.style.display = 'none'; };
         
-        // Đổi tên
         const leftName = document.getElementById('leftName');
         const renameModal = document.getElementById('renameModal');
         const closeRenameModalBtn = document.getElementById('closeRenameModalBtn');
@@ -696,7 +662,6 @@
         
         document.getElementById('logoutBtn').onclick = logout;
         
-        // Modal tin tức
         const newsModal = document.getElementById('newsModal');
         const addNewsBtn = document.getElementById('addNewsBtn');
         const closeNewsModalBtn = document.getElementById('closeNewsModalBtn');

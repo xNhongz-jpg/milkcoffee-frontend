@@ -218,8 +218,7 @@
 <div id="newsModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📰 Thêm tin mới</span><button class="close-modal" id="closeNewsModalBtn">&times;</button></div><input type="text" id="newsTitleInput" class="date-input" placeholder="Nội dung tin tức"><input type="date" id="newsDateInput" class="date-input"><button id="saveNewsBtn" class="add-event-modal-btn">Thêm</button></div></div>
 
 <script>
-    // ==================== API KẾT NỐI BACKEND ====================
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     const getToken = () => localStorage.getItem('token');
     
@@ -240,7 +239,6 @@
     async function deleteEventAPI(eventId) { return await apiRequest(`/events/${eventId}`, { method: 'DELETE' }); }
     async function addActivityAPI(title, score) { return await apiRequest('/activities', { method: 'POST', body: JSON.stringify({ title, score }) }); }
     
-    // ==================== BIẾN TOÀN CỤC ====================
     let currentAccount = null;
     let currentUserName = null;
     let personalEvents = [];
@@ -248,7 +246,6 @@
     let itemToDelete = null;
     let deleteType = null;
     
-    // Danh sách các ngày lễ, sự kiện lớn của Việt Nam
     const vietnamEvents = [
         { day: 1, month: 1, name: "Tết Dương lịch", type: "holiday", desc: "Nghỉ lễ Quốc tế đầu năm mới" },
         { day: 3, month: 2, name: "Ngày thành lập Đảng Cộng sản Việt Nam", type: "celebration", desc: "3/2/1930 - Ngày thành lập Đảng" },
@@ -291,6 +288,16 @@
         setTimeout(() => toast.remove(), 2000);
     }
     
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
     function formatDisplayFull(dateObj) {
         if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ";
         let d = dateObj.getDate().toString().padStart(2,'0');
@@ -299,14 +306,6 @@
         let h = dateObj.getHours().toString().padStart(2,'0');
         let min = dateObj.getMinutes().toString().padStart(2,'0');
         return `${d}/${m}/${y} - ${h}:${min}`;
-    }
-    
-    function formatDateOnly(dateObj) {
-        if (!dateObj || isNaN(dateObj.getTime())) return "";
-        let d = dateObj.getDate().toString().padStart(2,'0');
-        let m = (dateObj.getMonth()+1).toString().padStart(2,'0');
-        let y = dateObj.getFullYear();
-        return `${d}/${m}/${y}`;
     }
     
     async function addActivityLocal(title, score) {
@@ -490,7 +489,7 @@
         personalEvents.slice(0, 10).forEach(ev => {
             const div = document.createElement('div');
             div.className = 'event-item-right';
-            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${ev.title}</div><div class="event-date-right">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}"><i class="fas fa-trash-alt"></i></button>`;
+            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-right">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}"><i class="fas fa-trash-alt"></i></button>`;
             container.appendChild(div);
         });
         
@@ -515,7 +514,7 @@
         newsItems.slice(0, 10).forEach(item => {
             const div = document.createElement('div');
             div.className = 'news-item-custom';
-            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${item.title}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`;
+            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`;
             container.appendChild(div);
         });
         
@@ -540,7 +539,6 @@
         newsItems = newsItems.filter(item => item.id !== newsId);
         renderNews();
         showToast("🗑️ Đã xóa tin tức");
-        await addActivityLocal(`Đã xóa tin tức`, 5);
     }
     
     function getUpcomingEvents() {
@@ -618,7 +616,6 @@
         newsItems = [];
         renderNews();
         
-        // Điều hướng menu
         document.querySelector('.menu-item[data-page="home"]').onclick = () => { window.location.href = 'trangchu.html'; };
         document.querySelector('.menu-item[data-page="dashboard"]').onclick = () => { window.location.href = 'bangdieukhien.html'; };
         document.querySelector('.menu-item[data-page="profile"]').onclick = () => { window.location.href = 'trangcanhan.html'; };
@@ -629,7 +626,6 @@
         document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
         document.getElementById('leftProfile').onclick = () => { window.location.href = 'trangcanhan.html'; };
         
-        // Calendar navigation
         document.getElementById('prevMonthBtn').onclick = () => {
             currentMonth--;
             if (currentMonth < 0) { currentMonth = 11; currentYear--; }
@@ -642,7 +638,6 @@
             renderCalendar();
         };
         
-        // Modal thêm sự kiện
         const calendarModal = document.getElementById('calendarModal');
         const openCalendarBtn = document.getElementById('openCalendarBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -661,7 +656,6 @@
             calendarModal.style.display = 'none';
         };
         
-        // Modal xóa
         const confirmDeleteModal = document.getElementById('confirmDeleteModal');
         const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -678,7 +672,6 @@
             confirmDeleteModal.style.display = 'none';
         };
         
-        // Modal tin tức
         const newsModal = document.getElementById('newsModal');
         const addNewsBtn = document.getElementById('addNewsBtn');
         const closeNewsModalBtn = document.getElementById('closeNewsModalBtn');
@@ -699,7 +692,6 @@
             newsModal.style.display = 'none';
         };
         
-        // Thông báo
         const notificationBtn = document.getElementById('notificationBtn');
         const notificationModal = document.getElementById('notificationModal');
         const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');

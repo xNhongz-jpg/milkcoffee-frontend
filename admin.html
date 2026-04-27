@@ -320,8 +320,7 @@
 <div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
 
 <script>
-    // ==================== API KẾT NỐI BACKEND ====================
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     let isAdminLoggedIn = false;
     let adminUser = null;
@@ -332,7 +331,7 @@
     let itemToDelete = null;
     let deleteType = null;
     
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
     
     function showToast(message, isSuccess = true) {
         const toast = document.createElement('div');
@@ -353,7 +352,17 @@
         });
     }
     
-    // ========== ADMIN PROFILE (LƯU ẢNH KHI F5) ==========
+    async function apiRequest(endpoint, options = {}) {
+        const headers = { 'Content-Type': 'application/json', ...options.headers };
+        const token = localStorage.getItem('admin_token');
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
+        return data;
+    }
+    
     async function loadAdminProfile() {
         try {
             const response = await fetch(`${API_URL}/users/profile`, {
@@ -403,7 +412,6 @@
         const adminAvatar = document.getElementById('adminAvatar');
         const adminCover = document.getElementById('adminCover');
         
-        // Upload avatar
         const avatarInput = document.createElement('input');
         avatarInput.type = 'file';
         avatarInput.accept = 'image/*';
@@ -419,7 +427,6 @@
                     if (result.success && result.avatarUrl) {
                         adminAvatar.innerHTML = `<img src="${result.avatarUrl}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
                         showToast("✅ Đã cập nhật ảnh đại diện!");
-                        await loadAdminProfile(); // Reload để cập nhật
                     }
                 } catch (error) {
                     showToast(error.message, false);
@@ -429,7 +436,6 @@
         adminAvatar.style.cursor = 'pointer';
         adminAvatar.addEventListener('click', (e) => { e.stopPropagation(); avatarInput.click(); });
         
-        // Upload cover
         const coverInput = document.createElement('input');
         coverInput.type = 'file';
         coverInput.accept = 'image/*';
@@ -447,7 +453,6 @@
                         adminCover.style.backgroundSize = 'cover';
                         adminCover.style.backgroundPosition = 'center';
                         showToast("✅ Đã cập nhật ảnh bìa!");
-                        await loadAdminProfile(); // Reload để cập nhật
                     }
                 } catch (error) {
                     showToast(error.message, false);
@@ -456,29 +461,6 @@
         };
         adminCover.style.cursor = 'pointer';
         adminCover.addEventListener('click', (e) => { e.stopPropagation(); coverInput.click(); });
-    }
-    
-    // ========== API CALLS ==========
-    async function apiRequest(endpoint, options = {}) {
-        const headers = { 'Content-Type': 'application/json', ...options.headers };
-        const token = localStorage.getItem('admin_token');
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-        
-        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
-        return data;
-    }
-    
-    async function adminLogin(username, password) {
-        const response = await fetch(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Đăng nhập thất bại');
-        return data;
     }
     
     async function getAdminUsers() {
@@ -523,7 +505,6 @@
         }
     }
     
-    // ========== RENDER LIBRARY ==========
     async function loadLibraryFiles() {
         try {
             libraryFiles = await getLibraryFilesAPI();
@@ -644,7 +625,6 @@
         }
     }
     
-    // ========== RENDER USER TABLE ==========
     async function renderUserTable(searchTerm = "") {
         try {
             const usersList = await getAdminUsers();
@@ -744,7 +724,6 @@
         }
     };
     
-    // ========== RENDER STATS ==========
     async function renderStatsTable() {
         try {
             const usersList = await getAdminUsers();
@@ -778,7 +757,6 @@
         }
     }
     
-    // ========== TAB SWITCHING ==========
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
         document.getElementById(`${tabId}Tab`).style.display = 'block';
@@ -797,7 +775,6 @@
         if (isAdminLoggedIn) renderUserTable(e.target.value);
     });
     
-    // ========== MODAL CLOSE ==========
     document.getElementById('closeEditModalBtn').onclick = () => document.getElementById('editUserModal').style.display = 'none';
     document.getElementById('closeDetailModalBtn').onclick = () => document.getElementById('userDetailModal').style.display = 'none';
     document.getElementById('closeConfirmModalBtn').onclick = () => {
@@ -819,7 +796,6 @@
         if (e.target === document.getElementById('confirmDeleteModal')) document.getElementById('confirmDeleteModal').style.display = 'none';
     };
     
-    // ========== CLEAR & EXPORT ==========
     document.getElementById('clearAllDataBtn').onclick = () => {
         if (confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa TẤT CẢ dữ liệu. Bạn có chắc chắn?")) {
             showToast("Tính năng đang phát triển", false);
@@ -848,7 +824,6 @@
         }
     };
     
-    // ========== LOGIN ==========
     async function handleAdminLogin() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
@@ -861,7 +836,15 @@
         }
         
         try {
-            const result = await adminLogin(username, password);
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const result = await response.json();
+            
+            if (!response.ok) throw new Error(result.error || 'Đăng nhập thất bại');
+            
             if (result.success && result.user.role === 'admin') {
                 localStorage.setItem('admin_token', result.token);
                 localStorage.setItem('admin_user', JSON.stringify(result.user));
@@ -870,7 +853,6 @@
                 document.getElementById('loginModal').style.display = 'none';
                 showToast("✅ Đăng nhập thành công! Chào mừng quản trị viên.");
                 
-                // Load dữ liệu
                 await loadAdminProfile();
                 await loadLibraryFiles();
                 await renderUserTable();
@@ -891,7 +873,6 @@
     document.getElementById('loginPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdminLogin(); });
     document.getElementById('loginUsername').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdminLogin(); });
     
-    // Logo & logout
     document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
     document.getElementById('logoutBtn').onclick = () => {
         localStorage.removeItem('admin_token');
@@ -899,7 +880,6 @@
         window.location.href = 'dndk.html';
     };
     
-    // Check if already logged in
     if (localStorage.getItem('admin_token')) {
         isAdminLoggedIn = true;
         document.getElementById('loginModal').style.display = 'none';

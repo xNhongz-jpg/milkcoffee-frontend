@@ -245,8 +245,7 @@
 <div id="newsModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📰 Thêm tin mới</span><button class="close-modal" id="closeNewsModalBtn">&times;</button></div><input type="text" id="newsTitleInput" class="date-input" placeholder="Nội dung tin tức"><input type="date" id="newsDateInput" class="date-input"><button id="saveNewsBtn" class="add-event-modal-btn">Thêm</button></div></div>
 
 <script>
-    // ==================== API KẾT NỐI BACKEND ====================
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     const getToken = () => localStorage.getItem('token');
     
@@ -280,7 +279,6 @@
         return await response.json();
     }
     
-    // ==================== BIẾN TOÀN CỤC ====================
     let currentAccount = null;
     let currentUserName = null;
     let currentGender = null;
@@ -296,6 +294,16 @@
         toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
     
     function formatDisplayFull(dateObj) {
@@ -336,7 +344,6 @@
             renderEvents();
             updateNotificationBadge();
             showToast("🗑️ Đã xóa sự kiện");
-            if (deletedEvent) await addActivityLocal(`Đã xóa sự kiện: ${deletedEvent.title}`, 5);
         } catch (error) { showToast(error.message, false); }
     }
     
@@ -351,7 +358,7 @@
         events.slice(0, 10).forEach(ev => {
             const div = document.createElement('div');
             div.className = 'event-item-custom';
-            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${ev.title}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`;
+            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`;
             container.appendChild(div);
         });
         
@@ -376,7 +383,7 @@
         newsItems.slice(0, 10).forEach(item => {
             const div = document.createElement('div');
             div.className = 'news-item-custom';
-            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${item.title}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`;
+            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`;
             container.appendChild(div);
         });
         
@@ -401,7 +408,6 @@
         newsItems = newsItems.filter(item => item.id !== newsId);
         renderNews();
         showToast("🗑️ Đã xóa tin tức");
-        await addActivityLocal(`Đã xóa tin tức`, 5);
     }
     
     function getUpcomingEvents() {
@@ -421,15 +427,8 @@
         const upcoming = getUpcomingEvents();
         const notiList = document.getElementById('notificationList');
         if (upcoming.length === 0) notiList.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo</div>';
-        else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${ev.title}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join('');
+        else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join('');
         document.getElementById('notificationModal').style.display = 'flex';
-    }
-    
-    function logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        showToast("Đã đăng xuất!");
-        setTimeout(() => { window.location.href = 'dndk.html'; }, 500);
     }
     
     async function loadAndRender() {
@@ -448,13 +447,11 @@
                 radios.forEach(radio => { if (radio.value === currentGender) radio.checked = true; });
             }
             
-            // Avatar
             if (profile.avatar) {
                 document.getElementById('leftAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
                 document.getElementById('avatarPreview').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
             }
             
-            // Sự kiện
             const eventsData = await getEvents();
             events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
             events.sort((a,b) => a.date - b.date);
@@ -473,13 +470,19 @@
         }
     }
     
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        showToast("Đã đăng xuất!");
+        setTimeout(() => { window.location.href = 'dndk.html'; }, 500);
+    }
+    
     async function init() {
         const token = localStorage.getItem('token');
         if (!token) { window.location.href = 'dndk.html'; return; }
         
         await loadAndRender();
         
-        // Điều hướng menu
         document.querySelector('.menu-item[data-page="home"]').onclick = () => { window.location.href = 'trangchu.html'; };
         document.querySelector('.menu-item[data-page="dashboard"]').onclick = () => { window.location.href = 'bangdieukhien.html'; };
         document.querySelector('.menu-item[data-page="profile"]').onclick = () => { window.location.href = 'trangcanhan.html'; };
@@ -490,7 +493,6 @@
         document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
         document.getElementById('leftProfile').onclick = () => { window.location.href = 'trangcanhan.html'; };
         
-        // Upload avatar
         const avatarInput = document.getElementById('avatarInput');
         const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
         const avatarPreview = document.getElementById('avatarPreview');
@@ -513,7 +515,6 @@
             }
         };
         
-        // Lưu thông tin
         document.getElementById('saveProfileBtn').onclick = async () => {
             const newDisplayName = document.getElementById('txtDisplayName').value.trim();
             const selectedGender = document.querySelector('input[name="gender"]:checked')?.value;
@@ -565,7 +566,6 @@
             if (!hasChanges && !newPassword) showToast("ℹ️ Không có thay đổi nào", true);
         };
         
-        // Modal sự kiện
         const calendarModal = document.getElementById('calendarModal');
         const openCalendarBtn = document.getElementById('openCalendarBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -584,7 +584,6 @@
             calendarModal.style.display = 'none';
         };
         
-        // Modal xóa
         const confirmDeleteModal = document.getElementById('confirmDeleteModal');
         const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -601,7 +600,6 @@
             confirmDeleteModal.style.display = 'none';
         };
         
-        // Modal tin tức
         const newsModal = document.getElementById('newsModal');
         const addNewsBtn = document.getElementById('addNewsBtn');
         const closeNewsModalBtn = document.getElementById('closeNewsModalBtn');
@@ -622,7 +620,6 @@
             newsModal.style.display = 'none';
         };
         
-        // Thông báo
         const notificationBtn = document.getElementById('notificationBtn');
         const notificationModal = document.getElementById('notificationModal');
         const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');

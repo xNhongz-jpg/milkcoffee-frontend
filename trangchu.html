@@ -222,8 +222,7 @@
 </div>
 
 <script>
-    // ==================== API KẾT NỐI BACKEND ====================
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     let isLoggedIn = false;
     let currentUserName = null;
@@ -363,7 +362,6 @@
     }
     
     async function init() {
-        // Kiểm tra đăng nhập từ token
         const token = localStorage.getItem('token');
         if (token) {
             try {
@@ -384,12 +382,10 @@
         
         updateHeaderUI();
         
-        // Logo
         document.getElementById('logoArea').onclick = () => {
             window.location.href = 'trangchu.html';
         };
         
-        // Menu items
         document.querySelectorAll('.nav-item').forEach(item => {
             item.onclick = () => {
                 const page = item.dataset.page;
@@ -407,7 +403,6 @@
             };
         });
         
-        // Footer links
         document.getElementById('footerHome')?.addEventListener('click', () => {
             window.location.href = 'trangchu.html';
         });
@@ -424,7 +419,6 @@
             window.location.href = 'lienhe.html';
         });
         
-        // Buttons
         document.getElementById('startNowBtn').onclick = () => {
             if (isLoggedIn) {
                 window.location.href = 'bangdieukhien.html';
@@ -445,7 +439,6 @@
             }
         };
         
-        // Modal close
         document.getElementById('closeNotiModalBtn').onclick = () => {
             document.getElementById('notificationModal').style.display = 'none';
         };
@@ -456,20 +449,16 @@
             }
         };
         
-        // Cập nhật badge mỗi phút
         setInterval(async () => {
             if (isLoggedIn) {
                 events = await getEvents();
                 events = events.map(ev => ({ ...ev, date: ev.date ? new Date(ev.date) : null })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
-                const updateBadge = () => {
-                    const upcoming = getUpcomingEvents();
-                    const badge = document.getElementById('notificationBadge');
-                    if (badge) {
-                        if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; }
-                        else { badge.style.display = 'none'; }
-                    }
-                };
-                updateBadge();
+                const upcoming = getUpcomingEvents();
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; }
+                    else { badge.style.display = 'none'; }
+                }
             }
         }, 60000);
     }
