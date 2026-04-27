@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Milk Coffee - Học tập thông minh</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231565C0'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3E☕%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; overflow-x: hidden; }
+        .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Header */
+        .main-header { background: rgba(24, 43, 71, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.02); }
+        .logo-icon { background: linear-gradient(135deg, #1565C0, #42a5f5); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(21,101,192,0.3); }
+        .logo-text { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #90caf9); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .trial-btn { background: linear-gradient(135deg, #1565C0, #0f4d96); color: white; border: none; padding: 10px 28px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+        .trial-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.4); }
+        .action-btn { background: rgba(255,255,255,0.1); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s; font-size: 1.2rem; position: relative; backdrop-filter: blur(5px); }
+        .action-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+        .badge-notify { position: absolute; top: -5px; right: -5px; background: linear-gradient(135deg, #f44336, #e91e63); color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        
+        /* Menu thanh điều hướng */
+        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; }
+        .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+        .nav-item { padding: 16px 8px; font-weight: 600; font-size: 1rem; color: #414141; cursor: pointer; transition: all 0.3s; position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px; background: linear-gradient(90deg, #1565C0, #42a5f5); transition: all 0.3s; transform: translateX(-50%); border-radius: 3px; }
+        .nav-item:hover { color: #1565C0; }
+        .nav-item:hover::after { width: 80%; }
+        .nav-item.active { color: #1565C0; }
+        .nav-item.active::after { width: 80%; }
+        
+        /* Hero Section */
+        .hero { position: relative; min-height: 85vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/455886b2-bff1-4757-a195-e89f97a0b5e0/d6kvnyd-64268279-624b-4a5a-af3b-c4cbc0fcae25.jpg/v1/fill/w_1192,h_670,q_70,strp/stellar_collision_by_kuldarleement_d6kvnyd-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6Ii9mLzQ1NTg4NmIyLWJmZjEtNDc1Ny1hMTk1LWU4OWY5N2EwYjVlMC9kNmt2bnlkLTY0MjY4Mjc5LTYyNGItNGE1YS1hZjNiLWM0Y2JjMGZjYWUyNS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.E3OTLds9Nji0SSNai3yO6y5_nPkhaX1DWG8bMEYC7-0'); background-size: cover; background-position: center; filter: brightness(0.7); transform: scale(1.05); animation: slowZoom 20s ease-out infinite alternate; }
+        @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(24,43,71,0.85), rgba(15,26,48,0.75)); }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: white; max-width: 900px; padding: 0 20px; animation: fadeInUp 1s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-badge { display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(5px); padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; margin-bottom: 24px; letter-spacing: 1px; }
+        .hero-content h1 { font-size: 4rem; font-weight: 800; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); background: linear-gradient(135deg, #fff, #90caf9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 32px; opacity: 0.95; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: linear-gradient(135deg, #1565C0, #0f4d96); color: white; border: none; padding: 14px 36px; border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(21,101,192,0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(21,101,192,0.5); }
+        .btn-outline { background: transparent; color: white; border: 2px solid white; padding: 14px 36px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; backdrop-filter: blur(5px); }
+        .btn-outline:hover { background: white; color: #1565C0; transform: translateY(-3px); }
+        
+        /* Features Section - Grid 3 cột ngang */
+        .features-section { max-width: 1400px; margin: 80px auto; padding: 0 32px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-tag { display: inline-block; background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; color: white; letter-spacing: 1px; margin-bottom: 16px; }
+        .section-title { font-size: 2.2rem; font-weight: 700; color: #182b47; margin-bottom: 16px; }
+        .section-title span { color: #1565C0; }
+        .section-desc { color: #6f7c8f; max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .feature-card { background: white; border-radius: 24px; padding: 32px 24px; text-align: center; transition: all 0.4s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #1565C0, #42a5f5); transform: scaleX(0); transition: transform 0.4s; }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #1565C0, #42a5f5); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 8px 20px rgba(21,101,192,0.3); transition: transform 0.3s; }
+        .feature-card:hover .feature-icon { transform: scale(1.05); }
+        .feature-icon i { font-size: 2rem; color: white; }
+        .feature-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #182b47; }
+        .feature-card p { font-size: 0.85rem; color: #6f7c8f; line-height: 1.5; }
+        
+        /* CTA Section */
+        .cta-section { text-align: center; padding: 70px 32px; background: linear-gradient(135deg, #f5f7fa, #fff); margin: 40px 32px 80px; border-radius: 48px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .cta-section h2 { font-size: 2rem; font-weight: 700; color: #182b47; margin-bottom: 16px; }
+        .cta-section h2 span { color: #1565C0; }
+        .cta-section p { color: #6f7c8f; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1rem; line-height: 1.6; }
+        .cta-btn { background: linear-gradient(135deg, #1565C0, #0f4d96); color: white; border: none; padding: 14px 40px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(21,101,192,0.3); }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(21,101,192,0.4); }
+        
+        /* Footer */
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 32px; font-size: 0.85rem; margin-top: auto; }
+        .footer-links { max-width: 1400px; margin: 0 auto 20px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .footer-links a { color: #a0b3d0; text-decoration: none; transition: color 0.3s; cursor: pointer; font-size: 0.85rem; }
+        .footer-links a:hover { color: white; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; animation: fadeInUp 0.3s ease; }
+        .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; transition: color 0.3s; }
+        .close-modal:hover { color: #333; }
+        .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #1565C0, #0f4d96); color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+        .empty-state { text-align: center; padding: 40px; color: #a0aec0; }
+        .empty-state i { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
+        .notification-item { background: white; padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; border-left: 4px solid #1565C0; }
+        .notification-title { font-weight: 600; font-size: 0.9rem; color: #414141; }
+        .notification-time { font-size: 0.75rem; color: #e64949; margin-top: 6px; }
+        
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero { min-height: 70vh; }
+            .section-title { font-size: 1.6rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .nav-container { gap: 20px; overflow-x: auto; justify-content: flex-start; }
+            .cta-section { margin: 40px 16px; padding: 50px 20px; }
+            .cta-section h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <!-- Header -->
+    <div class="main-header">
+        <div class="header-inner">
+            <div class="logo-area" id="logoArea">
+                <div class="logo-icon"><i class="fas fa-mug-hot"></i></div>
+                <div class="logo-text">Milk Coffee</div>
+            </div>
+            <div class="header-actions" id="headerActions"></div>
+        </div>
+    </div>
+
+    <!-- Menu thanh điều hướng -->
+    <div class="nav-menu">
+        <div class="nav-container">
+            <div class="nav-item active" data-page="home">Giới thiệu</div>
+            <div class="nav-item" data-page="dashboard">Bảng điều khiển</div>
+            <div class="nav-item" data-page="calendar">Lịch</div>
+            <div class="nav-item" data-page="library">Thư viện</div>
+            <div class="nav-item" data-page="contact">Liên hệ</div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-star"></i> Nền tảng học tập thông minh</div>
+            <h1>Khám phá tri thức<br>cùng <span style="color:#90caf9">Milk Coffee</span></h1>
+            <p>Trải nghiệm phương pháp học tập hiện đại với AI thông minh, lộ trình cá nhân hóa và cộng đồng học tập năng động.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" id="startNowBtn"><i class="fas fa-rocket"></i> Bắt đầu ngay</button>
+                <button class="btn-outline" id="learnMoreBtn"><i class="fas fa-play"></i> Xem giới thiệu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section - Grid 3 cột ngang -->
+    <div class="features-section">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-gem"></i> Tính năng nổi bật</div>
+            <h2 class="section-title">Trải nghiệm học tập<br><span>vượt trội</span></h2>
+            <p class="section-desc">Công nghệ tiên tiến giúp việc học trở nên thú vị và hiệu quả hơn bao giờ hết</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI Thông minh</h3>
+                <p>Trợ lý ảo thông minh gợi ý lộ trình học tập phù hợp với năng lực cá nhân</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Phân tích tiến độ</h3>
+                <p>Theo dõi chi tiết quá trình học tập với biểu đồ trực quan, dễ hiểu</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                <h3>Lịch thông minh</h3>
+                <p>Lên kế hoạch học tập, nhắc nhở lịch thi, tự động sắp xếp thời gian biểu</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                <h3>Bảng xếp hạng</h3>
+                <p>Thi đua cùng bạn bè, tích điểm nhận thưởng hấp dẫn mỗi tháng</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-users"></i></div>
+                <h3>Cộng đồng học tập</h3>
+                <p>Kết nối với hàng ngàn học viên, cùng thảo luận và giải đáp thắc mắc</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-database"></i></div>
+                <h3>Kho đề thi khổng lồ</h3>
+                <p>Hàng ngàn đề thi, bài tập từ cơ bản đến nâng cao, cập nhật liên tục</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>Sẵn sàng chinh phục <span>đỉnh cao</span>?</h2>
+        <p>Tham gia cùng cộng đồng học viên để nâng cao kiến thức và kỹ năng của bạn</p>
+        <button class="cta-btn" id="joinNowBtn"><i class="fas fa-graduation-cap"></i> Đăng ký ngay hôm nay</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+        <div class="footer-links">
+            <a id="footerHome">Giới thiệu</a>
+            <a id="footerDashboard">Bảng điều khiển</a>
+            <a id="footerCalendar">Lịch</a>
+            <a id="footerLibrary">Thư viện</a>
+            <a id="footerContact">Liên hệ</a>
+        </div>
+        <div><i class="fas fa-mug-hot"></i> Milk Coffee · Học tập cấp 3 thông minh · Cập nhật liên tục</div>
+        <div style="margin-top: 12px; font-size: 0.75rem;">© 2025 Milk Coffee. All rights reserved.</div>
+    </div>
+</div>
+
+<!-- Modal thông báo -->
+<div id="notificationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><span>🔔 Thông báo</span><button class="close-modal" id="closeNotiModalBtn">&times;</button></div>
+        <div id="notificationList" style="max-height: 400px; overflow-y: auto;"></div>
+    </div>
+</div>
+
+<script>
+    // ==================== API KẾT NỐI BACKEND ====================
+    const API_URL = 'http://localhost:5000/api';
+    
+    let isLoggedIn = false;
+    let currentUserName = null;
+    let currentAccount = null;
+    let events = [];
+    
+    function showToast(message, isSuccess = true) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 2000);
+    }
+    
+    function formatDisplayFull(dateObj) {
+        if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ";
+        let d = dateObj.getDate().toString().padStart(2,'0');
+        let m = (dateObj.getMonth()+1).toString().padStart(2,'0');
+        let y = dateObj.getFullYear();
+        let h = dateObj.getHours().toString().padStart(2,'0');
+        let min = dateObj.getMinutes().toString().padStart(2,'0');
+        return `${d}/${m}/${y} - ${h}:${min}`;
+    }
+    
+    async function getProfile() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            const response = await fetch(`${API_URL}/users/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Token không hợp lệ');
+            return await response.json();
+        } catch (error) {
+            return null;
+        }
+    }
+    
+    async function getEvents() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return [];
+            const response = await fetch(`${API_URL}/events`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) return [];
+            return await response.json();
+        } catch (error) {
+            return [];
+        }
+    }
+    
+    function getUpcomingEvents() {
+        const now = new Date();
+        const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000);
+        return events.filter(ev => ev.date && new Date(ev.date) > now && new Date(ev.date) <= fifteenMinutesLater);
+    }
+    
+    function showNotificationModal() {
+        const upcoming = getUpcomingEvents();
+        const notiList = document.getElementById('notificationList');
+        if (!notiList) return;
+        
+        if (upcoming.length === 0) {
+            notiList.innerHTML = `<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo nào</div>`;
+        } else {
+            notiList.innerHTML = '';
+            upcoming.forEach(ev => {
+                const div = document.createElement('div');
+                div.className = 'notification-item';
+                div.innerHTML = `
+                    <div class="notification-title">⚠️ ${ev.title}</div>
+                    <div class="notification-time">🕒 ${formatDisplayFull(new Date(ev.date))}</div>
+                `;
+                notiList.appendChild(div);
+            });
+        }
+        document.getElementById('notificationModal').style.display = 'flex';
+    }
+    
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        isLoggedIn = false;
+        currentUserName = null;
+        currentAccount = null;
+        updateHeaderUI();
+        showToast("✅ Đã đăng xuất thành công!");
+        setTimeout(() => {
+            window.location.href = 'trangchu.html';
+        }, 500);
+    }
+    
+    function updateHeaderUI() {
+        const headerActions = document.getElementById('headerActions');
+        if (!headerActions) return;
+        
+        if (isLoggedIn && currentUserName) {
+            headerActions.innerHTML = `
+                <div class="action-btn" id="notificationBtn"><i class="fas fa-bell"></i><span id="notificationBadge" class="badge-notify" style="display: none;">0</span></div>
+                <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
+            `;
+            const notificationBtn = document.getElementById('notificationBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (notificationBtn) notificationBtn.addEventListener('click', showNotificationModal);
+            if (logoutBtn) logoutBtn.addEventListener('click', logout);
+            
+            const updateBadge = () => {
+                const upcoming = getUpcomingEvents();
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; }
+                    else { badge.style.display = 'none'; }
+                }
+            };
+            updateBadge();
+            setInterval(updateBadge, 60000);
+        } else {
+            headerActions.innerHTML = `<button class="trial-btn" id="trialBtn"><i class="fas fa-graduation-cap"></i> Học thử ngay</button>`;
+            const trialBtn = document.getElementById('trialBtn');
+            if (trialBtn) trialBtn.addEventListener('click', () => {
+                window.location.href = 'dndk.html';
+            });
+        }
+    }
+    
+    function checkLoginAndNavigate(page, targetUrl) {
+        if (!isLoggedIn) {
+            showToast("⚠️ Vui lòng đăng nhập để truy cập trang này!", false);
+            setTimeout(() => {
+                window.location.href = 'dndk.html';
+            }, 1500);
+            return false;
+        }
+        window.location.href = targetUrl;
+        return true;
+    }
+    
+    async function init() {
+        // Kiểm tra đăng nhập từ token
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const profile = await getProfile();
+                if (profile) {
+                    isLoggedIn = true;
+                    currentUserName = profile.displayName || profile.username;
+                    currentAccount = profile.username;
+                    events = await getEvents();
+                    events = events.map(ev => ({ ...ev, date: ev.date ? new Date(ev.date) : null })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
+                }
+            } catch (error) {
+                console.error('Lỗi kiểm tra đăng nhập:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            }
+        }
+        
+        updateHeaderUI();
+        
+        // Logo
+        document.getElementById('logoArea').onclick = () => {
+            window.location.href = 'trangchu.html';
+        };
+        
+        // Menu items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.onclick = () => {
+                const page = item.dataset.page;
+                if (page === 'home') {
+                    window.location.href = 'trangchu.html';
+                } else if (page === 'dashboard') {
+                    checkLoginAndNavigate('dashboard', 'bangdieukhien.html');
+                } else if (page === 'calendar') {
+                    checkLoginAndNavigate('calendar', 'lich.html');
+                } else if (page === 'library') {
+                    checkLoginAndNavigate('library', 'thuvien.html');
+                } else if (page === 'contact') {
+                    window.location.href = 'lienhe.html';
+                }
+            };
+        });
+        
+        // Footer links
+        document.getElementById('footerHome')?.addEventListener('click', () => {
+            window.location.href = 'trangchu.html';
+        });
+        document.getElementById('footerDashboard')?.addEventListener('click', () => {
+            checkLoginAndNavigate('dashboard', 'bangdieukhien.html');
+        });
+        document.getElementById('footerCalendar')?.addEventListener('click', () => {
+            checkLoginAndNavigate('calendar', 'lich.html');
+        });
+        document.getElementById('footerLibrary')?.addEventListener('click', () => {
+            checkLoginAndNavigate('library', 'thuvien.html');
+        });
+        document.getElementById('footerContact')?.addEventListener('click', () => {
+            window.location.href = 'lienhe.html';
+        });
+        
+        // Buttons
+        document.getElementById('startNowBtn').onclick = () => {
+            if (isLoggedIn) {
+                window.location.href = 'bangdieukhien.html';
+            } else {
+                window.location.href = 'dndk.html';
+            }
+        };
+        
+        document.getElementById('learnMoreBtn').onclick = () => {
+            document.querySelector('.features-section').scrollIntoView({ behavior: 'smooth' });
+        };
+        
+        document.getElementById('joinNowBtn').onclick = () => {
+            if (isLoggedIn) {
+                window.location.href = 'bangdieukhien.html';
+            } else {
+                window.location.href = 'dndk.html';
+            }
+        };
+        
+        // Modal close
+        document.getElementById('closeNotiModalBtn').onclick = () => {
+            document.getElementById('notificationModal').style.display = 'none';
+        };
+        
+        window.onclick = (e) => {
+            if (e.target === document.getElementById('notificationModal')) {
+                document.getElementById('notificationModal').style.display = 'none';
+            }
+        };
+        
+        // Cập nhật badge mỗi phút
+        setInterval(async () => {
+            if (isLoggedIn) {
+                events = await getEvents();
+                events = events.map(ev => ({ ...ev, date: ev.date ? new Date(ev.date) : null })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
+                const updateBadge = () => {
+                    const upcoming = getUpcomingEvents();
+                    const badge = document.getElementById('notificationBadge');
+                    if (badge) {
+                        if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; }
+                        else { badge.style.display = 'none'; }
+                    }
+                };
+                updateBadge();
+            }
+        }, 60000);
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>
+</body>
+</html>

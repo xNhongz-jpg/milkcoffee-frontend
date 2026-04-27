@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Quản trị hệ thống - Milk Coffee</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231565C0'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3E☕%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+        .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.02); }
+        .logo-icon { background: linear-gradient(135deg, #1565C0, #42a5f5); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(21,101,192,0.3); }
+        .logo-text { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #90caf9); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; }
+        .action-btn:hover { background: #3a5280; transform: scale(1.05); }
+        .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
+        
+        /* Menu thanh điều hướng */
+        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; }
+        .nav-container { max-width: 1600px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; }
+        .nav-item { padding: 16px 8px; font-weight: 600; font-size: 1rem; color: #414141; cursor: pointer; transition: all 0.3s; position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px; background: linear-gradient(90deg, #1565C0, #42a5f5); transition: all 0.3s; transform: translateX(-50%); border-radius: 3px; }
+        .nav-item:hover { color: #1565C0; }
+        .nav-item:hover::after { width: 80%; }
+        .nav-item.active { color: #1565C0; }
+        .nav-item.active::after { width: 80%; }
+        
+        .container { max-width: 1600px; margin: 32px auto; padding: 0 32px; flex: 1; }
+        .page-title { font-size: 1.6rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        
+        /* Profile Admin */
+        .admin-profile { background: white; border-radius: 32px; overflow: hidden; margin-bottom: 28px; border: 1px solid #D0D0D0; }
+        .admin-cover { height: 200px; background: linear-gradient(135deg, #1a2a4f, #0f1a30); position: relative; cursor: pointer; background-size: cover; background-position: center; }
+        .edit-cover-badge { position: absolute; bottom: 16px; right: 20px; background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 30px; color: white; font-size: 0.7rem; cursor: pointer; }
+        .admin-avatar-wrapper { padding: 0 32px 20px 32px; position: relative; margin-top: -60px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+        .admin-avatar { width: 120px; height: 120px; border-radius: 50%; border: 6px solid white; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; cursor: pointer; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .admin-info { background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 40px; backdrop-filter: blur(5px); }
+        .admin-info span { font-weight: 700; color: #182b47; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px; }
+        .stat-card { background: white; border-radius: 24px; padding: 24px; text-align: center; border: 1px solid #D0D0D0; transition: 0.2s; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .stat-card i { font-size: 2.5rem; color: #1565C0; margin-bottom: 12px; }
+        .stat-card .number { font-size: 2rem; font-weight: 800; color: #182b47; }
+        .stat-card .label { font-size: 0.85rem; color: #6f7c8f; margin-top: 4px; }
+        
+        /* Tables */
+        .table-container { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; }
+        .table-header { background: #F2F2F2; padding: 16px 24px; border-bottom: 1px solid #D0D0D0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .table-header h3 { font-size: 1.2rem; color: #1565C0; display: flex; align-items: center; gap: 10px; }
+        .search-box { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #D0D0D0; border-radius: 40px; padding: 8px 16px; }
+        .search-box input { border: none; outline: none; font-size: 0.85rem; width: 200px; }
+        .search-box i { color: #8a99b0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid #e8ecef; }
+        th { background: white; font-weight: 700; color: #1565C0; }
+        tr:hover { background: #F8F9FC; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .badge-admin { background: #ffe0e0; color: #e64949; }
+        .badge-user { background: #e0f0ff; color: #1565C0; }
+        .user-avatar-table { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        
+        /* Library Files Table - 2 cột */
+        .library-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 32px; }
+        .library-col { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; }
+        .library-col-header { background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 20px; color: white; }
+        .library-col-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 12px; }
+        .library-col-header h3 i { font-size: 1.5rem; }
+        .library-col-body { padding: 20px; max-height: 500px; overflow-y: auto; }
+        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; }
+        .file-item:last-child { border-bottom: none; }
+        .file-info { flex: 1; }
+        .file-name { font-weight: 600; font-size: 0.9rem; word-break: break-word; }
+        .file-meta { font-size: 0.7rem; color: #8a99b0; margin-top: 4px; }
+        .file-actions { display: flex; gap: 8px; }
+        .upload-area { margin-top: 16px; padding: 16px; border: 2px dashed #D0D0D0; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .upload-area:hover { border-color: #1565C0; background: #F8F9FC; }
+        .upload-area i { font-size: 2rem; color: #1565C0; margin-bottom: 8px; }
+        .upload-area p { font-size: 0.8rem; color: #6f7c8f; }
+        .empty-library { text-align: center; padding: 40px; color: #a0aec0; }
+        .empty-library i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+        .file-btn { background: none; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.2s; color: #6f7c8f; }
+        .file-btn.download:hover { background: #e0f0ff; color: #1565C0; transform: scale(1.05); }
+        .file-btn.delete:hover { background: #ffe0e0; color: #e64949; transform: scale(1.05); }
+        
+        /* Action Buttons */
+        .action-buttons { display: flex; gap: 8px; }
+        .btn-icon { background: none; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.2s; color: #6f7c8f; }
+        .btn-icon:hover { background: #F2F2F2; transform: scale(1.05); }
+        .btn-icon.delete:hover { color: #e64949; background: #ffe0e0; }
+        .btn-icon.edit:hover { color: #1565C0; background: #e0f0ff; }
+        .btn-icon.view:hover { color: #1565C0; background: #e0f0ff; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 600px; padding: 32px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; }
+        .close-modal:hover { color: #333; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #414141; }
+        .form-control { width: 100%; padding: 12px 16px; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; transition: 0.2s; }
+        .form-control:focus { outline: none; border-color: #1565C0; }
+        .btn-save { background: #1565C0; color: white; border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-save:hover { background: #0f4d96; transform: scale(1.02); }
+        .btn-danger { background: #e64949; }
+        .btn-danger:hover { background: #c21818; }
+        
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #a0aec0; }
+        .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+        .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+        .error-message { color: #e64949; font-size: 0.8rem; margin-top: 8px; display: none; }
+        .error-message.show { display: block; }
+        .confirm-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .confirm-buttons button { flex: 1; padding: 12px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .confirm-delete-btn { background: #e64949; color: white; }
+        .confirm-delete-btn:hover { background: #c21818; }
+        .confirm-cancel-btn { background: #e8ecef; color: #414141; }
+        .confirm-cancel-btn:hover { background: #D0D0D0; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 16px; }
+            .table-container { overflow-x: auto; }
+            th, td { padding: 10px 12px; font-size: 0.85rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-container { gap: 20px; overflow-x: auto; }
+            .admin-avatar-wrapper { flex-direction: column; align-items: center; text-align: center; }
+            .library-2cols { grid-template-columns: 1fr; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="main-header">
+        <div class="header-inner">
+            <div class="logo-area" id="logoArea">
+                <div class="logo-icon"><i class="fas fa-mug-hot"></i></div>
+                <div class="logo-text">Milk Coffee</div>
+            </div>
+            <div class="header-actions">
+                <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-menu">
+        <div class="nav-container">
+            <div class="nav-item active" data-tab="library">📚 Quản lý thư viện</div>
+            <div class="nav-item" data-tab="users">👥 Quản lý người dùng</div>
+            <div class="nav-item" data-tab="stats">📊 Thống kê</div>
+            <div class="nav-item" data-tab="settings">⚙️ Cài đặt</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Profile Admin -->
+        <div class="admin-profile">
+            <div class="admin-cover" id="adminCover">
+                <div class="edit-cover-badge"><i class="fas fa-camera"></i> Đổi ảnh bìa</div>
+            </div>
+            <div class="admin-avatar-wrapper">
+                <div class="admin-avatar" id="adminAvatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="admin-info">
+                    <span><i class="fas fa-user-cog"></i> Quản trị viên</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Quản lý thư viện (2 cột) -->
+        <div id="libraryTab" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-file-alt"></i>
+                    <div class="number" id="totalExams">0</div>
+                    <div class="label">Tổng đề thi</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="number" id="totalTheories">0</div>
+                    <div class="label">Tổng tài liệu</div>
+                </div>
+            </div>
+
+            <div class="library-2cols">
+                <!-- Cột 1: Đề thi / Bài tập -->
+                <div class="library-col">
+                    <div class="library-col-header">
+                        <h3><i class="fas fa-file-alt"></i> Đề thi & Bài tập</h3>
+                    </div>
+                    <div class="library-col-body">
+                        <div id="examList"></div>
+                        <div id="examUploadArea" class="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Tải đề thi lên (PDF, DOC, DOCX, ZIP, tối đa 10MB)</p>
+                            <input type="file" id="examFileInput" accept=".pdf,.doc,.docx,.zip" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột 2: Tài liệu lý thuyết -->
+                <div class="library-col">
+                    <div class="library-col-header">
+                        <h3><i class="fas fa-file-pdf"></i> Tài liệu lý thuyết</h3>
+                    </div>
+                    <div class="library-col-body">
+                        <div id="theoryList"></div>
+                        <div id="theoryUploadArea" class="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Tải tài liệu lên (PDF, DOC, DOCX, tối đa 10MB)</p>
+                            <input type="file" id="theoryFileInput" accept=".pdf,.doc,.docx" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Quản lý người dùng -->
+        <div id="usersTab" class="tab-content" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="number" id="totalUsers">0</div>
+                    <div class="label">Tổng số người dùng</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <div class="number" id="activeUsers">0</div>
+                    <div class="label">Người dùng hoạt động</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-list"></i> Danh sách tài khoản</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr><th>STT</th><th>Avatar</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Giới tính</th><th>Thao tác</th></tr>
+                        </thead>
+                        <tbody id="userTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Thống kê -->
+        <div id="statsTab" class="tab-content" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card"><i class="fas fa-calendar-alt"></i><div class="number" id="statTotalUsers">0</div><div class="label">Tổng người dùng</div></div>
+                <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number" id="statTotalEvents">0</div><div class="label">Tổng sự kiện</div></div>
+                <div class="stat-card"><i class="fas fa-newspaper"></i><div class="number" id="statTotalNews">0</div><div class="label">Tổng tin tức</div></div>
+                <div class="stat-card"><i class="fas fa-star"></i><div class="number" id="statTotalScore">0</div><div class="label">Tổng điểm tích lũy</div></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-chart-simple"></i> Chi tiết hoạt động người dùng</h3></div>
+                <div style="overflow-x: auto;">
+                    <table><thead><tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr></thead><tbody id="statsTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Cài đặt -->
+        <div id="settingsTab" class="tab-content" style="display: none;">
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-database"></i> Quản lý dữ liệu</h3></div>
+                <div style="padding: 24px;">
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-trash-alt"></i> Xóa dữ liệu</h4>
+                        <p style="color: #6f7c8f; margin-bottom: 16px;">Xóa tất cả dữ liệu người dùng, sự kiện, tin tức. Hành động này không thể hoàn tác!</p>
+                        <button id="clearAllDataBtn" class="btn-save btn-danger" style="width: auto; padding: 10px 24px;"><i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu</button>
+                    </div>
+                    <div style="border-top: 1px solid #e8ecef; padding-top: 24px;">
+                        <h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-download"></i> Xuất dữ liệu</h4>
+                        <p style="color: #6f7c8f; margin-bottom: 16px;">Xuất danh sách người dùng ra file Excel.</p>
+                        <button id="exportDataBtn" class="btn-save" style="width: auto; padding: 10px 24px;"><i class="fas fa-file-excel"></i> Xuất Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note"><i class="fas fa-mug-hot"></i> Milk Coffee · Khu vực quản trị · Dành cho quản trị viên</div>
+</div>
+
+<!-- Modal đăng nhập Admin -->
+<div id="loginModal" class="modal" style="display: flex;">
+    <div class="modal-content">
+        <div class="modal-header"><span><i class="fas fa-shield-alt"></i> Đăng nhập quản trị</span></div>
+        <div class="form-group"><label>Tên đăng nhập</label><input type="text" id="loginUsername" class="form-control" placeholder="Nhập tên đăng nhập"></div>
+        <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu"></div>
+        <div id="loginError" class="error-message"></div>
+        <button id="loginSubmitBtn" class="btn-save"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+    </div>
+</div>
+
+<!-- Modal xem chi tiết người dùng -->
+<div id="userDetailModal" class="modal"><div class="modal-content"><div class="modal-header"><span><i class="fas fa-user-circle"></i> Chi tiết người dùng</span><button class="close-modal" id="closeDetailModalBtn">&times;</button></div><div id="userDetailContent"></div></div></div>
+
+<!-- Modal chỉnh sửa người dùng -->
+<div id="editUserModal" class="modal"><div class="modal-content"><div class="modal-header"><span>✏️ Chỉnh sửa người dùng</span><button class="close-modal" id="closeEditModalBtn">&times;</button></div><div class="form-group"><label>Tên hiển thị</label><input type="text" id="editDisplayName" class="form-control"></div><div class="form-group"><label>Mật khẩu mới (để trống nếu không đổi)</label><input type="password" id="editPassword" class="form-control" placeholder="Nhập mật khẩu mới"></div><div class="form-group"><label>Giới tính</label><select id="editGender" class="form-control"><option value="Nam">Nam</option><option value="Nữ">Nữ</option><option value="Khác">Khác</option></select></div><button id="saveEditBtn" class="btn-save">Lưu thay đổi</button></div></div>
+
+<!-- Modal xác nhận xóa file -->
+<div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
+
+<script>
+    // ==================== API KẾT NỐI BACKEND ====================
+    const API_URL = 'http://localhost:5000/api';
+    
+    let isAdminLoggedIn = false;
+    let adminUser = null;
+    let libraryFiles = [];
+    let users = [];
+    let currentEditUser = null;
+    let deleteFileId = null;
+    let itemToDelete = null;
+    let deleteType = null;
+    
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    
+    function showToast(message, isSuccess = true) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.style.background = isSuccess ? '#1565C0' : '#e64949';
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // ========== ADMIN PROFILE (LƯU ẢNH KHI F5) ==========
+    async function loadAdminProfile() {
+        try {
+            const response = await fetch(`${API_URL}/users/profile`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
+            });
+            const profile = await response.json();
+            
+            if (profile.avatar) {
+                document.getElementById('adminAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                document.getElementById('adminAvatar').innerHTML = '<i class="fas fa-user-shield"></i>';
+            }
+            
+            if (profile.cover) {
+                document.getElementById('adminCover').style.backgroundImage = `url(${profile.cover}?t=${Date.now()})`;
+                document.getElementById('adminCover').style.backgroundSize = 'cover';
+                document.getElementById('adminCover').style.backgroundPosition = 'center';
+            }
+        } catch (error) {
+            console.error('Lỗi tải admin profile:', error);
+        }
+    }
+    
+    async function uploadAdminAvatar(file) {
+        const formData = new FormData();
+        formData.append('avatar', file);
+        const response = await fetch(`${API_URL}/upload/avatar`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
+            body: formData
+        });
+        return await response.json();
+    }
+    
+    async function uploadAdminCover(file) {
+        const formData = new FormData();
+        formData.append('cover', file);
+        const response = await fetch(`${API_URL}/upload/cover`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
+            body: formData
+        });
+        return await response.json();
+    }
+    
+    function setupAdminImageUpload() {
+        const adminAvatar = document.getElementById('adminAvatar');
+        const adminCover = document.getElementById('adminCover');
+        
+        // Upload avatar
+        const avatarInput = document.createElement('input');
+        avatarInput.type = 'file';
+        avatarInput.accept = 'image/*';
+        avatarInput.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast("⚠️ Ảnh quá lớn! Dưới 5MB", false);
+                    return;
+                }
+                try {
+                    const result = await uploadAdminAvatar(file);
+                    if (result.success && result.avatarUrl) {
+                        adminAvatar.innerHTML = `<img src="${result.avatarUrl}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
+                        showToast("✅ Đã cập nhật ảnh đại diện!");
+                        await loadAdminProfile(); // Reload để cập nhật
+                    }
+                } catch (error) {
+                    showToast(error.message, false);
+                }
+            }
+        };
+        adminAvatar.style.cursor = 'pointer';
+        adminAvatar.addEventListener('click', (e) => { e.stopPropagation(); avatarInput.click(); });
+        
+        // Upload cover
+        const coverInput = document.createElement('input');
+        coverInput.type = 'file';
+        coverInput.accept = 'image/*';
+        coverInput.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast("⚠️ Ảnh quá lớn! Dưới 5MB", false);
+                    return;
+                }
+                try {
+                    const result = await uploadAdminCover(file);
+                    if (result.success && result.coverUrl) {
+                        adminCover.style.backgroundImage = `url(${result.coverUrl}?t=${Date.now()})`;
+                        adminCover.style.backgroundSize = 'cover';
+                        adminCover.style.backgroundPosition = 'center';
+                        showToast("✅ Đã cập nhật ảnh bìa!");
+                        await loadAdminProfile(); // Reload để cập nhật
+                    }
+                } catch (error) {
+                    showToast(error.message, false);
+                }
+            }
+        };
+        adminCover.style.cursor = 'pointer';
+        adminCover.addEventListener('click', (e) => { e.stopPropagation(); coverInput.click(); });
+    }
+    
+    // ========== API CALLS ==========
+    async function apiRequest(endpoint, options = {}) {
+        const headers = { 'Content-Type': 'application/json', ...options.headers };
+        const token = localStorage.getItem('admin_token');
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
+        return data;
+    }
+    
+    async function adminLogin(username, password) {
+        const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Đăng nhập thất bại');
+        return data;
+    }
+    
+    async function getAdminUsers() {
+        return await apiRequest('/admin/users');
+    }
+    
+    async function deleteUserAPI(userId) {
+        return await apiRequest(`/admin/users/${userId}`, { method: 'DELETE' });
+    }
+    
+    async function getLibraryFilesAPI() {
+        const response = await fetch(`${API_URL}/library`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function uploadLibraryFile(file, type) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', type);
+        const response = await fetch(`${API_URL}/library`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
+            body: formData
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function deleteLibraryFileAPI(fileId) {
+        return await apiRequest(`/library/${fileId}`, { method: 'DELETE' });
+    }
+    
+    function downloadFile(file) {
+        if (file && file.filePath) {
+            window.open(file.filePath, '_blank');
+            showToast("✅ Đang tải file: " + file.name);
+        }
+    }
+    
+    // ========== RENDER LIBRARY ==========
+    async function loadLibraryFiles() {
+        try {
+            libraryFiles = await getLibraryFilesAPI();
+            const exams = libraryFiles.filter(f => f.type === 'exam');
+            const theories = libraryFiles.filter(f => f.type === 'theory');
+            
+            document.getElementById('totalExams').innerText = exams.length;
+            document.getElementById('totalTheories').innerText = theories.length;
+            
+            const examContainer = document.getElementById('examList');
+            if (exams.length === 0) {
+                examContainer.innerHTML = `<div class="empty-library"><i class="fas fa-file-alt"></i><p>Chưa có đề thi nào</p><p style="font-size:0.75rem;">Hãy tải lên để chia sẻ với học viên</p></div>`;
+            } else {
+                examContainer.innerHTML = exams.map(file => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">📄 ${escapeHtml(file.name)}</div>
+                            <div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')}</div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="file-btn download" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button>
+                            <button class="file-btn delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const theoryContainer = document.getElementById('theoryList');
+            if (theories.length === 0) {
+                theoryContainer.innerHTML = `<div class="empty-library"><i class="fas fa-file-pdf"></i><p>Chưa có tài liệu nào</p><p style="font-size:0.75rem;">Hãy tải lên để chia sẻ với học viên</p></div>`;
+            } else {
+                theoryContainer.innerHTML = theories.map(file => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">📄 ${escapeHtml(file.name)}</div>
+                            <div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')}</div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="file-btn download" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button>
+                            <button class="file-btn delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Lỗi tải thư viện:', error);
+        }
+    }
+    
+    window.downloadFileById = (fileId) => {
+        const file = libraryFiles.find(f => f.id === fileId);
+        if (file) downloadFile(file);
+    };
+    
+    window.deleteFileById = (fileId) => {
+        deleteFileId = fileId;
+        document.getElementById('confirmDeleteModal').style.display = 'flex';
+    };
+    
+    async function confirmDeleteFile() {
+        if (deleteFileId) {
+            try {
+                await deleteLibraryFileAPI(deleteFileId);
+                await loadLibraryFiles();
+                showToast("🗑️ Đã xóa file thành công!");
+            } catch (error) {
+                showToast(error.message, false);
+            }
+            deleteFileId = null;
+        }
+    }
+    
+    function setupFileUpload() {
+        const examUploadArea = document.getElementById('examUploadArea');
+        const examFileInput = document.getElementById('examFileInput');
+        if (examUploadArea) {
+            examUploadArea.onclick = () => examFileInput.click();
+            examFileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > MAX_FILE_SIZE) {
+                        showToast(`⚠️ File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false);
+                        return;
+                    }
+                    try {
+                        await uploadLibraryFile(file, 'exam');
+                        await loadLibraryFiles();
+                        showToast("✅ Đã thêm đề thi: " + file.name);
+                    } catch (error) {
+                        showToast(error.message, false);
+                    }
+                    examFileInput.value = '';
+                }
+            };
+        }
+        
+        const theoryUploadArea = document.getElementById('theoryUploadArea');
+        const theoryFileInput = document.getElementById('theoryFileInput');
+        if (theoryUploadArea) {
+            theoryUploadArea.onclick = () => theoryFileInput.click();
+            theoryFileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > MAX_FILE_SIZE) {
+                        showToast(`⚠️ File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false);
+                        return;
+                    }
+                    try {
+                        await uploadLibraryFile(file, 'theory');
+                        await loadLibraryFiles();
+                        showToast("✅ Đã thêm tài liệu: " + file.name);
+                    } catch (error) {
+                        showToast(error.message, false);
+                    }
+                    theoryFileInput.value = '';
+                }
+            };
+        }
+    }
+    
+    // ========== RENDER USER TABLE ==========
+    async function renderUserTable(searchTerm = "") {
+        try {
+            const usersList = await getAdminUsers();
+            users = usersList;
+            document.getElementById('totalUsers').innerText = users.length;
+            document.getElementById('activeUsers').innerText = users.length;
+            
+            let filteredUsers = users;
+            if (searchTerm) {
+                filteredUsers = users.filter(u => 
+                    u.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (u.displayName || "").toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            
+            const tbody = document.getElementById('userTableBody');
+            if (filteredUsers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br>Không có người dùng nào</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            filteredUsers.forEach((user, i) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = i + 1;
+                row.insertCell(1).innerHTML = user.avatar ? `<img src="${user.avatar}" class="user-avatar-table" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : `<i class="fas fa-user-circle" style="font-size: 40px; color: #1565C0;"></i>`;
+                row.insertCell(2).innerHTML = `<strong>${escapeHtml(user.username)}</strong> ${user.role === 'admin' ? '<span class="badge badge-admin">Admin</span>' : ''}`;
+                row.insertCell(3).innerText = user.displayName || user.username;
+                row.insertCell(4).innerText = user.gender || 'Chưa cập nhật';
+                row.insertCell(5).innerHTML = `
+                    <div class="action-buttons">
+                        <button class="btn-icon view" onclick="viewUserDetail('${user.id}')" title="Xem chi tiết"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon edit" onclick="editUser('${user.id}')" title="Chỉnh sửa"><i class="fas fa-edit"></i></button>
+                        ${user.role !== 'admin' ? `<button class="btn-icon delete" onclick="deleteUserById('${user.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>` : ''}
+                    </div>
+                `;
+            });
+        } catch (error) {
+            console.error('Lỗi tải user:', error);
+        }
+    }
+    
+    window.viewUserDetail = async (userId) => {
+        const user = users.find(u => u.id == userId);
+        if (!user) return;
+        const content = document.getElementById('userDetailContent');
+        content.innerHTML = `
+            <div style="text-align: center; margin-bottom: 20px;">
+                ${user.avatar ? `<img src="${user.avatar}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #1565C0;">` : `<i class="fas fa-user-circle" style="font-size: 80px; color: #1565C0;"></i>`}
+                <h3 style="margin-top: 10px; color: #182b47;">${escapeHtml(user.displayName || user.username)}</h3>
+                <p style="color: #6f7c8f;">@${escapeHtml(user.username)}</p>
+            </div>
+            <div class="form-group"><label>Giới tính</label><p>${user.gender || 'Chưa cập nhật'}</p></div>
+            <div class="form-group"><label>Thống kê</label><p>📊 Điểm tích lũy: <strong>${user.stats?.score || 0}</strong></p><p>📈 Tiến độ: <strong>${user.stats?.progress || 0}%</strong></p><p>🏆 Xếp hạng: <strong>#${user.stats?.rank || 100}</strong></p></div>
+            <div class="form-group"><label>Ngày tạo</label><p>${user.createdAt ? new Date(user.createdAt).toLocaleString('vi-VN') : 'Chưa rõ'}</p></div>
+        `;
+        document.getElementById('userDetailModal').style.display = 'flex';
+    };
+    
+    window.editUser = (userId) => {
+        const user = users.find(u => u.id == userId);
+        if (!user) return;
+        currentEditUser = user;
+        document.getElementById('editDisplayName').value = user.displayName || user.username;
+        document.getElementById('editPassword').value = '';
+        document.getElementById('editGender').value = user.gender || 'Nam';
+        document.getElementById('editUserModal').style.display = 'flex';
+    };
+    
+    document.getElementById('saveEditBtn').onclick = async () => {
+        if (!currentEditUser) return;
+        try {
+            await apiRequest(`/users/profile`, {
+                method: 'PUT',
+                body: JSON.stringify({ 
+                    displayName: document.getElementById('editDisplayName').value,
+                    gender: document.getElementById('editGender').value
+                })
+            });
+            document.getElementById('editUserModal').style.display = 'none';
+            await renderUserTable(document.getElementById('searchInput')?.value || '');
+            showToast("✅ Đã cập nhật thông tin người dùng");
+        } catch (error) {
+            showToast(error.message, false);
+        }
+    };
+    
+    window.deleteUserById = async (userId) => {
+        if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
+            try {
+                await deleteUserAPI(userId);
+                await renderUserTable(document.getElementById('searchInput')?.value || '');
+                showToast("✅ Đã xóa tài khoản");
+            } catch (error) {
+                showToast(error.message, false);
+            }
+        }
+    };
+    
+    // ========== RENDER STATS ==========
+    async function renderStatsTable() {
+        try {
+            const usersList = await getAdminUsers();
+            const tbody = document.getElementById('statsTableBody');
+            document.getElementById('statTotalUsers').innerText = usersList.length;
+            
+            let totalScore = 0;
+            usersList.forEach(u => { totalScore += u.stats?.score || 0; });
+            document.getElementById('statTotalScore').innerText = totalScore;
+            document.getElementById('statTotalEvents').innerText = "0";
+            document.getElementById('statTotalNews').innerText = "0";
+            
+            if (usersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="empty-state"><i class="fas fa-chart-line"></i><br>Chưa có dữ liệu thống kê</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            usersList.forEach((user, i) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = i + 1;
+                row.insertCell(1).innerHTML = `<strong>${escapeHtml(user.username)}</strong>`;
+                row.insertCell(2).innerText = user.displayName || user.username;
+                row.insertCell(3).innerText = user.stats?.score || 0;
+                row.insertCell(4).innerText = user.stats?.hours || 0;
+                row.insertCell(5).innerText = user.stats?.progress || 0;
+                row.insertCell(6).innerText = '#' + (user.stats?.rank || 100);
+            });
+        } catch (error) {
+            console.error('Lỗi tải stats:', error);
+        }
+    }
+    
+    // ========== TAB SWITCHING ==========
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        document.getElementById(`${tabId}Tab`).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
+        if (tabId === 'library') loadLibraryFiles();
+        if (tabId === 'users') renderUserTable();
+        if (tabId === 'stats') renderStatsTable();
+    }
+    
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.onclick = () => { if (isAdminLoggedIn) switchTab(item.dataset.tab); };
+    });
+    
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
+        if (isAdminLoggedIn) renderUserTable(e.target.value);
+    });
+    
+    // ========== MODAL CLOSE ==========
+    document.getElementById('closeEditModalBtn').onclick = () => document.getElementById('editUserModal').style.display = 'none';
+    document.getElementById('closeDetailModalBtn').onclick = () => document.getElementById('userDetailModal').style.display = 'none';
+    document.getElementById('closeConfirmModalBtn').onclick = () => {
+        document.getElementById('confirmDeleteModal').style.display = 'none';
+        deleteFileId = null;
+    };
+    document.getElementById('cancelDeleteBtn').onclick = () => {
+        document.getElementById('confirmDeleteModal').style.display = 'none';
+        deleteFileId = null;
+    };
+    document.getElementById('confirmDeleteBtn').onclick = async () => {
+        await confirmDeleteFile();
+        document.getElementById('confirmDeleteModal').style.display = 'none';
+    };
+    
+    window.onclick = (e) => {
+        if (e.target === document.getElementById('editUserModal')) document.getElementById('editUserModal').style.display = 'none';
+        if (e.target === document.getElementById('userDetailModal')) document.getElementById('userDetailModal').style.display = 'none';
+        if (e.target === document.getElementById('confirmDeleteModal')) document.getElementById('confirmDeleteModal').style.display = 'none';
+    };
+    
+    // ========== CLEAR & EXPORT ==========
+    document.getElementById('clearAllDataBtn').onclick = () => {
+        if (confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa TẤT CẢ dữ liệu. Bạn có chắc chắn?")) {
+            showToast("Tính năng đang phát triển", false);
+        }
+    };
+    
+    document.getElementById('exportDataBtn').onclick = async () => {
+        try {
+            const usersList = await getAdminUsers();
+            let csvContent = "STT,Tên tài khoản,Tên hiển thị,Giới tính,Điểm tích lũy,Ngày tạo\n";
+            usersList.forEach((user, index) => {
+                csvContent += `${index + 1},"${user.username}","${user.displayName || user.username}","${user.gender || 'Chưa cập nhật'}","${user.stats?.score || 0}","${user.createdAt || ''}"\n`;
+            });
+            const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.setAttribute("download", "milkcoffee_users.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast("✅ Đã xuất dữ liệu thành công!");
+        } catch (error) {
+            showToast(error.message, false);
+        }
+    };
+    
+    // ========== LOGIN ==========
+    async function handleAdminLogin() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const errorDiv = document.getElementById('loginError');
+        
+        if (!username || !password) {
+            errorDiv.innerText = 'Vui lòng nhập đầy đủ thông tin!';
+            errorDiv.classList.add('show');
+            return;
+        }
+        
+        try {
+            const result = await adminLogin(username, password);
+            if (result.success && result.user.role === 'admin') {
+                localStorage.setItem('admin_token', result.token);
+                localStorage.setItem('admin_user', JSON.stringify(result.user));
+                adminUser = result.user;
+                isAdminLoggedIn = true;
+                document.getElementById('loginModal').style.display = 'none';
+                showToast("✅ Đăng nhập thành công! Chào mừng quản trị viên.");
+                
+                // Load dữ liệu
+                await loadAdminProfile();
+                await loadLibraryFiles();
+                await renderUserTable();
+                await renderStatsTable();
+                setupFileUpload();
+                setupAdminImageUpload();
+            } else {
+                errorDiv.innerText = 'Bạn không có quyền truy cập Admin!';
+                errorDiv.classList.add('show');
+            }
+        } catch (error) {
+            errorDiv.innerText = error.message;
+            errorDiv.classList.add('show');
+        }
+    }
+    
+    document.getElementById('loginSubmitBtn').onclick = handleAdminLogin;
+    document.getElementById('loginPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdminLogin(); });
+    document.getElementById('loginUsername').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdminLogin(); });
+    
+    // Logo & logout
+    document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
+    document.getElementById('logoutBtn').onclick = () => {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = 'dndk.html';
+    };
+    
+    // Check if already logged in
+    if (localStorage.getItem('admin_token')) {
+        isAdminLoggedIn = true;
+        document.getElementById('loginModal').style.display = 'none';
+        loadAdminProfile();
+        loadLibraryFiles();
+        renderUserTable();
+        renderStatsTable();
+        setupFileUpload();
+        setupAdminImageUpload();
+    }
+</script>
+</body>
+</html>
