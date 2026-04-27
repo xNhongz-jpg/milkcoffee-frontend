@@ -2,18 +2,18 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Milk Coffee - Học tập thông minh</title>
     <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231565C0'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3E☕%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; overflow-x: hidden; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
         .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
         
         /* Header */
-        .main-header { background: rgba(24, 43, 71, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .main-header { background: rgba(24, 43, 71, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); transition: background 0.3s; }
         .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
         .logo-area:hover { transform: scale(1.02); }
@@ -22,12 +22,16 @@
         .header-actions { display: flex; gap: 16px; align-items: center; }
         .trial-btn { background: linear-gradient(135deg, #1565C0, #0f4d96); color: white; border: none; padding: 10px 28px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
         .trial-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.4); }
-        .action-btn { background: rgba(255,255,255,0.1); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s; font-size: 1.2rem; position: relative; backdrop-filter: blur(5px); }
-        .action-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+        .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; }
+        .action-btn:hover { background: #3a5280; transform: scale(1.05); }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: linear-gradient(135deg, #f44336, #e91e63); color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
         
+        /* Nút chuyển đổi chế độ sáng/tối */
+        .theme-toggle { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; border: none; }
+        .theme-toggle:hover { background: #3a5280; transform: scale(1.05); }
+        
         /* Menu thanh điều hướng */
-        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; }
+        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; transition: background 0.3s, border-color 0.3s; }
         .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
         .nav-item { padding: 16px 8px; font-weight: 600; font-size: 1rem; color: #414141; cursor: pointer; transition: all 0.3s; position: relative; }
         .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px; background: linear-gradient(90deg, #1565C0, #42a5f5); transition: all 0.3s; transform: translateX(-50%); border-radius: 3px; }
@@ -60,7 +64,7 @@
         .section-title span { color: #1565C0; }
         .section-desc { color: #6f7c8f; max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .feature-card { background: white; border-radius: 24px; padding: 32px 24px; text-align: center; transition: all 0.4s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
+        .feature-card { background: white; border-radius: 24px; padding: 32px 24px; text-align: center; transition: all 0.4s, background 0.3s, border-color 0.3s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
         .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #1565C0, #42a5f5); transform: scaleX(0); transition: transform 0.4s; }
         .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .feature-card:hover::before { transform: scaleX(1); }
@@ -71,7 +75,7 @@
         .feature-card p { font-size: 0.85rem; color: #6f7c8f; line-height: 1.5; }
         
         /* CTA Section */
-        .cta-section { text-align: center; padding: 70px 32px; background: linear-gradient(135deg, #f5f7fa, #fff); margin: 40px 32px 80px; border-radius: 48px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .cta-section { text-align: center; padding: 70px 32px; background: linear-gradient(135deg, #f5f7fa, #fff); margin: 40px 32px 80px; border-radius: 48px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); transition: background 0.3s, border-color 0.3s; }
         .cta-section h2 { font-size: 2rem; font-weight: 700; color: #182b47; margin-bottom: 16px; }
         .cta-section h2 span { color: #1565C0; }
         .cta-section p { color: #6f7c8f; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1rem; line-height: 1.6; }
@@ -79,14 +83,14 @@
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(21,101,192,0.4); }
         
         /* Footer */
-        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 32px; font-size: 0.85rem; margin-top: auto; }
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 32px; font-size: 0.85rem; margin-top: auto; transition: background 0.3s; }
         .footer-links { max-width: 1400px; margin: 0 auto 20px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
         .footer-links a { color: #a0b3d0; text-decoration: none; transition: color 0.3s; cursor: pointer; font-size: 0.85rem; }
         .footer-links a:hover { color: white; }
         
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; animation: fadeInUp 0.3s ease; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; animation: fadeInUp 0.3s ease; transition: background 0.3s; }
         .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
         .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; transition: color 0.3s; }
         .close-modal:hover { color: #333; }
@@ -94,22 +98,72 @@
         @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(20px); } }
         .empty-state { text-align: center; padding: 40px; color: #a0aec0; }
         .empty-state i { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
-        .notification-item { background: white; padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; border-left: 4px solid #1565C0; }
+        .notification-item { background: white; padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; border-left: 4px solid #1565C0; transition: background 0.3s; }
         .notification-title { font-weight: 600; font-size: 0.9rem; color: #414141; }
         .notification-time { font-size: 0.75rem; color: #e64949; margin-top: 6px; }
         
+        /* ========== RESPONSIVE CHO ĐIỆN THOẠI ========== */
         @media (max-width: 1024px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
         }
+        
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero { min-height: 70vh; }
-            .section-title { font-size: 1.6rem; }
-            .features-grid { grid-template-columns: 1fr; }
-            .nav-container { gap: 20px; overflow-x: auto; justify-content: flex-start; }
-            .cta-section { margin: 40px 16px; padding: 50px 20px; }
-            .cta-section h2 { font-size: 1.5rem; }
+            .hero-content h1 { font-size: 2rem; }
+            .hero { min-height: 60vh; }
+            .section-title { font-size: 1.4rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 20px; }
+            .nav-container { gap: 16px; overflow-x: auto; justify-content: flex-start; padding: 0 16px; }
+            .nav-item { font-size: 0.85rem; padding: 12px 4px; }
+            .cta-section { margin: 20px 16px; padding: 30px 16px; }
+            .cta-section h2 { font-size: 1.3rem; }
+            .cta-section p { font-size: 0.85rem; }
+            .hero-buttons { gap: 12px; }
+            .btn-primary, .btn-outline { padding: 10px 20px; font-size: 0.85rem; }
+            .features-section { margin: 40px auto; padding: 0 16px; }
+            .section-header { margin-bottom: 30px; }
+            .feature-card { padding: 20px 16px; }
+            .feature-icon { width: 50px; height: 50px; }
+            .feature-icon i { font-size: 1.5rem; }
+            .feature-card h3 { font-size: 1rem; }
+            .theme-toggle, .action-btn { width: 40px; height: 40px; font-size: 1rem; }
         }
+        
+        /* ========== CHẾ ĐỘ TỐI (DARK THEME) ========== */
+        body.dark-theme { background-color: #0a0a0a !important; color: #e0e0e0 !important; }
+        body.dark-theme .main-header { background: #0a0a0a !important; border-bottom: 1px solid #333; }
+        body.dark-theme .action-btn { background: #2a2a2a !important; }
+        body.dark-theme .action-btn:hover { background: #3a3a3a !important; }
+        body.dark-theme .theme-toggle { background: #2a2a2a !important; }
+        body.dark-theme .theme-toggle:hover { background: #3a3a3a !important; }
+        body.dark-theme .nav-menu { background: #111 !important; border-bottom: 1px solid #333; }
+        body.dark-theme .nav-item { color: #ccc !important; }
+        body.dark-theme .nav-item.active { color: #1565C0 !important; }
+        body.dark-theme .hero-overlay { background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.75)) !important; }
+        body.dark-theme .hero-content h1 { background: linear-gradient(135deg, #fff, #90caf9) !important; -webkit-background-clip: text !important; background-clip: text !important; color: transparent !important; }
+        body.dark-theme .hero-content p, body.dark-theme .hero-badge { color: #ddd !important; }
+        body.dark-theme .feature-card { background: #1a1a1a !important; border-color: #333 !important; }
+        body.dark-theme .feature-card h3 { color: #eee !important; }
+        body.dark-theme .feature-card p { color: #aaa !important; }
+        body.dark-theme .section-title { color: #eee !important; }
+        body.dark-theme .section-title span { color: #1565C0 !important; }
+        body.dark-theme .section-desc { color: #aaa !important; }
+        body.dark-theme .cta-section { background: #1a1a1a !important; border-color: #333 !important; }
+        body.dark-theme .cta-section h2 { color: #eee !important; }
+        body.dark-theme .cta-section p { color: #aaa !important; }
+        body.dark-theme .footer-note { background: #0a0a0a !important; color: #888 !important; }
+        body.dark-theme .footer-links a { color: #888 !important; }
+        body.dark-theme .footer-links a:hover { color: #1565C0 !important; }
+        body.dark-theme .modal-content { background: #1a1a1a !important; border-color: #333 !important; }
+        body.dark-theme .modal-header { color: #1565C0 !important; }
+        body.dark-theme .close-modal { color: #aaa !important; }
+        body.dark-theme .close-modal:hover { color: #fff !important; }
+        body.dark-theme .notification-item { background: #222 !important; border-left-color: #1565C0 !important; }
+        body.dark-theme .notification-title { color: #eee !important; }
+        body.dark-theme .empty-state, body.dark-theme .empty-state i { color: #888 !important; }
+        body.dark-theme .trial-btn { background: linear-gradient(135deg, #1565C0, #0f4d96) !important; }
+        body.dark-theme .btn-primary, body.dark-theme .btn-outline, body.dark-theme .cta-btn { background: linear-gradient(135deg, #1565C0, #0f4d96) !important; }
+        body.dark-theme .btn-outline { border-color: #1565C0 !important; color: #1565C0 !important; }
+        body.dark-theme .btn-outline:hover { background: #1565C0 !important; color: white !important; }
     </style>
 </head>
 <body>
@@ -121,7 +175,11 @@
                 <div class="logo-icon"><i class="fas fa-mug-hot"></i></div>
                 <div class="logo-text">Milk Coffee</div>
             </div>
-            <div class="header-actions" id="headerActions"></div>
+            <div class="header-actions" id="headerActions">
+                <div class="action-btn" id="notificationBtn"><i class="fas fa-bell"></i><span id="notificationBadge" class="badge-notify" style="display: none;">0</span></div>
+                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
+                <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
+            </div>
         </div>
     </div>
 
@@ -222,6 +280,31 @@
 </div>
 
 <script>
+    // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+    
+    function toggleTheme() {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    }
+    
+    // ==================== API ====================
     const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     let isLoggedIn = false;
@@ -323,12 +406,15 @@
         if (isLoggedIn && currentUserName) {
             headerActions.innerHTML = `
                 <div class="action-btn" id="notificationBtn"><i class="fas fa-bell"></i><span id="notificationBadge" class="badge-notify" style="display: none;">0</span></div>
+                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
                 <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
             `;
             const notificationBtn = document.getElementById('notificationBtn');
             const logoutBtn = document.getElementById('logoutBtn');
+            const themeBtn = document.getElementById('themeToggleBtn');
             if (notificationBtn) notificationBtn.addEventListener('click', showNotificationModal);
             if (logoutBtn) logoutBtn.addEventListener('click', logout);
+            if (themeBtn) themeBtn.onclick = toggleTheme;
             
             const updateBadge = () => {
                 const upcoming = getUpcomingEvents();
@@ -341,11 +427,14 @@
             updateBadge();
             setInterval(updateBadge, 60000);
         } else {
-            headerActions.innerHTML = `<button class="trial-btn" id="trialBtn"><i class="fas fa-graduation-cap"></i> Học thử ngay</button>`;
+            headerActions.innerHTML = `<button class="trial-btn" id="trialBtn"><i class="fas fa-graduation-cap"></i> Học thử ngay</button>
+                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>`;
             const trialBtn = document.getElementById('trialBtn');
+            const themeBtn = document.getElementById('themeToggleBtn');
             if (trialBtn) trialBtn.addEventListener('click', () => {
                 window.location.href = 'dndk.html';
             });
+            if (themeBtn) themeBtn.onclick = toggleTheme;
         }
     }
     
@@ -381,6 +470,7 @@
         }
         
         updateHeaderUI();
+        initTheme();
         
         document.getElementById('logoArea').onclick = () => {
             window.location.href = 'trangchu.html';

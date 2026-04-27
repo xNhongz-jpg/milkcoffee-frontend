@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Đăng nhập/Đăng ký - Milk Coffee</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -23,6 +23,7 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            transition: background 0.3s ease;
         }
 
         body::before {
@@ -47,6 +48,31 @@
             pointer-events: none;
         }
 
+        /* Nút chuyển đổi chế độ sáng/tối */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            border: none;
+            z-index: 1000;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
         .auth-container {
             width: 100%;
             max-width: 500px;
@@ -62,6 +88,7 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             animation: fadeInUp 0.6s ease;
             border: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         @keyframes fadeInUp {
@@ -394,10 +421,74 @@
                 font-size: 0.85rem;
                 bottom: 20px;
             }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ========== CHẾ ĐỘ TỐI (DARK THEME) ========== */
+        body.dark-theme {
+            background: linear-gradient(135deg, #0a0a0a 0%, #050a0f 100%) !important;
+        }
+        body.dark-theme .theme-toggle {
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+        }
+        body.dark-theme .auth-card {
+            background: rgba(20, 20, 30, 0.95) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+        }
+        body.dark-theme .logo-text {
+            background: linear-gradient(135deg, #fff, #90caf9) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            color: transparent !important;
+        }
+        body.dark-theme .tagline {
+            color: #aaa !important;
+        }
+        body.dark-theme .tab {
+            color: #aaa !important;
+        }
+        body.dark-theme .tab.active {
+            color: #1565C0 !important;
+        }
+        body.dark-theme .input-group label {
+            color: #ccc !important;
+        }
+        body.dark-theme .input-field i {
+            color: #1565C0 !important;
+        }
+        body.dark-theme .input-field input {
+            background: #2a2a2a !important;
+            border-color: #444 !important;
+            color: #fff !important;
+        }
+        body.dark-theme .input-field input:focus {
+            border-color: #1565C0 !important;
+            background: #333 !important;
+        }
+        body.dark-theme .info-text {
+            color: #aaa !important;
+        }
+        body.dark-theme .info-text a {
+            color: #1565C0 !important;
+        }
+        body.dark-theme .btn-auth {
+            background: linear-gradient(135deg, #1565C0, #0f4d96) !important;
+        }
+        body.dark-theme .strength-text {
+            color: #aaa !important;
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
+
     <div class="auth-container">
         <div class="auth-card">
             <div class="logo-area">
@@ -491,6 +582,31 @@
     </div>
 
     <script>
+        // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        function toggleTheme() {
+            if (document.body.classList.contains('dark-theme')) {
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+        
+        // ==================== API ====================
         const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
         
         function showToast(message, isSuccess = true) {
@@ -735,6 +851,10 @@
         if (localStorage.getItem('token')) {
             window.location.href = 'bangdieukhien.html';
         }
+        
+        // Khởi tạo chế độ sáng/tối
+        initTheme();
+        document.getElementById('themeToggleBtn').onclick = toggleTheme;
     </script>
 </body>
 </html>

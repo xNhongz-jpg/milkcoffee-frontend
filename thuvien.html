@@ -2,36 +2,41 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Thư viện - Milk Coffee</title>
     <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231565C0'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3E☕%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
         .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s; }
         .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
         .logo-area:hover { transform: scale(1.02); }
         .logo-icon { background: linear-gradient(135deg, #1565C0, #42a5f5); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(21,101,192,0.3); }
         .logo-text { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #90caf9); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
-        .header-actions { display: flex; gap: 16px; position: relative; }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
         .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; }
         .action-btn:hover { background: #3a5280; transform: scale(1.05); }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
+        
+        /* Nút chuyển đổi chế độ sáng/tối */
+        .theme-toggle { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; border: none; }
+        .theme-toggle:hover { background: #3a5280; transform: scale(1.05); }
+        
         .three-columns { max-width: 1600px; margin: 32px auto; padding: 0 32px; display: flex; gap: 32px; flex: 1; width: 100%; }
         
         /* Cột trái */
         .left-col { flex: 1; max-width: 320px; position: sticky; top: 90px; height: fit-content; }
         .profile-summary { padding: 24px 20px; text-align: center; cursor: pointer; border-radius: 28px; transition: background 0.2s; margin-bottom: 12px; }
-        .profile-summary:hover { background: #FFFFFF; }
+        .profile-summary:hover { background: #FFFFFF; transition: background 0.2s; }
         .left-avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; border: 4px solid white; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .left-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .left-name { font-size: 1.4rem; font-weight: 700; color: #3B5998; cursor: pointer; }
         .left-name:hover { text-decoration: underline; }
-        .menu-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; font-weight: 500; font-size: 1rem; color: #414141; cursor: pointer; border-radius: 16px; margin: 2px 8px; transition: background 0.2s; }
+        .menu-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; font-weight: 500; font-size: 1rem; color: #414141; cursor: pointer; border-radius: 16px; margin: 2px 8px; transition: background 0.2s, color 0.2s; }
         .menu-item i { width: 28px; color: #1565C0; font-size: 1.2rem; }
         .menu-item.active { background: #FFFFFF; color: #1565C0; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .menu-item:hover:not(.active) { background: #FFFFFF; }
@@ -41,14 +46,14 @@
         .center-col { flex: 3; min-width: 0; }
         .page-title { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; justify-content: space-between; flex-wrap: wrap; }
         .library-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 32px; }
-        .library-card { background: white; border-radius: 28px; border: 1px solid #D0D0D0; overflow: hidden; transition: 0.3s; }
+        .library-card { background: white; border-radius: 28px; border: 1px solid #D0D0D0; overflow: hidden; transition: 0.3s, background 0.3s, border-color 0.3s; }
         .library-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
         .card-header { background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 24px; text-align: center; color: white; }
         .card-header i { font-size: 2.5rem; margin-bottom: 12px; }
         .card-header h3 { font-size: 1.3rem; font-weight: 700; }
         .card-body { padding: 20px; }
         .file-list { max-height: 350px; overflow-y: auto; }
-        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; }
+        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; transition: border-color 0.3s; }
         .file-item:last-child { border-bottom: none; }
         .file-info { flex: 1; }
         .file-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; word-break: break-word; }
@@ -58,7 +63,7 @@
         .file-btn.download:hover { background: #e0f0ff; color: #1565C0; transform: scale(1.05); }
         .empty-library { text-align: center; padding: 40px; color: #a0aec0; }
         .empty-library i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-        .sgk-link { display: block; text-align: center; margin-top: 16px; padding: 12px; background: #F2F2F2; border-radius: 20px; color: #1565C0; text-decoration: none; transition: 0.2s; }
+        .sgk-link { display: block; text-align: center; margin-top: 16px; padding: 12px; background: #F2F2F2; border-radius: 20px; color: #1565C0; text-decoration: none; transition: 0.2s, background 0.3s, color 0.3s; }
         .sgk-link:hover { background: #1565C0; color: white; }
         
         /* Cột phải */
@@ -68,7 +73,7 @@
         .calendar-trigger, .add-news-btn { background: #1565C0; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 500; }
         .calendar-trigger:hover, .add-news-btn:hover { background: #0f4d96; transform: scale(1.02); }
         .event-list { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
-        .event-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border: 1px solid #e8ecef; }
+        .event-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s, background 0.3s, border-color 0.3s; border: 1px solid #e8ecef; }
         .event-item-custom:hover { background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #D0D0D0; }
         .event-info { flex: 1; }
         .event-title { font-weight: 600; font-size: 0.95rem; }
@@ -76,7 +81,7 @@
         .delete-event-btn { background: none; border: none; color: #e64949; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; transition: 0.2s; }
         .delete-event-btn:hover { background: #ffe0e0; transform: scale(1.1); }
         .news-content { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
-        .news-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border: 1px solid #e8ecef; }
+        .news-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s, background 0.3s, border-color 0.3s; border: 1px solid #e8ecef; }
         .news-item-custom:hover { background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #D0D0D0; }
         .news-info { flex: 1; }
         .news-title { font-weight: 600; font-size: 0.95rem; }
@@ -84,7 +89,7 @@
         .delete-news-btn { background: none; border: none; color: #e64949; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; transition: 0.2s; }
         .delete-news-btn:hover { background: #ffe0e0; transform: scale(1.1); }
         
-        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; }
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; transition: background 0.3s; }
         .empty-state { text-align: center; padding: 50px 20px; color: #a0aec0; }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
         .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
@@ -92,7 +97,7 @@
         
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; transition: background 0.3s; }
         .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
         .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; }
         .close-modal:hover { color: #333; }
@@ -107,8 +112,64 @@
         .confirm-cancel-btn { background: #e8ecef; color: #414141; }
         .confirm-cancel-btn:hover { background: #D0D0D0; }
         
-        @media (max-width: 1000px) { .left-col, .right-col { display: none; } .three-columns { padding: 0 20px; } }
-        @media (max-width: 900px) { .library-grid { grid-template-columns: 1fr; } }
+        /* ========== RESPONSIVE CHO ĐIỆN THOẠI ========== */
+        @media (max-width: 1000px) { 
+            .three-columns { flex-direction: column; padding: 0 20px; gap: 20px; }
+            .left-col, .right-col { max-width: 100%; position: static; display: block; }
+            .center-col { width: 100%; }
+            .library-grid { grid-template-columns: 1fr; gap: 20px; }
+            .page-title { font-size: 1.2rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .card-header { padding: 16px; }
+            .card-header h3 { font-size: 1.1rem; }
+            .card-body { padding: 16px; }
+            .file-name { font-size: 0.8rem; }
+            .file-meta { font-size: 0.65rem; }
+            .event-item-custom, .news-item-custom { padding: 10px 12px; }
+            .event-title, .news-title { font-size: 0.85rem; }
+            .three-columns { padding: 0 16px; }
+        }
+        
+        /* ========== CHẾ ĐỘ TỐI (DARK THEME) ========== */
+        body.dark-theme { background-color: #0a0a0a !important; color: #e0e0e0 !important; }
+        body.dark-theme .main-header { background: #0a0a0a !important; border-bottom: 1px solid #333; }
+        body.dark-theme .action-btn { background: #2a2a2a !important; }
+        body.dark-theme .action-btn:hover { background: #3a3a3a !important; }
+        body.dark-theme .theme-toggle { background: #2a2a2a !important; }
+        body.dark-theme .theme-toggle:hover { background: #3a3a3a !important; }
+        body.dark-theme .profile-summary:hover { background: #1a1a1a !important; }
+        body.dark-theme .menu-item { color: #ccc !important; }
+        body.dark-theme .menu-item.active { background: #1a1a1a !important; color: #1565C0 !important; }
+        body.dark-theme .menu-item:hover:not(.active) { background: #1a1a1a !important; }
+        body.dark-theme .library-card, body.dark-theme .event-list .event-item-custom, body.dark-theme .news-content .news-item-custom,
+        body.dark-theme .modal-content { background: #1a1a1a !important; border-color: #333 !important; }
+        body.dark-theme .card-header { background: linear-gradient(135deg, #0f3a6f, #1a4a8a) !important; }
+        body.dark-theme .file-item { border-bottom-color: #333 !important; }
+        body.dark-theme .file-name { color: #eee !important; }
+        body.dark-theme .file-meta { color: #888 !important; }
+        body.dark-theme .file-btn { color: #aaa !important; }
+        body.dark-theme .file-btn.download:hover { background: #1a3a5a !important; color: #1565C0 !important; }
+        body.dark-theme .empty-library, body.dark-theme .empty-library i { color: #888 !important; }
+        body.dark-theme .sgk-link { background: #2a2a2a !important; color: #1565C0 !important; }
+        body.dark-theme .sgk-link:hover { background: #1565C0 !important; color: white !important; }
+        body.dark-theme .event-item-custom, body.dark-theme .news-item-custom { background: #222 !important; border-color: #444 !important; }
+        body.dark-theme .event-title, body.dark-theme .news-title { color: #eee !important; }
+        body.dark-theme .event-date-custom, body.dark-theme .news-date-custom { color: #ff8888 !important; }
+        body.dark-theme .delete-event-btn, body.dark-theme .delete-news-btn { color: #ff8888 !important; }
+        body.dark-theme .delete-event-btn:hover, body.dark-theme .delete-news-btn:hover { background: #442222 !important; }
+        body.dark-theme .modal-header { color: #1565C0 !important; }
+        body.dark-theme .close-modal { color: #aaa !important; }
+        body.dark-theme .close-modal:hover { color: #fff !important; }
+        body.dark-theme .form-control { background: #2a2a2a !important; border-color: #444 !important; color: #fff !important; }
+        body.dark-theme .footer-note { background: #0a0a0a !important; color: #888 !important; }
+        body.dark-theme .footer-links a { color: #888 !important; }
+        body.dark-theme .footer-links a:hover { color: #1565C0 !important; }
+        body.dark-theme .empty-state, body.dark-theme .empty-state i { color: #888 !important; }
+        body.dark-theme .card-header-custom { color: #1565C0 !important; }
+        body.dark-theme .calendar-trigger, body.dark-theme .add-news-btn { background: #1565C0 !important; }
+        body.dark-theme .calendar-trigger:hover, body.dark-theme .add-news-btn:hover { background: #0f4d96 !important; }
     </style>
 </head>
 <body>
@@ -121,6 +182,7 @@
             </div>
             <div class="header-actions">
                 <div class="action-btn" id="notificationBtn"><i class="fas fa-bell"></i><span id="notificationBadge" class="badge-notify" style="display: none;">0</span></div>
+                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
                 <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
             </div>
         </div>
@@ -135,7 +197,7 @@
             </div>
             <div class="menu-item" data-page="home"><i class="fas fa-home"></i> Trang chủ</div>
             <div class="menu-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</div>
-            <div class="menu-item"><i class="fas fa-newspaper"></i> Bản tin</div>
+            <div class="menu-item" data-page="contact"><i class="fas fa-envelope"></i> Liên hệ</div>
             <div class="menu-item"><i class="fas fa-users"></i> Lớp của tôi</div>
             <div class="apps-title">Ứng dụng</div>
             <div class="menu-item" data-page="profile"><i class="fas fa-user-circle"></i> Trang cá nhân</div>
@@ -216,6 +278,31 @@
 <div id="newsModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📰 Thêm tin mới</span><button class="close-modal" id="closeNewsModalBtn">&times;</button></div><input type="text" id="newsTitleInput" class="date-input" placeholder="Nội dung tin tức"><input type="date" id="newsDateInput" class="date-input"><button id="saveNewsBtn" class="add-event-modal-btn">Thêm</button></div></div>
 
 <script>
+    // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+    
+    function toggleTheme() {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    }
+    
+    // ==================== API KẾT NỐI BACKEND ====================
     const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     const getToken = () => localStorage.getItem('token');
@@ -510,16 +597,22 @@
         newsItems = [];
         renderNews();
         
-        document.querySelector('.menu-item[data-page="home"]').onclick = () => { window.location.href = 'trangchu.html'; };
-        document.querySelector('.menu-item[data-page="dashboard"]').onclick = () => { window.location.href = 'bangdieukhien.html'; };
-        document.querySelector('.menu-item[data-page="profile"]').onclick = () => { window.location.href = 'trangcanhan.html'; };
-        document.querySelector('.menu-item[data-page="exams"]').onclick = () => { window.location.href = 'bangdieukhien.html'; };
-        document.querySelector('.menu-item[data-page="library"]').onclick = () => { window.location.href = 'thuvien.html'; };
-        document.querySelector('.menu-item[data-page="calendar"]').onclick = () => { window.location.href = 'lich.html'; };
+        initTheme();
+        document.getElementById('themeToggleBtn').onclick = toggleTheme;
+        
+        // Điều hướng menu
+        document.querySelectorAll('.menu-item[data-page="home"]').forEach(el => el.onclick = () => { window.location.href = 'trangchu.html'; });
+        document.querySelectorAll('.menu-item[data-page="dashboard"]').forEach(el => el.onclick = () => { window.location.href = 'bangdieukhien.html'; });
+        document.querySelectorAll('.menu-item[data-page="contact"]').forEach(el => el.onclick = () => { window.location.href = 'lienhe.html'; });
+        document.querySelectorAll('.menu-item[data-page="profile"]').forEach(el => el.onclick = () => { window.location.href = 'trangcanhan.html'; });
+        document.querySelectorAll('.menu-item[data-page="exams"]').forEach(el => el.onclick = () => { window.location.href = 'bangdieukhien.html'; });
+        document.querySelectorAll('.menu-item[data-page="library"]').forEach(el => el.onclick = () => { window.location.href = 'thuvien.html'; });
+        document.querySelectorAll('.menu-item[data-page="calendar"]').forEach(el => el.onclick = () => { window.location.href = 'lich.html'; });
         
         document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
         document.getElementById('leftProfile').onclick = () => { window.location.href = 'trangcanhan.html'; };
         
+        // Modal sự kiện
         const calendarModal = document.getElementById('calendarModal');
         const openCalendarBtn = document.getElementById('openCalendarBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -538,6 +631,7 @@
             calendarModal.style.display = 'none';
         };
         
+        // Modal xóa
         const confirmDeleteModal = document.getElementById('confirmDeleteModal');
         const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -554,6 +648,7 @@
             confirmDeleteModal.style.display = 'none';
         };
         
+        // Modal tin tức
         const newsModal = document.getElementById('newsModal');
         const addNewsBtn = document.getElementById('addNewsBtn');
         const closeNewsModalBtn = document.getElementById('closeNewsModalBtn');
@@ -574,6 +669,7 @@
             newsModal.style.display = 'none';
         };
         
+        // Thông báo
         const notificationBtn = document.getElementById('notificationBtn');
         const notificationModal = document.getElementById('notificationModal');
         const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');
