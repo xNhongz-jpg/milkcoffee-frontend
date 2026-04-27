@@ -337,12 +337,12 @@
             <div class="table-container">
                 <div class="table-header"><h3><i class="fas fa-chart-simple"></i> Chi tiết hoạt động người dùng</h3></div>
                 <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr>
-                        </thead>
-                        <tbody id="statsTableBody"></tbody>
-                    </table>
+                    86
+                    <thead>
+                        <tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr>
+                    </thead>
+                    <tbody id="statsTableBody"></tbody>
+                </table>
                 </div>
             </div>
         </div>
@@ -981,7 +981,6 @@
     initTheme();
     document.getElementById('themeToggleBtn').onclick = toggleTheme;
     
-    // Kiểm tra xem đã có token chưa
     if (localStorage.getItem('admin_token')) {
         isAdminLoggedIn = true;
         document.getElementById('loginModal').style.display = 'none';
