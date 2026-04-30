@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Đăng nhập/Đăng ký - Milk Coffee</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Đăng nhập/Đăng ký - Milk Coffee | Vũ trụ học tập</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%238B5CF6'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3E☕%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -13,9 +14,11 @@
             box-sizing: border-box;
         }
 
+        /* Light Theme - mặc định */
         body {
-            background: linear-gradient(135deg, #182b47 0%, #0f1a30 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #1a1a2e;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,37 +26,54 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
-            transition: background 0.3s ease;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 80%, rgba(21,101,192,0.15) 0%, transparent 50%);
-            pointer-events: none;
+        /* Dark Theme */
+        body.dark {
+            background: radial-gradient(ellipse at 30% 40%, #0B0A2A, #02010A);
+            color: #e0e0e0;
         }
 
-        body::after {
-            content: '';
-            position: absolute;
+        /* Universe cho dark mode */
+        .universe {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 80% 20%, rgba(66,165,245,0.1) 0%, transparent 50%);
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
             pointer-events: none;
+            display: none;
         }
+        body.dark .universe { display: block; }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            will-change: transform;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3), inset 0 0 25px rgba(255, 255, 200, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .planet-1 { top: 8%; right: -60px; width: 260px; height: 260px; background: radial-gradient(circle at 35% 35%, #FF6B6B, #C41E3A, #8B1A2B); animation: rotateSlow 40s linear infinite; box-shadow: 0 0 45px rgba(255, 107, 107, 0.6); }
+        .planet-2 { bottom: 5%; left: -70px; width: 240px; height: 240px; background: radial-gradient(circle at 65% 40%, #3B82F6, #1E40AF, #1E3A8A); animation: rotateSlow 48s linear infinite; box-shadow: 0 0 45px rgba(59, 130, 246, 0.6); }
+        .planet-3 { top: 52%; left: 62%; width: 110px; height: 110px; background: radial-gradient(circle at 70% 30%, #C084FC, #6B21A5, #4C1D95); animation: rotateSlow 25s linear infinite; box-shadow: 0 0 35px #C084FC; }
+        .planet-4 { top: 72%; right: 8%; width: 140px; height: 140px; background: radial-gradient(circle at 40% 60%, #FBBF24, #D97706, #B45309); animation: rotateSlow 32s linear infinite; box-shadow: 0 0 35px #FBBF24; }
+        @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .star { position: absolute; background: white; border-radius: 50%; pointer-events: none; }
+        .star-twinkle { position: absolute; background: radial-gradient(circle, #fff, #FFEAA7); border-radius: 50%; animation: twinkle 3s ease-in-out infinite; pointer-events: none; }
+        @keyframes twinkle { 0%,100%{ opacity:0.3; transform:scale(0.8); }50%{ opacity:1; transform:scale(1.1); box-shadow:0 0 5px #fff; } }
+        .shooting-star { position: absolute; width: 2.5px; height: 2.5px; background: linear-gradient(135deg, #ffffff, #ffdd99, #ffaa66); border-radius: 50%; box-shadow: 0 0 10px #ffaa66; pointer-events: none; will-change: transform; z-index: 10; }
+        .shooting-star::before { content: ''; position: absolute; top: 0; left: -70px; width: 70px; height: 1.5px; background: linear-gradient(90deg, rgba(255,220,100,0.9), rgba(255,180,80,0.4), transparent); border-radius: 2px; }
 
         /* Nút chuyển đổi chế độ sáng/tối */
         .theme-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(5px);
             width: 48px;
             height: 48px;
@@ -61,16 +81,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #1a1a2e;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 1.2rem;
-            border: none;
+            border: 1px solid rgba(139, 92, 246, 0.3);
             z-index: 1000;
         }
+        body.dark .theme-toggle {
+            background: rgba(139, 92, 246, 0.3);
+            color: white;
+            border-color: rgba(139, 92, 246, 0.5);
+        }
         .theme-toggle:hover {
-            background: rgba(255,255,255,0.3);
+            background: #8B5CF6;
+            color: white;
             transform: scale(1.05);
+            box-shadow: 0 0 15px #A78BFA;
         }
 
         .auth-container {
@@ -85,21 +112,21 @@
             backdrop-filter: blur(10px);
             border-radius: 48px;
             padding: 48px 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
             animation: fadeInUp 0.6s ease;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: background 0.3s ease, border-color 0.3s ease;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        body.dark .auth-card {
+            background: rgba(15, 20, 45, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo-area {
@@ -108,7 +135,7 @@
         }
 
         .logo-icon {
-            background: linear-gradient(135deg, #1565C0, #42a5f5);
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -118,36 +145,47 @@
             color: white;
             font-size: 2.5rem;
             margin-bottom: 16px;
-            box-shadow: 0 8px 20px rgba(21,101,192,0.3);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
             transition: transform 0.3s ease;
         }
-
         .logo-icon:hover {
             transform: scale(1.05);
+        }
+        body.dark .logo-icon {
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.6);
         }
 
         .logo-text {
             font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #1565C0, #3B5998);
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
         }
+        body.dark .logo-text {
+            background: linear-gradient(135deg, #FFFFFF, #C4B5FD, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
         .tagline {
             text-align: center;
-            color: #6f7c8f;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             margin-top: 8px;
+            color: #6f7c8f;
+        }
+        body.dark .tagline {
+            color: #CBD5E1;
         }
 
         .tabs {
             display: flex;
             gap: 16px;
             margin-bottom: 32px;
-            border-bottom: 2px solid #e8ecef;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.2);
         }
 
         .tab {
@@ -161,9 +199,12 @@
             transition: all 0.3s ease;
             position: relative;
         }
+        body.dark .tab {
+            color: #CBD5E1;
+        }
 
         .tab.active {
-            color: #1565C0;
+            color: #8B5CF6;
         }
 
         .tab.active::after {
@@ -173,22 +214,18 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #1565C0, #42a5f5);
+            background: linear-gradient(90deg, #8B5CF6, #3B82F6);
             border-radius: 3px;
             animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
-            from {
-                transform: scaleX(0);
-            }
-            to {
-                transform: scaleX(1);
-            }
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
         }
 
         .tab:hover:not(.active) {
-            color: #1565C0;
+            color: #8B5CF6;
         }
 
         .form-panel {
@@ -201,14 +238,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .input-group {
@@ -222,6 +253,9 @@
             color: #414141;
             margin-bottom: 8px;
         }
+        body.dark .input-group label {
+            color: #CBD5E1;
+        }
 
         .input-field {
             position: relative;
@@ -232,7 +266,7 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #1565C0;
+            color: #8B5CF6;
             font-size: 1rem;
             z-index: 1;
             transition: color 0.3s ease;
@@ -241,7 +275,7 @@
         .input-field input {
             width: 100%;
             padding: 14px 16px 14px 48px;
-            border: 2px solid #D0D0D0;
+            border: 2px solid rgba(139, 92, 246, 0.3);
             border-radius: 30px;
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
@@ -249,11 +283,19 @@
             outline: none;
             background: #F8F9FC;
         }
+        body.dark .input-field input {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 92, 246, 0.4);
+            color: white;
+        }
 
         .input-field input:focus {
-            border-color: #1565C0;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        body.dark .input-field input:focus {
+            border-color: #A78BFA;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
 
         .input-field input.error {
@@ -282,7 +324,7 @@
 
         .btn-auth {
             width: 100%;
-            background: linear-gradient(135deg, #1565C0, #0f4d96);
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
             color: white;
             border: none;
             padding: 14px;
@@ -314,7 +356,7 @@
 
         .btn-auth:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(21,101,192,0.4);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
         }
 
         .btn-auth:active {
@@ -324,22 +366,25 @@
         .info-text {
             text-align: center;
             margin-top: 24px;
-            color: #6f7c8f;
             font-size: 0.85rem;
+            color: #6f7c8f;
+        }
+        body.dark .info-text {
+            color: #CBD5E1;
         }
 
         .info-text a {
-            color: #1565C0;
+            color: #8B5CF6;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s ease;
         }
-
         .info-text a:hover {
             text-decoration: underline;
-            color: #0f4d96;
+            color: #3B82F6;
         }
 
+        /* Toast Message - KHÔNG ICON */
         .toast-message {
             position: fixed;
             bottom: 30px;
@@ -350,21 +395,22 @@
             padding: 14px 28px;
             border-radius: 50px;
             z-index: 2000;
-            animation: slideUp 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+            animation: slideUp 0.3s ease, fadeOut 0.5s ease 3s forwards;
             font-size: 0.9rem;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            text-align: center;
             font-weight: 500;
         }
-
         .toast-message.error {
             background: linear-gradient(135deg, #e64949, #c21818);
         }
-
-        .toast-message i {
-            font-size: 1.2rem;
+        body.dark .toast-message {
+            background: #1E1B4B;
+            border-left: 3px solid #A78BFA;
+        }
+        body.dark .toast-message.error {
+            background: #4A1F1F;
+            border-left-color: #FF6B6B;
         }
 
         @keyframes slideUp {
@@ -403,6 +449,30 @@
         .strength-text {
             color: #6f7c8f;
         }
+        body.dark .strength-text {
+            color: #CBD5E1;
+        }
+
+        .page-transition { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            z-index: 9999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.2s ease; 
+            pointer-events: none;
+        }
+        body.dark .page-transition { background: radial-gradient(circle, #0B0A2A, #02010A); }
+        .page-transition.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .transition-loader { font-size: 1.2rem; font-weight: 600; color: white; animation: pulseText 0.8s infinite; }
+        @keyframes pulseText { 0%,100%{ opacity:0.6; }50%{ opacity:1; } }
 
         @media (max-width: 600px) {
             .auth-card {
@@ -429,432 +499,441 @@
                 font-size: 1rem;
             }
         }
-
-        /* ========== CHẾ ĐỘ TỐI (DARK THEME) ========== */
-        body.dark-theme {
-            background: linear-gradient(135deg, #0a0a0a 0%, #050a0f 100%) !important;
-        }
-        body.dark-theme .theme-toggle {
-            background: rgba(0,0,0,0.5);
-            color: #fff;
-        }
-        body.dark-theme .auth-card {
-            background: rgba(20, 20, 30, 0.95) !important;
-            border-color: rgba(255,255,255,0.1) !important;
-        }
-        body.dark-theme .logo-text {
-            background: linear-gradient(135deg, #fff, #90caf9) !important;
-            -webkit-background-clip: text !important;
-            background-clip: text !important;
-            color: transparent !important;
-        }
-        body.dark-theme .tagline {
-            color: #aaa !important;
-        }
-        body.dark-theme .tab {
-            color: #aaa !important;
-        }
-        body.dark-theme .tab.active {
-            color: #1565C0 !important;
-        }
-        body.dark-theme .input-group label {
-            color: #ccc !important;
-        }
-        body.dark-theme .input-field i {
-            color: #1565C0 !important;
-        }
-        body.dark-theme .input-field input {
-            background: #2a2a2a !important;
-            border-color: #444 !important;
-            color: #fff !important;
-        }
-        body.dark-theme .input-field input:focus {
-            border-color: #1565C0 !important;
-            background: #333 !important;
-        }
-        body.dark-theme .info-text {
-            color: #aaa !important;
-        }
-        body.dark-theme .info-text a {
-            color: #1565C0 !important;
-        }
-        body.dark-theme .btn-auth {
-            background: linear-gradient(135deg, #1565C0, #0f4d96) !important;
-        }
-        body.dark-theme .strength-text {
-            color: #aaa !important;
-        }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
 
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="logo-area">
-                <div class="logo-icon">
-                    <i class="fas fa-mug-hot"></i>
+<div class="universe">
+    <div class="planet planet-1"></div>
+    <div class="planet planet-2"></div>
+    <div class="planet planet-3"></div>
+    <div class="planet planet-4"></div>
+</div>
+
+<button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i class="fas fa-mug-hot"></i>
+            </div>
+            <div class="logo-text">Milk Coffee</div>
+            <div class="tagline">Học tập thông minh - Cùng nhau tiến bộ</div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="login">Đăng nhập</div>
+            <div class="tab" data-tab="register">Đăng ký</div>
+        </div>
+
+        <!-- Form Đăng nhập -->
+        <div class="form-panel active" id="loginPanel">
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Tên tài khoản</label>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="loginUsername" placeholder="Nhập tên tài khoản" autocomplete="off">
+                    </div>
+                    <div class="error-message" id="loginError"></div>
                 </div>
-                <div class="logo-text">Milk Coffee</div>
-                <div class="tagline">Học tập thông minh - Cùng nhau tiến bộ</div>
-            </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu">
+                    </div>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <div class="info-text">
+                    Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a>
+                </div>
+            </form>
+        </div>
 
-            <div class="tabs">
-                <div class="tab active" data-tab="login">Đăng nhập</div>
-                <div class="tab" data-tab="register">Đăng ký</div>
-            </div>
-
-            <!-- Form Đăng nhập -->
-            <div class="form-panel active" id="loginPanel">
-                <form id="loginForm">
-                    <div class="input-group">
-                        <label>Tên tài khoản</label>
-                        <div class="input-field">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="loginUsername" placeholder="Nhập tên tài khoản" autocomplete="off">
-                        </div>
-                        <div class="error-message" id="loginError"></div>
+        <!-- Form Đăng ký -->
+        <div class="form-panel" id="registerPanel">
+            <form id="registerForm">
+                <div class="input-group">
+                    <label>Tên tài khoản</label>
+                    <div class="input-field">
+                        <i class="fas fa-user-plus"></i>
+                        <input type="text" id="regUsername" placeholder="Nhập tên tài khoản (tối thiểu 3 ký tự)" autocomplete="off">
                     </div>
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="loginPassword" placeholder="Nhập mật khẩu">
-                        </div>
-                        <div class="error-message" id="loginPasswordError"></div>
+                    <div class="error-message" id="regUsernameError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="regPassword" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)">
                     </div>
-                    <button type="submit" class="btn-auth">
-                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                    </button>
-                    <div class="info-text">
-                        Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a>
+                    <div class="error-message" id="regPasswordError"></div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                        <span class="strength-text" id="strengthText"></span>
                     </div>
-                </form>
-            </div>
-
-            <!-- Form Đăng ký -->
-            <div class="form-panel" id="registerPanel">
-                <form id="registerForm">
-                    <div class="input-group">
-                        <label>Tên tài khoản</label>
-                        <div class="input-field">
-                            <i class="fas fa-user-plus"></i>
-                            <input type="text" id="regUsername" placeholder="Nhập tên tài khoản (tối thiểu 3 ký tự)" autocomplete="off">
-                        </div>
-                        <div class="error-message" id="regUsernameError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Xác nhận mật khẩu</label>
+                    <div class="input-field">
+                        <i class="fas fa-check-circle"></i>
+                        <input type="password" id="regConfirmPassword" placeholder="Nhập lại mật khẩu">
                     </div>
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="regPassword" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)">
-                        </div>
-                        <div class="error-message" id="regPasswordError"></div>
-                        <div class="password-strength" id="passwordStrength">
-                            <div class="strength-bar" id="strengthBar"></div>
-                            <span class="strength-text" id="strengthText"></span>
-                        </div>
+                    <div class="error-message" id="regConfirmError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Tên hiển thị</label>
+                    <div class="input-field">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="regDisplayName" placeholder="Tên sẽ hiển thị trên hệ thống">
                     </div>
-                    <div class="input-group">
-                        <label>Xác nhận mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-check-circle"></i>
-                            <input type="password" id="regConfirmPassword" placeholder="Nhập lại mật khẩu">
-                        </div>
-                        <div class="error-message" id="regConfirmError"></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Tên hiển thị</label>
-                        <div class="input-field">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="regDisplayName" placeholder="Tên sẽ hiển thị trên hệ thống">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-auth">
-                        <i class="fas fa-user-plus"></i> Đăng ký
-                    </button>
-                    <div class="info-text">
-                        Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập ngay</a>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-user-plus"></i> Đăng ký
+                </button>
+                <div class="info-text">
+                    Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập ngay</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <script>
-        // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+<div id="pageTransition" class="page-transition"><div class="transition-loader"><i class="fas fa-sync-alt fa-spin"></i> Du hành vũ trụ...</div></div>
+
+<script>
+    // ==================== TẠO SAO NỀN CHO DARK MODE ====================
+    const universe = document.querySelector('.universe');
+    let starsCreated = false;
+    function createStars() {
+        if (starsCreated || !universe) return;
+        for (let i = 0; i < 150; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star');
+            let sz = Math.random() * 1.5 + 0.5;
+            star.style.width = sz + 'px';
+            star.style.height = sz + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.opacity = Math.random() * 0.5 + 0.2;
+            universe.appendChild(star);
+        }
+        for (let i = 0; i < 50; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star-twinkle');
+            let sz = Math.random() * 2 + 0.8;
+            star.style.width = sz + 'px';
+            star.style.height = sz + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            universe.appendChild(star);
+        }
+        starsCreated = true;
+    }
+
+    function createShootingStar() {
+        if (!document.body.classList.contains('dark')) return;
+        let meteor = document.createElement('div');
+        meteor.classList.add('shooting-star');
+        meteor.style.left = (Math.random() * 70 + 10) + '%';
+        meteor.style.top = (Math.random() * 25 + 5) + '%';
+        universe.appendChild(meteor);
+        let deltaX = (Math.random() * 55 + 45);
+        let deltaY = (Math.random() * 35 + 15);
+        let duration = Math.random() * 0.8 + 0.6;
+        meteor.style.transition = `transform ${duration}s cubic-bezier(0.2, 0.9, 0.4, 1)`;
+        meteor.offsetHeight;
+        meteor.style.transform = `translateX(${deltaX}vw) translateY(${deltaY}vh)`;
+        meteor.style.opacity = '0';
+        setTimeout(() => { if (meteor && meteor.remove) meteor.remove(); }, duration * 1000 + 100);
+    }
+
+    // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            createStars();
+            setInterval(() => { if(document.body.classList.contains('dark')) createShootingStar(); }, 8000);
+        } else {
+            document.body.classList.remove('dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+
+    function toggleTheme() {
+        if (document.body.classList.contains('dark')) {
+            document.body.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            createStars();
+        }
+    }
+
+    // ==================== API ====================
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
+
+    function showToast(message, isSuccess = true) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        if (!isSuccess) toast.classList.add('error');
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function navigate(url) { 
+        let overlay = document.getElementById('pageTransition'); 
+        overlay.classList.add('active'); 
+        setTimeout(() => { window.location.href = url; }, 300); 
+    }
+
+    function checkPasswordStrength(password) {
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        
+        if (!password) {
+            strengthBar.style.width = '0%';
+            strengthText.textContent = '';
+            return;
+        }
+        
+        let strength = 0;
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        
+        const percentages = [0, 20, 40, 60, 80, 100];
+        const colors = ['#e64949', '#e64949', '#f4a261', '#f4a261', '#2ecc71', '#27ae60'];
+        const texts = ['', 'Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];
+        
+        let index = Math.min(Math.floor(strength), 5);
+        if (password.length < 6) index = 1;
+        
+        strengthBar.style.width = percentages[index] + '%';
+        strengthBar.style.background = colors[index];
+        strengthText.textContent = texts[index];
+    }
+
+    // Xử lý tab
+    const tabs = document.querySelectorAll('.tab');
+    const loginPanel = document.getElementById('loginPanel');
+    const registerPanel = document.getElementById('registerPanel');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            if (tab.dataset.tab === 'login') {
+                loginPanel.classList.add('active');
+                registerPanel.classList.remove('active');
             } else {
-                document.body.classList.remove('dark-theme');
-                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-            }
-        }
-        
-        function toggleTheme() {
-            if (document.body.classList.contains('dark-theme')) {
-                document.body.classList.remove('dark-theme');
-                localStorage.setItem('theme', 'light');
-                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-            } else {
-                document.body.classList.add('dark-theme');
-                localStorage.setItem('theme', 'dark');
-                document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
-            }
-        }
-        
-        // ==================== API ====================
-        const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
-        
-        function showToast(message, isSuccess = true) {
-            const oldToast = document.querySelector('.toast-message');
-            if (oldToast) oldToast.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            if (!isSuccess) toast.classList.add('error');
-            toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function checkPasswordStrength(password) {
-            const strengthBar = document.getElementById('strengthBar');
-            const strengthText = document.getElementById('strengthText');
-            
-            if (!password) {
-                strengthBar.style.width = '0%';
-                strengthText.textContent = '';
-                return;
+                loginPanel.classList.remove('active');
+                registerPanel.classList.add('active');
             }
             
-            let strength = 0;
-            if (password.length >= 6) strength++;
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            
-            const percentages = [0, 20, 40, 60, 80, 100];
-            const colors = ['#e64949', '#e64949', '#f4a261', '#f4a261', '#2ecc71', '#27ae60'];
-            const texts = ['', 'Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];
-            
-            let index = Math.min(Math.floor(strength), 5);
-            if (password.length < 6) index = 1;
-            
-            strengthBar.style.width = percentages[index] + '%';
-            strengthBar.style.background = colors[index];
-            strengthText.textContent = texts[index];
-        }
-
-        // Xử lý tab
-        const tabs = document.querySelectorAll('.tab');
-        const loginPanel = document.getElementById('loginPanel');
-        const registerPanel = document.getElementById('registerPanel');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                if (tab.dataset.tab === 'login') {
-                    loginPanel.classList.add('active');
-                    registerPanel.classList.remove('active');
-                } else {
-                    loginPanel.classList.remove('active');
-                    registerPanel.classList.add('active');
-                }
-                
-                document.querySelectorAll('.error-message').forEach(el => {
-                    el.classList.remove('show');
-                    el.textContent = '';
-                });
-                document.querySelectorAll('.input-field input').forEach(input => {
-                    input.classList.remove('error');
-                });
-            });
-        });
-
-        document.getElementById('switchToRegister').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.tab[data-tab="register"]').click();
-        });
-        
-        document.getElementById('switchToLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.tab[data-tab="login"]').click();
-        });
-
-        const regPassword = document.getElementById('regPassword');
-        regPassword.addEventListener('input', (e) => {
-            checkPasswordStrength(e.target.value);
-        });
-
-        // XỬ LÝ ĐĂNG NHẬP
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            
-            document.querySelectorAll('#loginPanel .error-message').forEach(el => {
+            document.querySelectorAll('.error-message').forEach(el => {
                 el.classList.remove('show');
                 el.textContent = '';
             });
-            document.querySelectorAll('#loginPanel .input-field input').forEach(input => {
+            document.querySelectorAll('.input-field input').forEach(input => {
                 input.classList.remove('error');
             });
-            
-            let hasError = false;
-            
-            if (!username) {
-                document.getElementById('loginError').textContent = 'Vui lòng nhập tên tài khoản';
-                document.getElementById('loginError').classList.add('show');
-                document.getElementById('loginUsername').classList.add('error');
-                hasError = true;
-            }
-            
-            if (!password) {
-                document.getElementById('loginPasswordError').textContent = 'Vui lòng nhập mật khẩu';
-                document.getElementById('loginPasswordError').classList.add('show');
-                document.getElementById('loginPassword').classList.add('error');
-                hasError = true;
-            }
-            
-            if (hasError) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) throw new Error(data.error || 'Đăng nhập thất bại');
-                
-                if (data.success && data.token) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    showToast('🎉 Đăng nhập thành công!');
-                    setTimeout(() => {
-                        window.location.href = 'bangdieukhien.html';
-                    }, 1000);
-                }
-            } catch (error) {
-                document.getElementById('loginError').textContent = error.message;
-                document.getElementById('loginError').classList.add('show');
-                document.getElementById('loginUsername').classList.add('error');
-                document.getElementById('loginPassword').classList.add('error');
-                showToast('❌ ' + error.message, false);
-            }
         });
+    });
 
-        // XỬ LÝ ĐĂNG KÝ
-        const registerForm = document.getElementById('registerForm');
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('regUsername').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-            const displayName = document.getElementById('regDisplayName').value.trim();
-            
-            document.querySelectorAll('#registerPanel .error-message').forEach(el => {
-                el.classList.remove('show');
-                el.textContent = '';
-            });
-            document.querySelectorAll('#registerPanel .input-field input').forEach(input => {
-                input.classList.remove('error');
-            });
-            
-            let hasError = false;
-            
-            if (!username) {
-                document.getElementById('regUsernameError').textContent = 'Vui lòng nhập tên tài khoản';
-                document.getElementById('regUsernameError').classList.add('show');
-                document.getElementById('regUsername').classList.add('error');
-                hasError = true;
-            } else if (username.length < 3) {
-                document.getElementById('regUsernameError').textContent = 'Tên tài khoản phải có ít nhất 3 ký tự';
-                document.getElementById('regUsernameError').classList.add('show');
-                document.getElementById('regUsername').classList.add('error');
-                hasError = true;
-            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-                document.getElementById('regUsernameError').textContent = 'Tên tài khoản chỉ gồm chữ, số và dấu gạch dưới';
-                document.getElementById('regUsernameError').classList.add('show');
-                document.getElementById('regUsername').classList.add('error');
-                hasError = true;
-            }
-            
-            if (!password) {
-                document.getElementById('regPasswordError').textContent = 'Vui lòng nhập mật khẩu';
-                document.getElementById('regPasswordError').classList.add('show');
-                document.getElementById('regPassword').classList.add('error');
-                hasError = true;
-            } else if (password.length < 6) {
-                document.getElementById('regPasswordError').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
-                document.getElementById('regPasswordError').classList.add('show');
-                document.getElementById('regPassword').classList.add('error');
-                hasError = true;
-            }
-            
-            if (password !== confirmPassword) {
-                document.getElementById('regConfirmError').textContent = 'Mật khẩu xác nhận không khớp';
-                document.getElementById('regConfirmError').classList.add('show');
-                document.getElementById('regConfirmPassword').classList.add('error');
-                hasError = true;
-            }
-            
-            if (hasError) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password, displayName })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) throw new Error(data.error || 'Đăng ký thất bại');
-                
-                if (data.success) {
-                    showToast('🎉 Đăng ký thành công!');
-                    setTimeout(() => {
-                        document.querySelector('.tab[data-tab="login"]').click();
-                        document.getElementById('loginUsername').value = username;
-                        document.getElementById('loginPassword').value = '';
-                        showToast('✅ Hãy đăng nhập để tiếp tục!');
-                    }, 1000);
-                }
-            } catch (error) {
-                document.getElementById('regUsernameError').textContent = error.message;
-                document.getElementById('regUsernameError').classList.add('show');
-                showToast('❌ ' + error.message, false);
-            }
+    document.getElementById('switchToRegister').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('.tab[data-tab="register"]').click();
+    });
+    
+    document.getElementById('switchToLogin').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('.tab[data-tab="login"]').click();
+    });
+
+    const regPassword = document.getElementById('regPassword');
+    regPassword.addEventListener('input', (e) => {
+        checkPasswordStrength(e.target.value);
+    });
+
+    // XỬ LÝ ĐĂNG NHẬP
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        document.querySelectorAll('#loginPanel .error-message').forEach(el => {
+            el.classList.remove('show');
+            el.textContent = '';
+        });
+        document.querySelectorAll('#loginPanel .input-field input').forEach(input => {
+            input.classList.remove('error');
         });
         
-        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginForm.dispatchEvent(new Event('submit'));
-        });
-        document.getElementById('regConfirmPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') registerForm.dispatchEvent(new Event('submit'));
-        });
+        let hasError = false;
         
-        // Kiểm tra đã đăng nhập chưa
-        if (localStorage.getItem('token')) {
-            window.location.href = 'bangdieukhien.html';
+        if (!username) {
+            document.getElementById('loginError').textContent = 'Vui lòng nhập tên tài khoản';
+            document.getElementById('loginError').classList.add('show');
+            document.getElementById('loginUsername').classList.add('error');
+            hasError = true;
         }
         
-        // Khởi tạo chế độ sáng/tối
-        initTheme();
-        document.getElementById('themeToggleBtn').onclick = toggleTheme;
-    </script>
+        if (!password) {
+            document.getElementById('loginPasswordError').textContent = 'Vui lòng nhập mật khẩu';
+            document.getElementById('loginPasswordError').classList.add('show');
+            document.getElementById('loginPassword').classList.add('error');
+            hasError = true;
+        }
+        
+        if (hasError) return;
+        
+        try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) throw new Error(data.error || 'Đăng nhập thất bại');
+            
+            if (data.success && data.token) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                showToast('Đăng nhập thành công!');
+                setTimeout(() => {
+                    navigate('bangdieukhien.html');
+                }, 800);
+            }
+        } catch (error) {
+            document.getElementById('loginError').textContent = error.message;
+            document.getElementById('loginError').classList.add('show');
+            document.getElementById('loginUsername').classList.add('error');
+            document.getElementById('loginPassword').classList.add('error');
+            showToast(error.message, false);
+        }
+    });
+
+    // XỬ LÝ ĐĂNG KÝ
+    const registerForm = document.getElementById('registerForm');
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        const displayName = document.getElementById('regDisplayName').value.trim();
+        
+        document.querySelectorAll('#registerPanel .error-message').forEach(el => {
+            el.classList.remove('show');
+            el.textContent = '';
+        });
+        document.querySelectorAll('#registerPanel .input-field input').forEach(input => {
+            input.classList.remove('error');
+        });
+        
+        let hasError = false;
+        
+        if (!username) {
+            document.getElementById('regUsernameError').textContent = 'Vui lòng nhập tên tài khoản';
+            document.getElementById('regUsernameError').classList.add('show');
+            document.getElementById('regUsername').classList.add('error');
+            hasError = true;
+        } else if (username.length < 3) {
+            document.getElementById('regUsernameError').textContent = 'Tên tài khoản phải có ít nhất 3 ký tự';
+            document.getElementById('regUsernameError').classList.add('show');
+            document.getElementById('regUsername').classList.add('error');
+            hasError = true;
+        } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            document.getElementById('regUsernameError').textContent = 'Tên tài khoản chỉ gồm chữ, số và dấu gạch dưới';
+            document.getElementById('regUsernameError').classList.add('show');
+            document.getElementById('regUsername').classList.add('error');
+            hasError = true;
+        }
+        
+        if (!password) {
+            document.getElementById('regPasswordError').textContent = 'Vui lòng nhập mật khẩu';
+            document.getElementById('regPasswordError').classList.add('show');
+            document.getElementById('regPassword').classList.add('error');
+            hasError = true;
+        } else if (password.length < 6) {
+            document.getElementById('regPasswordError').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+            document.getElementById('regPasswordError').classList.add('show');
+            document.getElementById('regPassword').classList.add('error');
+            hasError = true;
+        }
+        
+        if (password !== confirmPassword) {
+            document.getElementById('regConfirmError').textContent = 'Mật khẩu xác nhận không khớp';
+            document.getElementById('regConfirmError').classList.add('show');
+            document.getElementById('regConfirmPassword').classList.add('error');
+            hasError = true;
+        }
+        
+        if (hasError) return;
+        
+        try {
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, displayName })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) throw new Error(data.error || 'Đăng ký thất bại');
+            
+            if (data.success) {
+                showToast('Đăng ký thành công!');
+                setTimeout(() => {
+                    document.querySelector('.tab[data-tab="login"]').click();
+                    document.getElementById('loginUsername').value = username;
+                    document.getElementById('loginPassword').value = '';
+                    showToast('Hãy đăng nhập để tiếp tục!');
+                }, 1000);
+            }
+        } catch (error) {
+            document.getElementById('regUsernameError').textContent = error.message;
+            document.getElementById('regUsernameError').classList.add('show');
+            showToast(error.message, false);
+        }
+    });
+    
+    document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') loginForm.dispatchEvent(new Event('submit'));
+    });
+    document.getElementById('regConfirmPassword').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') registerForm.dispatchEvent(new Event('submit'));
+    });
+    
+    // Kiểm tra đã đăng nhập chưa
+    if (localStorage.getItem('token')) {
+        navigate('bangdieukhien.html');
+    }
+    
+    // Khởi tạo chế độ sáng/tối
+    initTheme();
+    document.getElementById('themeToggleBtn').onclick = toggleTheme;
+</script>
 </body>
 </html>

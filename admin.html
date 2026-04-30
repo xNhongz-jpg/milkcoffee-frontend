@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
         .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s; }
+        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
         .logo-area:hover { transform: scale(1.02); }
@@ -22,10 +22,7 @@
         .action-btn:hover { background: #3a5280; transform: scale(1.05); }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
         
-        .theme-toggle { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; border: none; }
-        .theme-toggle:hover { background: #3a5280; transform: scale(1.05); }
-        
-        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; transition: background 0.3s, border-color 0.3s; }
+        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; }
         .nav-container { max-width: 1600px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; }
         .nav-item { padding: 16px 8px; font-weight: 600; font-size: 1rem; color: #414141; cursor: pointer; transition: all 0.3s; position: relative; }
         .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px; background: linear-gradient(90deg, #1565C0, #42a5f5); transition: all 0.3s; transform: translateX(-50%); border-radius: 3px; }
@@ -37,43 +34,43 @@
         .container { max-width: 1600px; margin: 32px auto; padding: 0 32px; flex: 1; }
         .page-title { font-size: 1.6rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
         
-        .admin-profile { background: white; border-radius: 32px; overflow: hidden; margin-bottom: 28px; border: 1px solid #D0D0D0; transition: background 0.3s, border-color 0.3s; }
+        .admin-profile { background: white; border-radius: 32px; overflow: hidden; margin-bottom: 28px; border: 1px solid #D0D0D0; }
         .admin-cover { height: 200px; background: linear-gradient(135deg, #1a2a4f, #0f1a30); position: relative; cursor: pointer; background-size: cover; background-position: center; }
         .edit-cover-badge { position: absolute; bottom: 16px; right: 20px; background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 30px; color: white; font-size: 0.7rem; cursor: pointer; }
         .admin-avatar-wrapper { padding: 0 32px 20px 32px; position: relative; margin-top: -60px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
         .admin-avatar { width: 120px; height: 120px; border-radius: 50%; border: 6px solid white; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; cursor: pointer; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
         .admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .admin-info { background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 40px; backdrop-filter: blur(5px); transition: background 0.3s; }
+        .admin-info { background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 40px; backdrop-filter: blur(5px); }
         .admin-info span { font-weight: 700; color: #182b47; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: white; border-radius: 24px; padding: 24px; text-align: center; border: 1px solid #D0D0D0; transition: background 0.3s, border-color 0.3s; }
+        .stat-card { background: white; border-radius: 24px; padding: 24px; text-align: center; border: 1px solid #D0D0D0; }
         .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         .stat-card i { font-size: 2.5rem; color: #1565C0; margin-bottom: 12px; }
         .stat-card .number { font-size: 2rem; font-weight: 800; color: #182b47; }
         .stat-card .label { font-size: 0.85rem; color: #6f7c8f; margin-top: 4px; }
         
-        .table-container { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; transition: background 0.3s, border-color 0.3s; }
-        .table-header { background: #F2F2F2; padding: 16px 24px; border-bottom: 1px solid #D0D0D0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; transition: background 0.3s; }
+        .table-container { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; }
+        .table-header { background: #F2F2F2; padding: 16px 24px; border-bottom: 1px solid #D0D0D0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .table-header h3 { font-size: 1.2rem; color: #1565C0; display: flex; align-items: center; gap: 10px; }
-        .search-box { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #D0D0D0; border-radius: 40px; padding: 8px 16px; transition: background 0.3s, border-color 0.3s; }
-        .search-box input { border: none; outline: none; font-size: 0.85rem; width: 200px; background: transparent; transition: color 0.3s; }
+        .search-box { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #D0D0D0; border-radius: 40px; padding: 8px 16px; }
+        .search-box input { border: none; outline: none; font-size: 0.85rem; width: 200px; background: transparent; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid #e8ecef; transition: border-color 0.3s; }
-        th { background: white; font-weight: 700; color: #1565C0; transition: background 0.3s; }
-        tr:hover { background: #F8F9FC; transition: background 0.3s; }
+        th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid #e8ecef; }
+        th { background: white; font-weight: 700; color: #1565C0; }
+        tr:hover { background: #F8F9FC; }
         .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
         .badge-admin { background: #ffe0e0; color: #e64949; }
         .badge-user { background: #e0f0ff; color: #1565C0; }
         .user-avatar-table { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         
         .library-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 32px; }
-        .library-col { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; transition: background 0.3s, border-color 0.3s; }
+        .library-col { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; }
         .library-col-header { background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 20px; color: white; }
         .library-col-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 12px; }
         .library-col-header h3 i { font-size: 1.5rem; }
         .library-col-body { padding: 20px; max-height: 500px; overflow-y: auto; }
-        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; transition: border-color 0.3s; }
+        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; }
         .file-item:last-child { border-bottom: none; }
         .file-info { flex: 1; }
         .file-name { font-weight: 600; font-size: 0.9rem; word-break: break-word; }
@@ -97,12 +94,12 @@
         .btn-icon.view:hover { color: #1565C0; background: #e0f0ff; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 600px; padding: 32px; max-height: 80vh; overflow-y: auto; transition: background 0.3s; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 600px; padding: 32px; max-height: 80vh; overflow-y: auto; }
         .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; transition: color 0.3s; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; }
         .close-modal:hover { color: #333; }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #414141; transition: color 0.3s; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #414141; }
         .form-control { width: 100%; padding: 12px 16px; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; transition: 0.2s; background: #F8F9FC; }
         .form-control:focus { outline: none; border-color: #1565C0; background: white; }
         .btn-save { background: #1565C0; color: white; border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
@@ -110,7 +107,7 @@
         .btn-danger { background: #e64949; }
         .btn-danger:hover { background: #c21818; }
         
-        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; transition: background 0.3s; }
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; }
         .empty-state { text-align: center; padding: 60px 20px; color: #a0aec0; }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
         .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
@@ -132,48 +129,9 @@
             .nav-container { gap: 20px; overflow-x: auto; }
             .admin-avatar-wrapper { flex-direction: column; align-items: center; text-align: center; }
             .library-2cols { grid-template-columns: 1fr; gap: 20px; }
-            .theme-toggle, .action-btn { width: 40px; height: 40px; font-size: 1rem; }
+            .action-btn { width: 40px; height: 40px; font-size: 1rem; }
             .upload-area select { width: auto; font-size: 0.75rem; }
         }
-        
-        body.dark-theme { background-color: #0a0a0a !important; color: #e0e0e0 !important; }
-        body.dark-theme .main-header { background: #0a0a0a !important; border-bottom: 1px solid #333; }
-        body.dark-theme .action-btn, body.dark-theme .theme-toggle { background: #2a2a2a !important; }
-        body.dark-theme .action-btn:hover, body.dark-theme .theme-toggle:hover { background: #3a3a3a !important; }
-        body.dark-theme .nav-menu { background: #111 !important; border-bottom: 1px solid #333; }
-        body.dark-theme .nav-item { color: #ccc !important; }
-        body.dark-theme .nav-item.active { color: #1565C0 !important; }
-        body.dark-theme .admin-profile, body.dark-theme .stat-card, body.dark-theme .table-container,
-        body.dark-theme .library-col, body.dark-theme .modal-content { background: #1a1a1a !important; border-color: #333 !important; }
-        body.dark-theme .admin-info { background: rgba(0,0,0,0.7) !important; }
-        body.dark-theme .table-header { background: #222 !important; border-bottom-color: #333 !important; }
-        body.dark-theme .search-box { background: #2a2a2a !important; border-color: #444 !important; }
-        body.dark-theme .search-box input { color: #fff !important; }
-        body.dark-theme th { background: #222 !important; color: #1565C0 !important; }
-        body.dark-theme td { border-bottom-color: #333 !important; color: #ccc !important; }
-        body.dark-theme tr:hover { background: #2a2a2a !important; }
-        body.dark-theme .badge-admin { background: #442222 !important; color: #ff8888 !important; }
-        body.dark-theme .badge-user { background: #1a3a5a !important; color: #1565C0 !important; }
-        body.dark-theme .library-col-header { background: linear-gradient(135deg, #0f3a6f, #1a4a8a) !important; }
-        body.dark-theme .file-item { border-bottom-color: #333 !important; }
-        body.dark-theme .file-name { color: #eee !important; }
-        body.dark-theme .file-meta { color: #888 !important; }
-        body.dark-theme .file-btn { color: #aaa !important; }
-        body.dark-theme .upload-area { border-color: #444 !important; background: #2a2a2a !important; color: #ccc !important; }
-        body.dark-theme .upload-area:hover { border-color: #1565C0 !important; background: #333 !important; }
-        body.dark-theme .empty-library, body.dark-theme .empty-library i { color: #888 !important; }
-        body.dark-theme .btn-icon { color: #aaa !important; }
-        body.dark-theme .btn-icon:hover { background: #333 !important; }
-        body.dark-theme .modal-header { color: #1565C0 !important; }
-        body.dark-theme .close-modal { color: #aaa !important; }
-        body.dark-theme .close-modal:hover { color: #fff !important; }
-        body.dark-theme .form-group label { color: #ccc !important; }
-        body.dark-theme .form-control { background: #2a2a2a !important; border-color: #444 !important; color: #fff !important; }
-        body.dark-theme .form-control:focus { border-color: #1565C0 !important; background: #333 !important; }
-        body.dark-theme .btn-save { background: #1565C0 !important; }
-        body.dark-theme .btn-save:hover { background: #0f4d96 !important; }
-        body.dark-theme .footer-note { background: #0a0a0a !important; color: #888 !important; }
-        body.dark-theme .empty-state, body.dark-theme .empty-state i { color: #888 !important; }
     </style>
 </head>
 <body>
@@ -186,7 +144,6 @@
             </div>
             <div class="header-actions">
                 <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
-                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
             </div>
         </div>
     </div>
@@ -337,12 +294,12 @@
             <div class="table-container">
                 <div class="table-header"><h3><i class="fas fa-chart-simple"></i> Chi tiết hoạt động người dùng</h3></div>
                 <div style="overflow-x: auto;">
-                    86
-                    <thead>
-                        <tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr>
-                    </thead>
-                    <tbody id="statsTableBody"></tbody>
-                </table>
+                    <table>
+                        <thead>
+                            <tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr>
+                        </thead>
+                        <tbody id="statsTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -384,29 +341,6 @@
 <div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
 
 <script>
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
-        } else {
-            document.body.classList.remove('dark-theme');
-            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-        }
-    }
-    
-    function toggleTheme() {
-        if (document.body.classList.contains('dark-theme')) {
-            document.body.classList.remove('dark-theme');
-            localStorage.setItem('theme', 'light');
-            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-        } else {
-            document.body.classList.add('dark-theme');
-            localStorage.setItem('theme', 'dark');
-            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
-        }
-    }
-    
     const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
     
     let isAdminLoggedIn = false;
@@ -977,9 +911,6 @@
         localStorage.removeItem('admin_user');
         window.location.href = 'dndk.html';
     };
-    
-    initTheme();
-    document.getElementById('themeToggleBtn').onclick = toggleTheme;
     
     if (localStorage.getItem('admin_token')) {
         isAdminLoggedIn = true;

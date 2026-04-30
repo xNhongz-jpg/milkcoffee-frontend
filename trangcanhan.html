@@ -9,116 +9,264 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
-        .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s; }
+        
+        /* Light Theme */
+        body {
+            background-color: #F2F2F2;
+            font-family: 'Inter', sans-serif;
+            color: #414141;
+            line-height: 1.5;
+            min-height: 100vh;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        
+        /* Dark Theme */
+        body.dark {
+            background: radial-gradient(ellipse at 30% 40%, #0B0A2A, #02010A);
+            color: #e0e0e0;
+        }
+        
+        /* Universe cho dark mode */
+        .universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+            display: none;
+        }
+        body.dark .universe { display: block; }
+        
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            will-change: transform;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3), inset 0 0 25px rgba(255, 255, 200, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .planet-1 { top: 8%; right: -60px; width: 260px; height: 260px; background: radial-gradient(circle at 35% 35%, #FF6B6B, #C41E3A, #8B1A2B); animation: rotateSlow 40s linear infinite; box-shadow: 0 0 45px rgba(255, 107, 107, 0.6); }
+        .planet-2 { bottom: 5%; left: -70px; width: 240px; height: 240px; background: radial-gradient(circle at 65% 40%, #3B82F6, #1E40AF, #1E3A8A); animation: rotateSlow 48s linear infinite; box-shadow: 0 0 45px rgba(59, 130, 246, 0.6); }
+        .planet-3 { top: 52%; left: 62%; width: 110px; height: 110px; background: radial-gradient(circle at 70% 30%, #C084FC, #6B21A5, #4C1D95); animation: rotateSlow 25s linear infinite; box-shadow: 0 0 35px #C084FC; }
+        .planet-4 { top: 72%; right: 8%; width: 140px; height: 140px; background: radial-gradient(circle at 40% 60%, #FBBF24, #D97706, #B45309); animation: rotateSlow 32s linear infinite; box-shadow: 0 0 35px #FBBF24; }
+        @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .star { position: absolute; background: white; border-radius: 50%; pointer-events: none; }
+        .star-twinkle { position: absolute; background: radial-gradient(circle, #fff, #FFEAA7); border-radius: 50%; animation: twinkle 3s ease-in-out infinite; pointer-events: none; }
+        @keyframes twinkle { 0%,100%{ opacity:0.3; transform:scale(0.8); }50%{ opacity:1; transform:scale(1.1); box-shadow:0 0 5px #fff; } }
+        .shooting-star { position: absolute; width: 2.5px; height: 2.5px; background: linear-gradient(135deg, #ffffff, #ffdd99, #ffaa66); border-radius: 50%; box-shadow: 0 0 10px #ffaa66; pointer-events: none; will-change: transform; z-index: 10; }
+        .shooting-star::before { content: ''; position: absolute; top: 0; left: -70px; width: 70px; height: 1.5px; background: linear-gradient(90deg, rgba(255,220,100,0.9), rgba(255,180,80,0.4), transparent); border-radius: 2px; }
+        
+        /* Header */
+        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        body.dark .main-header { background: rgba(5, 5, 20, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(139, 92, 246, 0.4); }
         .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
         .logo-area:hover { transform: scale(1.02); }
         .logo-icon { background: linear-gradient(135deg, #1565C0, #42a5f5); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(21,101,192,0.3); }
         .logo-text { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #90caf9); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        body.dark .logo-text { background: linear-gradient(135deg, #FFFFFF, #C4B5FD, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .header-actions { display: flex; gap: 16px; align-items: center; }
-        .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; }
+        .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; border: none; }
         .action-btn:hover { background: #3a5280; transform: scale(1.05); }
+        body.dark .action-btn { background: rgba(139, 92, 246, 0.3); border: 1px solid rgba(139, 92, 246, 0.5); }
+        body.dark .action-btn:hover { background: #8B5CF6; box-shadow: 0 0 15px #A78BFA; }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
         
-        /* Nút chuyển đổi chế độ sáng/tối */
-        .theme-toggle { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; border: none; }
-        .theme-toggle:hover { background: #3a5280; transform: scale(1.05); }
+        /* KHÔNG CÓ MENU NGANG PHÍA DƯỚI HEADER */
         
-        .three-columns { max-width: 1600px; margin: 32px auto; padding: 0 32px; display: flex; gap: 32px; flex: 1; width: 100%; }
-        
-        /* Cột trái */
+        /* 3 cột */
+        .three-columns { max-width: 1600px; margin: 32px auto; padding: 0 32px; display: flex; gap: 32px; }
         .left-col { flex: 1; max-width: 320px; position: sticky; top: 90px; height: fit-content; }
+        .center-col { flex: 3; min-width: 0; }
+        .right-col { flex: 1; max-width: 360px; position: sticky; top: 90px; height: fit-content; }
+        
+        /* Profile Summary */
         .profile-summary { padding: 24px 20px; text-align: center; cursor: pointer; border-radius: 28px; transition: background 0.2s; margin-bottom: 12px; }
         .profile-summary:hover { background: #FFFFFF; }
+        body.dark .profile-summary { background: rgba(15, 20, 45, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); }
+        body.dark .profile-summary:hover { background: rgba(139, 92, 246, 0.2); transform: translateY(-3px); }
         .left-avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; border: 4px solid white; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .left-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .left-name { font-size: 1.4rem; font-weight: 700; color: #3B5998; cursor: pointer; }
-        .left-name:hover { text-decoration: underline; }
-        .menu-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; font-weight: 500; font-size: 1rem; color: #414141; cursor: pointer; border-radius: 16px; margin: 2px 8px; transition: background 0.2s, color 0.2s; }
+        body.dark .left-name { background: linear-gradient(135deg, #FFFFFF, #C4B5FD); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        
+        /* Menu Item */
+        .menu-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; font-weight: 500; font-size: 1rem; color: #414141; cursor: pointer; border-radius: 16px; margin: 2px 8px; transition: all 0.2s; position: relative; overflow: hidden; }
         .menu-item i { width: 28px; color: #1565C0; font-size: 1.2rem; }
         .menu-item.active { background: #FFFFFF; color: #1565C0; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .menu-item:hover:not(.active) { background: #FFFFFF; }
-        .apps-title { font-size: 0.75rem; text-transform: uppercase; color: #8a99b0; padding: 16px 20px 8px 20px; letter-spacing: 0.8px; font-weight: 600; }
+        body.dark .menu-item { color: #E0E7FF; background: rgba(15, 20, 45, 0.3); backdrop-filter: blur(8px); }
+        body.dark .menu-item i { color: #A78BFA; }
+        body.dark .menu-item.active { background: rgba(139, 92, 246, 0.3); color: #FFFFFF; }
+        body.dark .menu-item:hover:not(.active) { background: rgba(139, 92, 246, 0.2); transform: translateX(5px); }
+        body.dark .menu-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
+        body.dark .menu-item:hover::before { left: 100%; }
         
-        /* Cột giữa - Form thông tin cá nhân */
-        .center-col { flex: 3; min-width: 0; }
-        .page-title { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-        .profile-card { background: white; border-radius: 28px; border: 1px solid #D0D0D0; overflow: hidden; transition: background 0.3s, border-color 0.3s; }
-        .profile-card-header { background: #F2F2F2; padding: 20px 28px; border-bottom: 1px solid #D0D0D0; transition: background 0.3s; }
+        .apps-title { font-size: 0.75rem; text-transform: uppercase; color: #8a99b0; padding: 16px 20px 8px 20px; letter-spacing: 0.8px; font-weight: 600; }
+        body.dark .apps-title { color: #A78BFA; }
+        
+        /* Page Title */
+        .page-title { font-size: 1.6rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        body.dark .page-title { color: #C4B5FD; }
+        
+        /* Profile Form */
+        .profile-card { background: white; border-radius: 28px; border: 1px solid #D0D0D0; overflow: hidden; }
+        body.dark .profile-card { background: rgba(15, 20, 45, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .profile-card-header { background: #F2F2F2; padding: 20px 28px; border-bottom: 1px solid #D0D0D0; }
+        body.dark .profile-card-header { background: rgba(0,0,0,0.3); border-bottom-color: rgba(139, 92, 246, 0.3); }
         .profile-card-header h3 { font-size: 1.2rem; color: #1565C0; display: flex; align-items: center; gap: 10px; }
+        body.dark .profile-card-header h3 { color: #C4B5FD; }
         .profile-form { padding: 28px; }
         .form-group { margin-bottom: 24px; }
-        .form-group label { display: block; font-weight: 600; color: #414141; margin-bottom: 8px; font-size: 0.9rem; transition: color 0.3s; }
+        .form-group label { display: block; font-weight: 600; color: #414141; margin-bottom: 8px; font-size: 0.9rem; }
         .form-group label i { margin-right: 8px; color: #1565C0; width: 20px; }
+        body.dark .form-group label { color: #CBD5E1; }
+        body.dark .form-group label i { color: #A78BFA; }
         .form-control { width: 100%; padding: 12px 16px; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; font-family: 'Inter', sans-serif; transition: 0.2s; background: #F8F9FC; }
         .form-control:focus { outline: none; border-color: #1565C0; background: white; }
+        body.dark .form-control { background: rgba(0,0,0,0.4); border: 1px solid #8B5CF6; color: white; }
+        body.dark .form-control:focus { border-color: #A78BFA; box-shadow: 0 0 10px rgba(139,92,246,0.3); }
         .form-control.readonly { background: #F2F2F2; color: #8a99b0; cursor: not-allowed; }
+        body.dark .form-control.readonly { background: rgba(0,0,0,0.2); color: #888; }
         .gender-group { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
         .gender-option { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .gender-option input { width: 18px; height: 18px; cursor: pointer; accent-color: #1565C0; }
+        body.dark .gender-option input { accent-color: #8B5CF6; }
         .avatar-upload { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
         .avatar-preview { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); display: flex; align-items: center; justify-content: center; }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-preview i { font-size: 2.5rem; color: white; }
-        .upload-btn { background: #F2F2F2; border: 1px solid #D0D0D0; padding: 10px 20px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+        .upload-btn { background: #F2F2F2; border: 1px solid #D0D0D0; padding: 10px 20px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-size: 0.85rem; position: relative; overflow: hidden; }
         .upload-btn:hover { background: #1565C0; color: white; border-color: #1565C0; transform: scale(1.02); }
-        .btn-save { background: #1565C0; color: white; border: none; padding: 14px 32px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 16px; }
+        body.dark .upload-btn { background: rgba(139,92,246,0.2); border-color: #8B5CF6; color: #E0E7FF; }
+        body.dark .upload-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
+        body.dark .upload-btn:hover::before { left: 100%; }
+        body.dark .upload-btn:hover { background: #8B5CF6; color: white; border-color: #A78BFA; }
+        .btn-save { background: #1565C0; color: white; border: none; padding: 14px 32px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 16px; position: relative; overflow: hidden; }
         .btn-save:hover { background: #0f4d96; transform: scale(1.02); }
-        .info-note { background: #F8F9FC; padding: 16px 20px; border-radius: 20px; margin-top: 20px; font-size: 0.85rem; color: #6f7c8f; display: flex; align-items: center; gap: 12px; border-left: 4px solid #1565C0; transition: background 0.3s; }
-        .divider { height: 1px; background: #e8ecef; margin: 24px 0; transition: background 0.3s; }
+        body.dark .btn-save { background: linear-gradient(95deg, #8B5CF6, #3B82F6); }
+        body.dark .btn-save::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
+        body.dark .btn-save:hover::before { left: 100%; }
         
-        /* Cột phải */
-        .right-col { flex: 1; max-width: 360px; position: sticky; top: 90px; height: fit-content; }
-        .right-block { margin-bottom: 28px; }
+        .info-note { background: #F8F9FC; padding: 16px 20px; border-radius: 20px; margin-top: 20px; font-size: 0.85rem; color: #6f7c8f; display: flex; align-items: center; gap: 12px; border-left: 4px solid #1565C0; }
+        body.dark .info-note { background: rgba(139,92,246,0.1); color: #CBD5E1; border-left-color: #A78BFA; }
+        .divider { height: 1px; background: #e8ecef; margin: 24px 0; }
+        body.dark .divider { background: rgba(139,92,246,0.3); }
+        
+        /* Right Block */
+        .right-block { margin-bottom: 28px; background: white; border-radius: 24px; padding: 20px; border: 1px solid #D0D0D0; }
+        body.dark .right-block { background: rgba(15, 20, 45, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.3); }
         .card-header-custom { font-weight: 700; color: #1565C0; padding: 0 0 12px 0; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .calendar-trigger, .add-news-btn { background: #1565C0; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        body.dark .card-header-custom { color: #C4B5FD; }
+        .calendar-trigger, .add-news-btn { background: #1565C0; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 500; position: relative; overflow: hidden; }
         .calendar-trigger:hover, .add-news-btn:hover { background: #0f4d96; transform: scale(1.02); }
-        .event-list { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
-        .event-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s, background 0.3s, border-color 0.3s; border: 1px solid #e8ecef; }
-        .event-item-custom:hover { background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #D0D0D0; }
-        .event-info { flex: 1; }
-        .event-title { font-weight: 600; font-size: 0.95rem; }
-        .event-date-custom { font-size: 0.8rem; color: #9E2121; margin-top: 6px; }
-        .delete-event-btn { background: none; border: none; color: #e64949; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; transition: 0.2s; }
-        .delete-event-btn:hover { background: #ffe0e0; transform: scale(1.1); }
-        .news-content { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
-        .news-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s, background 0.3s, border-color 0.3s; border: 1px solid #e8ecef; }
-        .news-item-custom:hover { background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #D0D0D0; }
-        .news-info { flex: 1; }
-        .news-title { font-weight: 600; font-size: 0.95rem; }
-        .news-date-custom { font-size: 0.8rem; color: #9E2121; margin-top: 6px; }
-        .delete-news-btn { background: none; border: none; color: #e64949; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; transition: 0.2s; }
-        .delete-news-btn:hover { background: #ffe0e0; transform: scale(1.1); }
+        body.dark .calendar-trigger, body.dark .add-news-btn { background: #8B5CF6; }
+        body.dark .calendar-trigger::before, body.dark .add-news-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
+        body.dark .calendar-trigger:hover::before, body.dark .add-news-btn:hover::before { left: 100%; }
         
-        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; transition: background 0.3s; }
+        .event-list, .news-content { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
+        .event-item-custom, .news-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border: 1px solid #e8ecef; }
+        .event-item-custom:hover, .news-item-custom:hover { background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #D0D0D0; }
+        body.dark .event-item-custom, body.dark .news-item-custom { background: rgba(0,0,0,0.35); border: 1px solid rgba(139, 92, 246, 0.25); }
+        body.dark .event-item-custom:hover, body.dark .news-item-custom:hover { background: rgba(139, 92, 246, 0.2); transform: translateX(5px); }
+        .event-info, .news-info { flex: 1; }
+        .event-title, .news-title { font-weight: 600; font-size: 0.95rem; color: #414141; }
+        body.dark .event-title, body.dark .news-title { color: #E0E7FF; }
+        .event-date-custom, .news-date-custom { font-size: 0.8rem; color: #9E2121; margin-top: 6px; }
+        body.dark .event-date-custom, body.dark .news-date-custom { color: #FBBF24; }
+        .delete-event-btn, .delete-news-btn { background: none; border: none; color: #e64949; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; width: 36px; height: 36px; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .delete-event-btn:hover, .delete-news-btn:hover { background: #ffe0e0; transform: scale(1.1); }
+        body.dark .delete-event-btn, body.dark .delete-news-btn { color: #FF6B6B; }
+        body.dark .delete-event-btn:hover, body.dark .delete-news-btn:hover { background: rgba(255,107,107,0.2); }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; transition: background 0.3s; }
-        .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; }
+        /* Footer */
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 32px; font-size: 0.85rem; margin-top: auto; }
+        body.dark .footer-note { background: rgba(2, 1, 10, 0.85); border-top: 1px solid #8B5CF6; }
+        .footer-links { max-width: 1600px; margin: 0 auto 20px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .footer-links a { color: #a0b3d0; text-decoration: none; transition: color 0.3s; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .footer-links a:hover { color: white; }
+        body.dark .footer-links a { color: #CBD5E1; }
+        body.dark .footer-links a:hover { color: #C4B5FD; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 480px; padding: 32px; border: 1px solid #D0D0D0; max-height: 80vh; overflow-y: auto; }
+        body.dark .modal-content { background: #0F172A; border: 1px solid #8B5CF6; }
+        .modal-header { font-size: 1.3rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        body.dark .modal-header { color: #C4B5FD; }
+        .close-modal { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #666; transition: color 0.2s; }
         .close-modal:hover { color: #333; }
-        .date-input { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; }
+        body.dark .close-modal { color: #A78BFA; }
+        .date-input { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; background: #F8F9FC; }
         .date-input:focus { outline: none; border-color: #1565C0; }
-        .add-event-modal-btn { background: #1565C0; color: white; border: none; padding: 14px; width: 100%; border-radius: 40px; font-weight: 600; margin-top: 12px; cursor: pointer; }
-        .add-event-modal-btn:hover { background: #0f4d96; }
+        body.dark .date-input { background: rgba(0,0,0,0.4); border: 1px solid #8B5CF6; color: white; }
+        .add-event-modal-btn { background: #1565C0; color: white; border: none; padding: 14px; width: 100%; border-radius: 40px; font-weight: 600; margin-top: 12px; cursor: pointer; transition: 0.2s; }
+        .add-event-modal-btn:hover { background: #0f4d96; transform: scale(1.02); }
+        body.dark .add-event-modal-btn { background: #8B5CF6; }
         .confirm-buttons { display: flex; gap: 12px; margin-top: 20px; }
         .confirm-buttons button { flex: 1; padding: 12px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .confirm-delete-btn { background: #e64949; color: white; }
         .confirm-delete-btn:hover { background: #c21818; }
         .confirm-cancel-btn { background: #e8ecef; color: #414141; }
         .confirm-cancel-btn:hover { background: #D0D0D0; }
-        .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+        body.dark .confirm-cancel-btn { background: #334155; color: white; }
+        
+        /* Toast Message - KHÔNG ICON */
+        .toast-message { 
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #1565C0; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            z-index: 2000; 
+            animation: fadeInOut 2s ease; 
+            font-size: 0.9rem; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            text-align: center;
+        }
+        .toast-message.error { background: #e64949; }
+        body.dark .toast-message { background: #1E1B4B; border-left: 3px solid #A78BFA; }
+        body.dark .toast-message.error { background: #4A1F1F; border-left-color: #FF6B6B; }
+        @keyframes fadeInOut { 
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+            100% { opacity: 0; transform: translateX(-50%) translateY(20px); } 
+        }
+        
         .empty-state { text-align: center; padding: 50px 20px; color: #a0aec0; }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
         
-        /* ========== RESPONSIVE CHO ĐIỆN THOẠI ========== */
+        .page-transition { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #182b47; 
+            z-index: 9999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.2s ease; 
+            pointer-events: none;
+        }
+        body.dark .page-transition { background: radial-gradient(circle, #0B0A2A, #02010A); }
+        .page-transition.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .transition-loader { font-size: 1.2rem; font-weight: 600; color: white; animation: pulseText 0.8s infinite; }
+        @keyframes pulseText { 0%,100%{ opacity:0.6; }50%{ opacity:1; } }
+        
         @media (max-width: 1000px) { 
-            .three-columns { flex-direction: column; padding: 0 20px; gap: 20px; }
-            .left-col, .right-col { max-width: 100%; position: static; display: block; }
-            .center-col { width: 100%; }
+            .three-columns { flex-direction: column; }
+            .left-col, .right-col { max-width: 100%; position: static; }
             .profile-form { padding: 20px; }
             .avatar-upload { justify-content: center; }
         }
@@ -130,51 +278,22 @@
             .btn-save { padding: 12px 20px; }
             .event-item-custom, .news-item-custom { padding: 10px 12px; }
             .event-title, .news-title { font-size: 0.85rem; }
+            .three-columns { padding: 0 16px; }
+            .action-btn { width: 40px; height: 40px; font-size: 1rem; }
+            .footer-links { gap: 20px; }
+            .footer-links a { font-size: 0.7rem; }
         }
-        
-        /* ========== CHẾ ĐỘ TỐI (DARK THEME) ========== */
-        body.dark-theme { background-color: #0a0a0a !important; color: #e0e0e0 !important; }
-        body.dark-theme .main-header { background: #0a0a0a !important; border-bottom: 1px solid #333; }
-        body.dark-theme .action-btn { background: #2a2a2a !important; }
-        body.dark-theme .action-btn:hover { background: #3a3a3a !important; }
-        body.dark-theme .theme-toggle { background: #2a2a2a !important; }
-        body.dark-theme .theme-toggle:hover { background: #3a3a3a !important; }
-        body.dark-theme .profile-summary:hover { background: #1a1a1a !important; }
-        body.dark-theme .menu-item { color: #ccc !important; }
-        body.dark-theme .menu-item.active { background: #1a1a1a !important; color: #1565C0 !important; }
-        body.dark-theme .menu-item:hover:not(.active) { background: #1a1a1a !important; }
-        body.dark-theme .profile-card, body.dark-theme .event-list .event-item-custom, body.dark-theme .news-content .news-item-custom,
-        body.dark-theme .modal-content { background: #1a1a1a !important; border-color: #333 !important; }
-        body.dark-theme .profile-card-header { background: #222 !important; border-bottom-color: #333 !important; }
-        body.dark-theme .profile-card-header h3 { color: #1565C0 !important; }
-        body.dark-theme .form-group label { color: #ccc !important; }
-        body.dark-theme .form-control { background: #2a2a2a !important; border-color: #444 !important; color: #fff !important; }
-        body.dark-theme .form-control:focus { border-color: #1565C0 !important; background: #333 !important; }
-        body.dark-theme .form-control.readonly { background: #222 !important; color: #888 !important; }
-        body.dark-theme .info-note { background: #2a2a2a !important; color: #aaa !important; }
-        body.dark-theme .divider { background: #333 !important; }
-        body.dark-theme .btn-save { background: #1565C0 !important; }
-        body.dark-theme .btn-save:hover { background: #0f4d96 !important; }
-        body.dark-theme .upload-btn { background: #2a2a2a !important; border-color: #444 !important; color: #ccc !important; }
-        body.dark-theme .upload-btn:hover { background: #1565C0 !important; color: white !important; }
-        body.dark-theme .event-item-custom, body.dark-theme .news-item-custom { background: #222 !important; border-color: #444 !important; }
-        body.dark-theme .event-title, body.dark-theme .news-title { color: #eee !important; }
-        body.dark-theme .event-date-custom, body.dark-theme .news-date-custom { color: #ff8888 !important; }
-        body.dark-theme .delete-event-btn, body.dark-theme .delete-news-btn { color: #ff8888 !important; }
-        body.dark-theme .delete-event-btn:hover, body.dark-theme .delete-news-btn:hover { background: #442222 !important; }
-        body.dark-theme .modal-header { color: #1565C0 !important; }
-        body.dark-theme .close-modal { color: #aaa !important; }
-        body.dark-theme .close-modal:hover { color: #fff !important; }
-        body.dark-theme .footer-note { background: #0a0a0a !important; color: #888 !important; }
-        body.dark-theme .footer-links a { color: #888 !important; }
-        body.dark-theme .footer-links a:hover { color: #1565C0 !important; }
-        body.dark-theme .empty-state, body.dark-theme .empty-state i { color: #888 !important; }
-        body.dark-theme .card-header-custom { color: #1565C0 !important; }
-        body.dark-theme .calendar-trigger, body.dark-theme .add-news-btn { background: #1565C0 !important; }
-        body.dark-theme .calendar-trigger:hover, body.dark-theme .add-news-btn:hover { background: #0f4d96 !important; }
     </style>
 </head>
 <body>
+
+<div class="universe">
+    <div class="planet planet-1"></div>
+    <div class="planet planet-2"></div>
+    <div class="planet planet-3"></div>
+    <div class="planet planet-4"></div>
+</div>
+
 <div class="app-wrapper">
     <div class="main-header">
         <div class="header-inner">
@@ -183,15 +302,16 @@
                 <div class="logo-text">Milk Coffee</div>
             </div>
             <div class="header-actions">
+                <button class="action-btn" id="themeToggleBtn" title="Chế độ sáng/tối"><i class="fas fa-moon"></i></button>
                 <div class="action-btn" id="notificationBtn"><i class="fas fa-bell"></i><span id="notificationBadge" class="badge-notify" style="display: none;">0</span></div>
-                <button class="theme-toggle" id="themeToggleBtn" title="Chuyển đổi chế độ sáng/tối"><i class="fas fa-moon"></i></button>
                 <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
             </div>
         </div>
     </div>
 
+    <!-- ĐÃ BỎ MENU NGANG PHÍA DƯỚI HEADER -->
+
     <div class="three-columns">
-        <!-- Cột trái -->
         <div class="left-col">
             <div class="profile-summary" id="leftProfile">
                 <div class="left-avatar" id="leftAvatar"><i class="fas fa-user-graduate"></i></div>
@@ -208,60 +328,44 @@
             <div class="menu-item" data-page="calendar"><i class="fas fa-calendar-week"></i> Lịch</div>
         </div>
 
-        <!-- Cột giữa - Thông tin cá nhân -->
         <div class="center-col">
-            <div class="page-title">
-                <i class="fas fa-user-circle"></i> Thông tin cá nhân
-            </div>
+            <div class="page-title"><i class="fas fa-user-circle"></i> Thông tin cá nhân</div>
             <div class="profile-card">
                 <div class="profile-card-header">
                     <h3><i class="fas fa-edit"></i> Cập nhật thông tin tài khoản</h3>
                 </div>
                 <div class="profile-form">
-                    <!-- Avatar -->
                     <div class="form-group">
                         <label><i class="fas fa-camera"></i> Ảnh đại diện</label>
                         <div class="avatar-upload">
-                            <div class="avatar-preview" id="avatarPreview">
-                                <i class="fas fa-user-graduate"></i>
-                            </div>
+                            <div class="avatar-preview" id="avatarPreview"><i class="fas fa-user-graduate"></i></div>
                             <button type="button" class="upload-btn" id="uploadAvatarBtn"><i class="fas fa-upload"></i> Tải ảnh lên</button>
                             <span style="font-size: 0.75rem; color: #8a99b0;">(jpg, png, tối đa 5MB)</span>
                         </div>
                         <input type="file" id="avatarInput" accept="image/*" style="display: none;">
                     </div>
 
-                    <!-- Tên tài khoản (chỉ đọc) -->
                     <div class="form-group">
                         <label><i class="fas fa-user"></i> Tên tài khoản</label>
                         <input type="text" id="txtUsername" class="form-control readonly" readonly>
                     </div>
 
-                    <!-- Tên hiển thị -->
                     <div class="form-group">
                         <label><i class="fas fa-id-card"></i> Tên hiển thị</label>
                         <input type="text" id="txtDisplayName" class="form-control" placeholder="Nhập tên hiển thị">
                     </div>
 
-                    <!-- Giới tính -->
                     <div class="form-group">
                         <label><i class="fas fa-venus-mars"></i> Giới tính</label>
                         <div class="gender-group">
-                            <label class="gender-option">
-                                <input type="radio" name="gender" value="Nam"> <i class="fas fa-mars"></i> Nam
-                            </label>
-                            <label class="gender-option">
-                                <input type="radio" name="gender" value="Nữ"> <i class="fas fa-venus"></i> Nữ
-                            </label>
-                            <label class="gender-option">
-                                <input type="radio" name="gender" value="Khác"> <i class="fas fa-genderless"></i> Khác
-                            </label>
+                            <label class="gender-option"><input type="radio" name="gender" value="Nam"> <i class="fas fa-mars"></i> Nam</label>
+                            <label class="gender-option"><input type="radio" name="gender" value="Nữ"> <i class="fas fa-venus"></i> Nữ</label>
+                            <label class="gender-option"><input type="radio" name="gender" value="Khác"> <i class="fas fa-genderless"></i> Khác</label>
                         </div>
                     </div>
 
                     <div class="divider"></div>
 
-                    <!-- Đổi mật khẩu -->
                     <div class="form-group">
                         <label><i class="fas fa-lock"></i> Mật khẩu hiện tại</label>
                         <input type="password" id="txtCurrentPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại">
@@ -285,62 +389,130 @@
             </div>
         </div>
 
-        <!-- Cột phải -->
         <div class="right-col">
             <div class="right-block">
-                <div class="card-header-custom"><span><i class="fas fa-calendar-alt"></i> Lịch của tôi</span><button class="calendar-trigger" id="openCalendarBtn"><i class="fas fa-plus"></i> Thêm sự kiện</button></div>
+                <div class="card-header-custom"><span><i class="fas fa-calendar-alt"></i> Lịch của tôi</span><button class="calendar-trigger" id="openCalendarBtn"><i class="fas fa-plus"></i> Thêm</button></div>
                 <div id="eventListContainer" class="event-list"></div>
             </div>
             <div class="right-block">
-                <div class="card-header-custom"><span><i class="fas fa-newspaper"></i> Bản tin</span><button class="add-news-btn" id="addNewsBtn"><i class="fas fa-plus"></i> Thêm tin mới</button></div>
+                <div class="card-header-custom"><span><i class="fas fa-newspaper"></i> Bản tin</span><button class="add-news-btn" id="addNewsBtn"><i class="fas fa-plus"></i> Thêm</button></div>
                 <div id="newsListContainer" class="news-content"></div>
             </div>
         </div>
     </div>
-    <div class="footer-note"><i class="fas fa-mug-hot"></i> Milk Coffee · Học tập cấp 3 thông minh · Cập nhật liên tục</div>
+    <div class="footer-note">
+        <div class="footer-links">
+            <a id="footerHome"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+            <a id="footerDashboard"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</a>
+            <a id="footerCalendar"><i class="fas fa-calendar-alt"></i> Lịch</a>
+            <a id="footerLibrary"><i class="fas fa-book"></i> Thư viện</a>
+            <a id="footerContact"><i class="fas fa-envelope"></i> Liên hệ</a>
+        </div>
+        <div><i class="fas fa-mug-hot"></i> Milk Coffee · Học tập cấp 3 thông minh · Cập nhật liên tục</div>
+        <div style="margin-top: 12px; font-size: 0.75rem;">© 2025 Milk Coffee. All rights reserved.</div>
+    </div>
 </div>
 
 <!-- Modals -->
-<div id="calendarModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📅 Thêm sự kiện mới</span><button class="close-modal" id="closeModalBtn">&times;</button></div><input type="text" id="eventTitleInput" class="date-input" placeholder="Tên sự kiện (VD: Thi thử Toán)"><input type="datetime-local" id="eventDateTimeInput" class="date-input"><button id="saveEventBtn" class="add-event-modal-btn">Lưu sự kiện</button></div></div>
+<div id="renameModal" class="modal"><div class="modal-content"><div class="modal-header"><span>✏️ Đổi tên hiển thị</span><button class="close-modal" id="closeRenameModalBtn">&times;</button></div><input type="text" id="newNameInput" class="date-input" placeholder="Nhập tên mới"><button id="saveRenameBtn" class="add-event-modal-btn">Lưu tên mới</button></div></div>
+<div id="calendarModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📅 Thêm sự kiện mới</span><button class="close-modal" id="closeModalBtn">&times;</button></div><input type="text" id="eventTitleInput" class="date-input" placeholder="Tên sự kiện"><input type="datetime-local" id="eventDateTimeInput" class="date-input"><button id="saveEventBtn" class="add-event-modal-btn">Lưu sự kiện</button></div></div>
 <div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
 <div id="notificationModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🔔 Thông báo</span><button class="close-modal" id="closeNotiModalBtn">&times;</button></div><div id="notificationList" style="max-height: 400px; overflow-y: auto;"></div></div></div>
 <div id="newsModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📰 Thêm tin mới</span><button class="close-modal" id="closeNewsModalBtn">&times;</button></div><input type="text" id="newsTitleInput" class="date-input" placeholder="Nội dung tin tức"><input type="date" id="newsDateInput" class="date-input"><button id="saveNewsBtn" class="add-event-modal-btn">Thêm</button></div></div>
+<div id="pageTransition" class="page-transition"><div class="transition-loader"><i class="fas fa-sync-alt fa-spin"></i> Du hành vũ trụ...</div></div>
 
 <script>
-    // ==================== CHẾ ĐỘ SÁNG/TỐI ====================
+    // ==================== ÁP DỤNG THEME NGAY LẬP TỨC ====================
+    (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
+        }
+    })();
+    
+    // Tạo sao nền
+    const universe = document.querySelector('.universe');
+    let starsCreated = false;
+    function createStars() {
+        if (starsCreated || !universe) return;
+        for (let i = 0; i < 120; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star');
+            let sz = Math.random() * 1.5 + 0.5;
+            star.style.width = sz + 'px';
+            star.style.height = sz + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.opacity = Math.random() * 0.4 + 0.2;
+            universe.appendChild(star);
+        }
+        for (let i = 0; i < 30; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star-twinkle');
+            let sz = Math.random() * 2 + 0.8;
+            star.style.width = sz + 'px';
+            star.style.height = sz + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            universe.appendChild(star);
+        }
+        starsCreated = true;
+    }
+    
+    function createShootingStar() {
+        if (!document.body.classList.contains('dark')) return;
+        let meteor = document.createElement('div');
+        meteor.classList.add('shooting-star');
+        meteor.style.left = (Math.random() * 70 + 10) + '%';
+        meteor.style.top = (Math.random() * 25 + 5) + '%';
+        universe.appendChild(meteor);
+        let deltaX = (Math.random() * 55 + 45);
+        let deltaY = (Math.random() * 35 + 15);
+        let duration = Math.random() * 0.8 + 0.6;
+        meteor.style.transition = `transform ${duration}s cubic-bezier(0.2, 0.9, 0.4, 1)`;
+        meteor.offsetHeight;
+        meteor.style.transform = `translateX(${deltaX}vw) translateY(${deltaY}vh)`;
+        meteor.style.opacity = '0';
+        setTimeout(() => { if (meteor && meteor.remove) meteor.remove(); }, duration * 1000 + 100);
+    }
+    
+    // Theme
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
+            document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            createStars();
+            setInterval(() => { if(document.body.classList.contains('dark')) createShootingStar(); }, 8000);
         } else {
-            document.body.classList.remove('dark-theme');
+            document.body.classList.remove('dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
         }
     }
     
     function toggleTheme() {
-        if (document.body.classList.contains('dark-theme')) {
-            document.body.classList.remove('dark-theme');
+        if (document.body.classList.contains('dark')) {
+            document.body.classList.remove('dark');
             localStorage.setItem('theme', 'light');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
         } else {
-            document.body.classList.add('dark-theme');
+            document.body.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+            createStars();
         }
     }
     
-    // ==================== API KẾT NỐI BACKEND ====================
     const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
-    
     const getToken = () => localStorage.getItem('token');
     
     async function apiRequest(endpoint, options = {}) {
         const headers = { 'Content-Type': 'application/json', ...options.headers };
         const token = getToken();
         if (token) headers['Authorization'] = `Bearer ${token}`;
-        
         const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
@@ -366,378 +538,131 @@
         return await response.json();
     }
     
-    let currentAccount = null;
-    let currentUserName = null;
-    let currentGender = null;
-    let events = [];
-    let newsItems = [];
-    let itemToDelete = null;
-    let deleteType = null;
+    let currentAccount = null, currentUserName = null, currentGender = null, events = [], newsItems = [], itemToDelete = null, deleteType = null;
     
-    function showToast(message, isSuccess = true) {
-        const toast = document.createElement('div');
-        toast.className = 'toast-message';
-        toast.style.background = isSuccess ? '#1565C0' : '#e64949';
-        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
+    function showToast(message, isSuccess = true) { 
+        const toast = document.createElement('div'); 
+        toast.className = 'toast-message' + (isSuccess ? '' : ' error'); 
+        toast.textContent = message;
+        document.body.appendChild(toast); 
+        setTimeout(() => toast.remove(), 2500); 
     }
     
-    function escapeHtml(str) {
-        if (!str) return '';
-        return String(str).replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+    function formatDisplayFull(dateObj) { if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ"; let d = dateObj.getDate().toString().padStart(2,'0'); let m = (dateObj.getMonth()+1).toString().padStart(2,'0'); let y = dateObj.getFullYear(); let h = dateObj.getHours().toString().padStart(2,'0'); let min = dateObj.getMinutes().toString().padStart(2,'0'); return `${d}/${m}/${y} - ${h}:${min}`; }
     
-    function formatDisplayFull(dateObj) {
-        if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ";
-        let d = dateObj.getDate().toString().padStart(2,'0');
-        let m = (dateObj.getMonth()+1).toString().padStart(2,'0');
-        let y = dateObj.getFullYear();
-        let h = dateObj.getHours().toString().padStart(2,'0');
-        let min = dateObj.getMinutes().toString().padStart(2,'0');
-        return `${d}/${m}/${y} - ${h}:${min}`;
-    }
+    async function addActivityLocal(title, score) { try { await addActivityAPI(title, score); } catch (error) { console.error(error); } }
     
-    async function addActivityLocal(title, score) {
-        try {
-            await addActivityAPI(title, score);
-        } catch (error) { console.error(error); }
-    }
+    async function addEventLocal(title, dateTimeStr) { let eventDate = new Date(dateTimeStr); if (isNaN(eventDate)) { showToast("Ngày giờ không hợp lệ!", false); return; } try { const result = await addEventAPI(title, dateTimeStr); events.push({ id: result.event.id, title, date: eventDate }); events.sort((a,b) => a.date - b.date); renderEvents(); updateNotificationBadge(); showToast("Đã thêm sự kiện thành công!"); await addActivityLocal(`Đã thêm sự kiện: ${title}`, 15); } catch (error) { showToast(error.message, false); } }
+    async function deleteEventLocal(eventId) { const deletedEvent = events.find(ev => ev.id === eventId); try { await deleteEventAPI(eventId); events = events.filter(ev => ev.id !== eventId); renderEvents(); updateNotificationBadge(); showToast("Đã xóa sự kiện"); } catch (error) { showToast(error.message, false); } }
     
-    async function addEventLocal(title, dateTimeStr) {
-        let eventDate = new Date(dateTimeStr);
-        if (isNaN(eventDate)) { showToast("⚠️ Ngày giờ không hợp lệ!", false); return; }
-        try {
-            const result = await addEventAPI(title, dateTimeStr);
-            events.push({ id: result.event.id, title, date: eventDate });
-            events.sort((a,b) => a.date - b.date);
-            renderEvents();
-            updateNotificationBadge();
-            showToast("✅ Đã thêm sự kiện thành công!");
-            await addActivityLocal(`Đã thêm sự kiện: ${title}`, 15);
-        } catch (error) { showToast(error.message, false); }
-    }
+    function renderEvents() { const container = document.getElementById('eventListContainer'); if (!container) return; if (events.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-alt"></i><br>Chưa có sự kiện nào</div>`; return; } container.innerHTML = ''; events.slice(0, 10).forEach(ev => { const div = document.createElement('div'); div.className = 'event-item-custom'; div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`; container.appendChild(div); }); document.querySelectorAll('.delete-event-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); itemToDelete = parseInt(btn.dataset.id); deleteType = 'event'; document.getElementById('confirmDeleteModal').style.display = 'flex'; }); }); }
     
-    async function deleteEventLocal(eventId) {
-        const deletedEvent = events.find(ev => ev.id === eventId);
-        try {
-            await deleteEventAPI(eventId);
-            events = events.filter(ev => ev.id !== eventId);
-            renderEvents();
-            updateNotificationBadge();
-            showToast("🗑️ Đã xóa sự kiện");
-        } catch (error) { showToast(error.message, false); }
-    }
+    function renderNews() { const container = document.getElementById('newsListContainer'); if (!container) return; if (newsItems.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-newspaper"></i><br>Chưa có tin tức</div>`; return; } container.innerHTML = ''; newsItems.slice(0, 10).forEach(item => { const div = document.createElement('div'); div.className = 'news-item-custom'; div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`; container.appendChild(div); }); document.querySelectorAll('.delete-news-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); itemToDelete = parseInt(btn.dataset.id); deleteType = 'news'; document.getElementById('confirmDeleteModal').style.display = 'flex'; }); }); }
     
-    function renderEvents() {
-        const container = document.getElementById('eventListContainer');
-        if (!container) return;
-        if (events.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-alt"></i><br>Chưa có sự kiện nào</div>`;
-            return;
-        }
-        container.innerHTML = '';
-        events.slice(0, 10).forEach(ev => {
-            const div = document.createElement('div');
-            div.className = 'event-item-custom';
-            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`;
-            container.appendChild(div);
-        });
-        
-        document.querySelectorAll('.delete-event-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                itemToDelete = parseInt(btn.dataset.id);
-                deleteType = 'event';
-                document.getElementById('confirmDeleteModal').style.display = 'flex';
-            });
-        });
-    }
+    async function addNewsItem(title, date) { newsItems.unshift({ id: Date.now(), title: title, date: date }); renderNews(); showToast("Đã thêm tin tức mới!"); await addActivityLocal(`Đã thêm tin mới: ${title.substring(0, 30)}...`, 10); }
+    async function deleteNewsItem(newsId) { newsItems = newsItems.filter(item => item.id !== newsId); renderNews(); showToast("Đã xóa tin tức"); }
     
-    function renderNews() {
-        const container = document.getElementById('newsListContainer');
-        if (!container) return;
-        if (newsItems.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-newspaper"></i><br>Chưa có tin tức</div>`;
-            return;
-        }
-        container.innerHTML = '';
-        newsItems.slice(0, 10).forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'news-item-custom';
-            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`;
-            container.appendChild(div);
-        });
-        
-        document.querySelectorAll('.delete-news-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                itemToDelete = parseInt(btn.dataset.id);
-                deleteType = 'news';
-                document.getElementById('confirmDeleteModal').style.display = 'flex';
-            });
-        });
-    }
+    function getUpcomingEvents() { const now = new Date(); const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000); return events.filter(ev => ev.date && ev.date > now && ev.date <= fifteenMinutesLater); }
+    function updateNotificationBadge() { const upcoming = getUpcomingEvents(); const badge = document.getElementById('notificationBadge'); if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; } else { badge.style.display = 'none'; } }
+    function showNotificationModal() { const upcoming = getUpcomingEvents(); const notiList = document.getElementById('notificationList'); if (upcoming.length === 0) notiList.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo</div>'; else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join(''); document.getElementById('notificationModal').style.display = 'flex'; }
     
-    async function addNewsItem(title, date) {
-        newsItems.unshift({ id: Date.now(), title: title, date: date });
-        renderNews();
-        showToast("✅ Đã thêm tin tức mới!");
-        await addActivityLocal(`Đã thêm tin mới: ${title.substring(0, 30)}...`, 10);
-    }
+    async function loadAndRender() { try { const profile = await getProfile(); currentAccount = profile.username; currentUserName = profile.displayName; currentGender = profile.gender; document.getElementById('leftName').innerText = currentUserName || currentAccount; document.getElementById('txtUsername').value = currentAccount; document.getElementById('txtDisplayName').value = currentUserName || currentAccount; if (currentGender) { const radios = document.querySelectorAll('input[name="gender"]'); radios.forEach(radio => { if (radio.value === currentGender) radio.checked = true; }); } if (profile.avatar) { document.getElementById('leftAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; document.getElementById('avatarPreview').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; } const eventsData = await getEvents(); events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime())); events.sort((a,b) => a.date - b.date); renderEvents(); newsItems = []; renderNews(); updateNotificationBadge(); } catch (error) { console.error('Lỗi:', error); showToast('Không thể tải dữ liệu', false); if (error.message.includes('token')) { setTimeout(() => navigate('dndk.html'), 1500); } } }
     
-    async function deleteNewsItem(newsId) {
-        newsItems = newsItems.filter(item => item.id !== newsId);
-        renderNews();
-        showToast("🗑️ Đã xóa tin tức");
-    }
+    function navigate(url) { let overlay = document.getElementById('pageTransition'); overlay.classList.add('active'); setTimeout(() => { window.location.href = url; }, 150); }
+    function logout() { localStorage.removeItem('token'); showToast("Đã đăng xuất!"); setTimeout(() => navigate('trangchu.html'), 500); }
     
-    function getUpcomingEvents() {
-        const now = new Date();
-        const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000);
-        return events.filter(ev => ev.date && ev.date > now && ev.date <= fifteenMinutesLater);
-    }
-    
-    function updateNotificationBadge() {
-        const upcoming = getUpcomingEvents();
-        const badge = document.getElementById('notificationBadge');
-        if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; }
-        else { badge.style.display = 'none'; }
-    }
-    
-    function showNotificationModal() {
-        const upcoming = getUpcomingEvents();
-        const notiList = document.getElementById('notificationList');
-        if (upcoming.length === 0) notiList.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo</div>';
-        else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join('');
-        document.getElementById('notificationModal').style.display = 'flex';
-    }
-    
-    async function loadAndRender() {
-        try {
-            const profile = await getProfile();
-            currentAccount = profile.username;
-            currentUserName = profile.displayName;
-            currentGender = profile.gender;
-            
-            document.getElementById('leftName').innerText = currentUserName || currentAccount;
-            document.getElementById('txtUsername').value = currentAccount;
-            document.getElementById('txtDisplayName').value = currentUserName || currentAccount;
-            
-            if (currentGender) {
-                const radios = document.querySelectorAll('input[name="gender"]');
-                radios.forEach(radio => { if (radio.value === currentGender) radio.checked = true; });
-            }
-            
-            if (profile.avatar) {
-                document.getElementById('leftAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
-                document.getElementById('avatarPreview').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
-            }
-            
-            const eventsData = await getEvents();
-            events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime()));
-            events.sort((a,b) => a.date - b.date);
-            renderEvents();
-            
-            newsItems = [];
-            renderNews();
-            updateNotificationBadge();
-            
-        } catch (error) {
-            console.error('Lỗi:', error);
-            showToast('Không thể tải dữ liệu', false);
-            if (error.message.includes('token')) {
-                setTimeout(() => { window.location.href = 'dndk.html'; }, 1500);
-            }
-        }
-    }
-    
-    function logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        showToast("Đã đăng xuất!");
-        setTimeout(() => { window.location.href = 'dndk.html'; }, 500);
-    }
-    
-    async function init() {
-        const token = localStorage.getItem('token');
-        if (!token) { window.location.href = 'dndk.html'; return; }
-        
-        await loadAndRender();
+    async function init() { 
+        const token = localStorage.getItem('token'); 
+        if (!token) { navigate('dndk.html'); return; } 
         initTheme();
-        
         document.getElementById('themeToggleBtn').onclick = toggleTheme;
+        await loadAndRender(); 
         
-        // Điều hướng menu
-        document.querySelectorAll('.menu-item[data-page="home"]').forEach(el => el.onclick = () => { window.location.href = 'trangchu.html'; });
-        document.querySelectorAll('.menu-item[data-page="dashboard"]').forEach(el => el.onclick = () => { window.location.href = 'bangdieukhien.html'; });
-        document.querySelectorAll('.menu-item[data-page="contact"]').forEach(el => el.onclick = () => { window.location.href = 'lienhe.html'; });
-        document.querySelectorAll('.menu-item[data-page="profile"]').forEach(el => el.onclick = () => { window.location.href = 'trangcanhan.html'; });
-        document.querySelectorAll('.menu-item[data-page="exams"]').forEach(el => el.onclick = () => { window.location.href = 'bangdieukhien.html'; });
-        document.querySelectorAll('.menu-item[data-page="library"]').forEach(el => el.onclick = () => { window.location.href = 'thuvien.html'; });
-        document.querySelectorAll('.menu-item[data-page="calendar"]').forEach(el => el.onclick = () => { window.location.href = 'lich.html'; });
+        document.querySelectorAll('.menu-item[data-page="home"]').forEach(el => el.onclick = () => navigate('trangchu.html')); 
+        document.querySelectorAll('.menu-item[data-page="dashboard"]').forEach(el => el.onclick = () => navigate('bangdieukhien.html')); 
+        document.querySelectorAll('.menu-item[data-page="contact"]').forEach(el => el.onclick = () => navigate('lienhe.html')); 
+        document.querySelectorAll('.menu-item[data-page="profile"]').forEach(el => el.onclick = () => navigate('trangcanhan.html')); 
+        document.querySelectorAll('.menu-item[data-page="exams"]').forEach(el => el.onclick = () => navigate('bangdieukhien.html')); 
+        document.querySelectorAll('.menu-item[data-page="library"]').forEach(el => el.onclick = () => navigate('thuvien.html')); 
+        document.querySelectorAll('.menu-item[data-page="calendar"]').forEach(el => el.onclick = () => navigate('lich.html')); 
+        document.getElementById('logoArea').onclick = () => navigate('trangchu.html'); 
+        document.getElementById('leftProfile').onclick = () => navigate('trangcanhan.html'); 
         
-        document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
-        document.getElementById('leftProfile').onclick = () => { window.location.href = 'trangcanhan.html'; };
-        
-        // Upload avatar
         const avatarInput = document.getElementById('avatarInput');
         const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
         const avatarPreview = document.getElementById('avatarPreview');
         const leftAvatar = document.getElementById('leftAvatar');
-        
         uploadAvatarBtn.onclick = () => avatarInput.click();
-        avatarInput.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) { showToast("⚠️ Ảnh quá lớn! Dưới 5MB", false); return; }
-                try {
-                    const result = await uploadAvatarAPI(file);
-                    if (result.success && result.avatarUrl) {
-                        avatarPreview.innerHTML = `<img src="${result.avatarUrl}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
-                        leftAvatar.innerHTML = `<img src="${result.avatarUrl}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
-                        showToast("✅ Đã cập nhật ảnh đại diện!");
-                        await addActivityLocal("Đã thay đổi ảnh đại diện", 10);
-                    }
-                } catch (error) { showToast(error.message, false); }
-            }
-        };
+        avatarInput.onchange = async (e) => { const file = e.target.files[0]; if (file) { if (file.size > 2*1024*1024) { showToast("Ảnh quá lớn! Dưới 2MB", false); return; } try { const result = await uploadAvatarAPI(file); if (result.success && result.avatarUrl) { const url = result.avatarUrl + '?t=' + Date.now(); avatarPreview.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; leftAvatar.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; showToast("Đã cập nhật ảnh đại diện!"); await addActivityLocal("Đã thay đổi ảnh đại diện", 10); } } catch (error) { showToast(error.message, false); } } };
         
-        // Lưu thông tin
         document.getElementById('saveProfileBtn').onclick = async () => {
             const newDisplayName = document.getElementById('txtDisplayName').value.trim();
             const selectedGender = document.querySelector('input[name="gender"]:checked')?.value;
             const currentPassword = document.getElementById('txtCurrentPassword').value;
             const newPassword = document.getElementById('txtNewPassword').value;
             const confirmPassword = document.getElementById('txtConfirmPassword').value;
-            
-            let updateData = {};
-            let hasChanges = false;
-            
-            if (newDisplayName && newDisplayName !== currentUserName) {
-                updateData.displayName = newDisplayName;
-                hasChanges = true;
-            }
-            if (selectedGender && selectedGender !== currentGender) {
-                updateData.gender = selectedGender;
-                hasChanges = true;
-            }
-            
-            if (hasChanges) {
-                try {
-                    await updateProfile(updateData);
-                    currentUserName = newDisplayName || currentUserName;
-                    currentGender = selectedGender || currentGender;
-                    document.getElementById('leftName').innerText = currentUserName;
-                    showToast("✅ Đã cập nhật thông tin!");
-                    await addActivityLocal("Đã cập nhật thông tin cá nhân", 5);
-                } catch (error) { showToast(error.message, false); }
-            }
-            
+            let updateData = {}, hasChanges = false;
+            if (newDisplayName && newDisplayName !== currentUserName) { updateData.displayName = newDisplayName; hasChanges = true; }
+            if (selectedGender && selectedGender !== currentGender) { updateData.gender = selectedGender; hasChanges = true; }
+            if (hasChanges) { try { await updateProfile(updateData); currentUserName = newDisplayName || currentUserName; currentGender = selectedGender || currentGender; document.getElementById('leftName').innerText = currentUserName; showToast("Đã cập nhật thông tin!"); await addActivityLocal("Đã cập nhật thông tin cá nhân", 5); } catch (error) { showToast(error.message, false); } }
             if (newPassword || confirmPassword || currentPassword) {
-                if (!currentPassword) { showToast("⚠️ Vui lòng nhập mật khẩu hiện tại", false); return; }
-                if (newPassword !== confirmPassword) { showToast("⚠️ Mật khẩu mới không khớp", false); return; }
-                if (newPassword && newPassword.length < 6) { showToast("⚠️ Mật khẩu mới phải có ít nhất 6 ký tự", false); return; }
-                if (newPassword) {
-                    try {
-                        await updateProfile({ currentPassword, newPassword });
-                        showToast("✅ Đã đổi mật khẩu! Vui lòng đăng nhập lại.");
-                        await addActivityLocal("Đã đổi mật khẩu", 10);
-                        setTimeout(() => { logout(); }, 2000);
-                    } catch (error) { showToast(error.message, false); }
-                }
+                if (!currentPassword) { showToast("Vui lòng nhập mật khẩu hiện tại", false); return; }
+                if (newPassword !== confirmPassword) { showToast("Mật khẩu mới không khớp", false); return; }
+                if (newPassword && newPassword.length < 6) { showToast("Mật khẩu mới phải có ít nhất 6 ký tự", false); return; }
+                if (newPassword) { try { await updateProfile({ currentPassword, newPassword }); showToast("Đã đổi mật khẩu! Vui lòng đăng nhập lại."); await addActivityLocal("Đã đổi mật khẩu", 10); setTimeout(() => { logout(); }, 2000); } catch (error) { showToast(error.message, false); } }
             }
-            
             document.getElementById('txtCurrentPassword').value = '';
             document.getElementById('txtNewPassword').value = '';
             document.getElementById('txtConfirmPassword').value = '';
-            
-            if (!hasChanges && !newPassword) showToast("ℹ️ Không có thay đổi nào", true);
+            if (!hasChanges && !newPassword) showToast("Không có thay đổi nào", true);
         };
         
-        // Modal sự kiện
-        const calendarModal = document.getElementById('calendarModal');
-        const openCalendarBtn = document.getElementById('openCalendarBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const saveEventBtn = document.getElementById('saveEventBtn');
+        const calendarModal = document.getElementById('calendarModal'); 
+        const openCalendarBtn = document.getElementById('openCalendarBtn'); 
+        const closeModalBtn = document.getElementById('closeModalBtn'); 
+        const saveEventBtn = document.getElementById('saveEventBtn'); 
+        openCalendarBtn.onclick = () => { calendarModal.style.display = 'flex'; }; 
+        closeModalBtn.onclick = () => { calendarModal.style.display = 'none'; }; 
+        saveEventBtn.onclick = async () => { let title = document.getElementById('eventTitleInput').value.trim(); let dateTime = document.getElementById('eventDateTimeInput').value; if (!title) { showToast("Vui lòng nhập tên sự kiện", false); return; } if (!dateTime) { showToast("Vui lòng chọn ngày giờ", false); return; } await addEventLocal(title, dateTime); document.getElementById('eventTitleInput').value = ''; document.getElementById('eventDateTimeInput').value = ''; calendarModal.style.display = 'none'; };
         
-        openCalendarBtn.onclick = () => { calendarModal.style.display = 'flex'; };
-        closeModalBtn.onclick = () => { calendarModal.style.display = 'none'; };
-        saveEventBtn.onclick = async () => {
-            let title = document.getElementById('eventTitleInput').value.trim();
-            let dateTime = document.getElementById('eventDateTimeInput').value;
-            if (!title) { showToast("⚠️ Vui lòng nhập tên sự kiện", false); return; }
-            if (!dateTime) { showToast("⚠️ Vui lòng chọn ngày giờ", false); return; }
-            await addEventLocal(title, dateTime);
-            document.getElementById('eventTitleInput').value = '';
-            document.getElementById('eventDateTimeInput').value = '';
-            calendarModal.style.display = 'none';
-        };
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal'); 
+        const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn'); 
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn'); 
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn'); 
+        closeConfirmModalBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; }; 
+        cancelDeleteBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; }; 
+        confirmDeleteBtn.onclick = async () => { if (itemToDelete !== null) { if (deleteType === 'event') await deleteEventLocal(itemToDelete); else if (deleteType === 'news') await deleteNewsItem(itemToDelete); itemToDelete = null; deleteType = null; } confirmDeleteModal.style.display = 'none'; };
         
-        // Modal xóa
-        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
-        const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const newsModal = document.getElementById('newsModal'); 
+        const addNewsBtn = document.getElementById('addNewsBtn'); 
+        const closeNewsModalBtn = document.getElementById('closeNewsModalBtn'); 
+        const saveNewsBtn = document.getElementById('saveNewsBtn'); 
+        const newsTitleInput = document.getElementById('newsTitleInput'); 
+        const newsDateInput = document.getElementById('newsDateInput'); 
+        addNewsBtn.onclick = () => { newsModal.style.display = 'flex'; }; 
+        closeNewsModalBtn.onclick = () => { newsModal.style.display = 'none'; }; 
+        saveNewsBtn.onclick = async () => { let title = newsTitleInput.value.trim(); let date = newsDateInput.value; if (!title) { showToast("Vui lòng nhập nội dung", false); return; } if (!date) { let today = new Date(); date = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`; } await addNewsItem(title, date.split('-').reverse().join('/')); newsTitleInput.value = ''; newsDateInput.value = ''; newsModal.style.display = 'none'; };
         
-        closeConfirmModalBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; };
-        cancelDeleteBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; };
-        confirmDeleteBtn.onclick = async () => {
-            if (itemToDelete !== null) {
-                if (deleteType === 'event') await deleteEventLocal(itemToDelete);
-                else if (deleteType === 'news') await deleteNewsItem(itemToDelete);
-                itemToDelete = null; deleteType = null;
-            }
-            confirmDeleteModal.style.display = 'none';
-        };
+        const notificationBtn = document.getElementById('notificationBtn'); 
+        const notificationModal = document.getElementById('notificationModal'); 
+        const closeNotiModalBtn = document.getElementById('closeNotiModalBtn'); 
+        notificationBtn.onclick = showNotificationModal; 
+        closeNotiModalBtn.onclick = () => { notificationModal.style.display = 'none'; }; 
         
-        // Modal tin tức
-        const newsModal = document.getElementById('newsModal');
-        const addNewsBtn = document.getElementById('addNewsBtn');
-        const closeNewsModalBtn = document.getElementById('closeNewsModalBtn');
-        const saveNewsBtn = document.getElementById('saveNewsBtn');
-        const newsTitleInput = document.getElementById('newsTitleInput');
-        const newsDateInput = document.getElementById('newsDateInput');
+        document.getElementById('logoutBtn').onclick = logout; 
         
-        addNewsBtn.onclick = () => { newsModal.style.display = 'flex'; };
-        closeNewsModalBtn.onclick = () => { newsModal.style.display = 'none'; };
-        saveNewsBtn.onclick = async () => {
-            let title = newsTitleInput.value.trim();
-            let date = newsDateInput.value;
-            if (!title) { showToast("⚠️ Vui lòng nhập nội dung", false); return; }
-            if (!date) { let today = new Date(); date = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`; }
-            await addNewsItem(title, date.split('-').reverse().join('/'));
-            newsTitleInput.value = '';
-            newsDateInput.value = '';
-            newsModal.style.display = 'none';
-        };
+        window.onclick = (e) => { if (e.target === calendarModal) calendarModal.style.display = 'none'; if (e.target === newsModal) newsModal.style.display = 'none'; if (e.target === renameModal) renameModal.style.display = 'none'; if (e.target === notificationModal) notificationModal.style.display = 'none'; if (e.target === confirmDeleteModal) confirmDeleteModal.style.display = 'none'; }; 
+        setInterval(() => { updateNotificationBadge(); }, 60000); 
         
-        // Thông báo
-        const notificationBtn = document.getElementById('notificationBtn');
-        const notificationModal = document.getElementById('notificationModal');
-        const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');
-        notificationBtn.onclick = showNotificationModal;
-        closeNotiModalBtn.onclick = () => { notificationModal.style.display = 'none'; };
-        
-        document.getElementById('logoutBtn').onclick = logout;
-        
-        window.onclick = (e) => {
-            if (e.target === calendarModal) calendarModal.style.display = 'none';
-            if (e.target === newsModal) newsModal.style.display = 'none';
-            if (e.target === notificationModal) notificationModal.style.display = 'none';
-            if (e.target === confirmDeleteModal) confirmDeleteModal.style.display = 'none';
-        };
-        
-        setInterval(() => { updateNotificationBadge(); }, 60000);
+        document.getElementById('footerHome')?.addEventListener('click', () => navigate('trangchu.html')); 
+        document.getElementById('footerDashboard')?.addEventListener('click', () => navigate('bangdieukhien.html')); 
+        document.getElementById('footerCalendar')?.addEventListener('click', () => navigate('lich.html')); 
+        document.getElementById('footerLibrary')?.addEventListener('click', () => navigate('thuvien.html')); 
+        document.getElementById('footerContact')?.addEventListener('click', () => navigate('lienhe.html')); 
     }
     
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } 
-    else { init(); }
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
 </script>
 </body>
 </html>
