@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: #F2F2F2; font-family: 'Inter', sans-serif; color: #414141; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
         .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s; }
         .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.3s; }
         .logo-area:hover { transform: scale(1.02); }
@@ -20,10 +20,12 @@
         .header-actions { display: flex; gap: 16px; align-items: center; }
         .action-btn { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; position: relative; }
         .action-btn:hover { background: #3a5280; transform: scale(1.05); }
+        .theme-toggle { background: #2a3e5e; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content; center; color: white; cursor: pointer; transition: 0.2s; font-size: 1.2rem; border: none; }
+        .theme-toggle:hover { background: #3a5280; transform: scale(1.05); }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
         
-        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; }
-        .nav-container { max-width: 1600px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; }
+        .nav-menu { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 72px; z-index: 99; transition: background 0.3s, border-color 0.3s; }
+        .nav-container { max-width: 1600px; margin: 0 auto; padding: 0 32px; display: flex; gap: 40px; flex-wrap: wrap; }
         .nav-item { padding: 16px 8px; font-weight: 600; font-size: 1rem; color: #414141; cursor: pointer; transition: all 0.3s; position: relative; }
         .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px; background: linear-gradient(90deg, #1565C0, #42a5f5); transition: all 0.3s; transform: translateX(-50%); border-radius: 3px; }
         .nav-item:hover { color: #1565C0; }
@@ -34,43 +36,44 @@
         .container { max-width: 1600px; margin: 32px auto; padding: 0 32px; flex: 1; }
         .page-title { font-size: 1.6rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
         
-        .admin-profile { background: white; border-radius: 32px; overflow: hidden; margin-bottom: 28px; border: 1px solid #D0D0D0; }
+        .admin-profile { background: white; border-radius: 32px; overflow: hidden; margin-bottom: 28px; border: 1px solid #D0D0D0; transition: background 0.3s, border-color 0.3s; }
         .admin-cover { height: 200px; background: linear-gradient(135deg, #1a2a4f, #0f1a30); position: relative; cursor: pointer; background-size: cover; background-position: center; }
         .edit-cover-badge { position: absolute; bottom: 16px; right: 20px; background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 30px; color: white; font-size: 0.7rem; cursor: pointer; }
         .admin-avatar-wrapper { padding: 0 32px 20px 32px; position: relative; margin-top: -60px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
         .admin-avatar { width: 120px; height: 120px; border-radius: 50%; border: 6px solid white; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; cursor: pointer; overflow: hidden; background: linear-gradient(135deg, #1565C0, #3B5998); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
         .admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .admin-info { background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 40px; backdrop-filter: blur(5px); }
+        .admin-info { background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 40px; backdrop-filter: blur(5px); transition: background 0.3s; }
         .admin-info span { font-weight: 700; color: #182b47; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: white; border-radius: 24px; padding: 24px; text-align: center; border: 1px solid #D0D0D0; }
+        .stat-card { background: white; border-radius: 24px; padding: 24px; text-align: center; border: 1px solid #D0D0D0; transition: background 0.3s, border-color 0.3s; }
         .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         .stat-card i { font-size: 2.5rem; color: #1565C0; margin-bottom: 12px; }
         .stat-card .number { font-size: 2rem; font-weight: 800; color: #182b47; }
         .stat-card .label { font-size: 0.85rem; color: #6f7c8f; margin-top: 4px; }
         
-        .table-container { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; }
-        .table-header { background: #F2F2F2; padding: 16px 24px; border-bottom: 1px solid #D0D0D0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .table-container { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; transition: background 0.3s, border-color 0.3s; }
+        .table-header { background: #F2F2F2; padding: 16px 24px; border-bottom: 1px solid #D0D0D0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; transition: background 0.3s; }
         .table-header h3 { font-size: 1.2rem; color: #1565C0; display: flex; align-items: center; gap: 10px; }
-        .search-box { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #D0D0D0; border-radius: 40px; padding: 8px 16px; }
-        .search-box input { border: none; outline: none; font-size: 0.85rem; width: 200px; background: transparent; }
+        .search-box { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #D0D0D0; border-radius: 40px; padding: 8px 16px; transition: background 0.3s, border-color 0.3s; }
+        .search-box input { border: none; outline: none; font-size: 0.85rem; width: 200px; background: transparent; transition: color 0.3s; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid #e8ecef; }
-        th { background: white; font-weight: 700; color: #1565C0; }
-        tr:hover { background: #F8F9FC; }
+        th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid #e8ecef; transition: border-color 0.3s; }
+        th { background: white; font-weight: 700; color: #1565C0; transition: background 0.3s; }
+        tr:hover { background: #F8F9FC; transition: background 0.3s; }
         .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
         .badge-admin { background: #ffe0e0; color: #e64949; }
         .badge-user { background: #e0f0ff; color: #1565C0; }
         .user-avatar-table { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .sort-btn { background: none; border: none; font-weight: 700; color: #1565C0; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-size: 1rem; }
+        .sort-btn:hover { opacity: 0.8; }
         
         .library-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 32px; }
-        .library-col { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; }
+        .library-col { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; transition: background 0.3s, border-color 0.3s; }
         .library-col-header { background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 20px; color: white; }
         .library-col-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 12px; }
-        .library-col-header h3 i { font-size: 1.5rem; }
         .library-col-body { padding: 20px; max-height: 500px; overflow-y: auto; }
-        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; }
+        .file-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e8ecef; transition: border-color 0.3s; }
         .file-item:last-child { border-bottom: none; }
         .file-info { flex: 1; }
         .file-name { font-weight: 600; font-size: 0.9rem; word-break: break-word; }
@@ -80,37 +83,49 @@
         .upload-area:hover { border-color: #1565C0; background: #F8F9FC; }
         .upload-area i { font-size: 2rem; color: #1565C0; margin-bottom: 8px; }
         .upload-area p { font-size: 0.8rem; color: #6f7c8f; }
-        .empty-library { text-align: center; padding: 40px; color: #a0aec0; }
-        .empty-library i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-        .file-btn { background: none; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.2s; color: #6f7c8f; }
-        .file-btn.download:hover { background: #e0f0ff; color: #1565C0; transform: scale(1.05); }
-        .file-btn.delete:hover { background: #ffe0e0; color: #e64949; transform: scale(1.05); }
+        
+        /* Exam Manager Styles */
+        .exam-manager { background: white; border-radius: 24px; border: 1px solid #D0D0D0; overflow: hidden; margin-bottom: 32px; transition: background 0.3s, border-color 0.3s; }
+        .exam-manager-header { background: linear-gradient(135deg, #1565C0, #42a5f5); padding: 20px; color: white; }
+        .exam-manager-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 12px; }
+        .exam-form { padding: 24px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #414141; transition: color 0.3s; }
+        .form-control { width: 100%; padding: 10px 14px; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 0.9rem; transition: 0.2s; background: #F8F9FC; }
+        .form-control:focus { outline: none; border-color: #1565C0; background: white; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .questions-container { max-height: 500px; overflow-y: auto; margin-bottom: 20px; }
+        .question-card { background: #F8F9FC; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #D0D0D0; transition: background 0.3s, border-color 0.3s; }
+        .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .question-text { font-weight: 600; margin-bottom: 12px; }
+        .question-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .option-input { display: flex; align-items: center; gap: 8px; }
+        .option-input input { flex: 1; padding: 8px; border: 1px solid #D0D0D0; border-radius: 12px; background: white; transition: background 0.3s, border-color 0.3s; }
+        .question-level { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+        .question-level select { padding: 6px 12px; border-radius: 20px; border: 1px solid #D0D0D0; background: white; }
+        .btn-add-question { background: #F2F2F2; border: 2px dashed #D0D0D0; padding: 12px; border-radius: 20px; width: 100%; cursor: pointer; font-weight: 600; transition: 0.2s; margin-bottom: 20px; }
+        .btn-add-question:hover { background: #e0e0e0; border-color: #1565C0; }
+        .btn-remove-question { background: #e64949; color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .btn-submit-exam { background: #1565C0; color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-submit-exam:hover { background: #0f4d96; transform: scale(1.02); }
         
         .action-buttons { display: flex; gap: 8px; }
         .btn-icon { background: none; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.2s; color: #6f7c8f; }
         .btn-icon:hover { background: #F2F2F2; transform: scale(1.05); }
         .btn-icon.delete:hover { color: #e64949; background: #ffe0e0; }
         .btn-icon.edit:hover { color: #1565C0; background: #e0f0ff; }
-        .btn-icon.view:hover { color: #1565C0; background: #e0f0ff; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 600px; padding: 32px; max-height: 80vh; overflow-y: auto; }
+        .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 600px; padding: 32px; max-height: 80vh; overflow-y: auto; transition: background 0.3s; }
         .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #666; transition: color 0.3s; }
         .close-modal:hover { color: #333; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #414141; }
-        .form-control { width: 100%; padding: 12px 16px; border: 2px solid #D0D0D0; border-radius: 20px; font-size: 1rem; transition: 0.2s; background: #F8F9FC; }
-        .form-control:focus { outline: none; border-color: #1565C0; background: white; }
-        .btn-save { background: #1565C0; color: white; border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-save:hover { background: #0f4d96; transform: scale(1.02); }
-        .btn-danger { background: #e64949; }
-        .btn-danger:hover { background: #c21818; }
         
-        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; }
+        .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 24px; font-size: 0.85rem; margin-top: auto; transition: background 0.3s; }
         .empty-state { text-align: center; padding: 60px 20px; color: #a0aec0; }
         .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-        .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .toast-message { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2000; animation: fadeInOut 2s ease; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center; }
         @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(20px); } }
         .error-message { color: #e64949; font-size: 0.8rem; margin-top: 8px; display: none; }
         .error-message.show { display: block; }
@@ -121,6 +136,32 @@
         .confirm-cancel-btn { background: #e8ecef; color: #414141; }
         .confirm-cancel-btn:hover { background: #D0D0D0; }
         
+        /* Dark Mode */
+        body.dark-theme { background-color: #0a0a0a !important; color: #e0e0e0 !important; }
+        body.dark-theme .main-header { background: #0a0a0a !important; border-bottom: 1px solid #333; }
+        body.dark-theme .action-btn, body.dark-theme .theme-toggle { background: #2a2a2a !important; }
+        body.dark-theme .action-btn:hover, body.dark-theme .theme-toggle:hover { background: #3a3a3a !important; }
+        body.dark-theme .nav-menu { background: #111 !important; border-bottom: 1px solid #333; }
+        body.dark-theme .nav-item { color: #ccc !important; }
+        body.dark-theme .nav-item.active { color: #1565C0 !important; }
+        body.dark-theme .admin-profile, body.dark-theme .stat-card, body.dark-theme .table-container,
+        body.dark-theme .library-col, body.dark-theme .exam-manager, body.dark-theme .modal-content { background: #1a1a1a !important; border-color: #333 !important; }
+        body.dark-theme .admin-info { background: rgba(0,0,0,0.7) !important; }
+        body.dark-theme .table-header { background: #222 !important; border-bottom-color: #333 !important; }
+        body.dark-theme .search-box { background: #2a2a2a !important; border-color: #444 !important; }
+        body.dark-theme .search-box input { color: #fff !important; }
+        body.dark-theme th { background: #222 !important; color: #1565C0 !important; }
+        body.dark-theme td { border-bottom-color: #333 !important; color: #ccc !important; }
+        body.dark-theme tr:hover { background: #2a2a2a !important; }
+        body.dark-theme .badge-admin { background: #442222 !important; color: #ff8888 !important; }
+        body.dark-theme .badge-user { background: #1a3a5a !important; color: #1565C0 !important; }
+        body.dark-theme .question-card { background: #2a2a2a !important; border-color: #444 !important; }
+        body.dark-theme .option-input input { background: #1a1a1a !important; border-color: #555 !important; color: white; }
+        body.dark-theme .form-control { background: #2a2a2a !important; border-color: #444 !important; color: white; }
+        body.dark-theme .form-group label { color: #ccc !important; }
+        body.dark-theme .btn-add-question { background: #2a2a2a !important; border-color: #555 !important; color: #ccc; }
+        body.dark-theme .footer-note { background: #0a0a0a !important; color: #888 !important; }
+        
         @media (max-width: 768px) {
             .container { padding: 0 16px; }
             .table-container { overflow-x: auto; }
@@ -129,8 +170,9 @@
             .nav-container { gap: 20px; overflow-x: auto; }
             .admin-avatar-wrapper { flex-direction: column; align-items: center; text-align: center; }
             .library-2cols { grid-template-columns: 1fr; gap: 20px; }
-            .action-btn { width: 40px; height: 40px; font-size: 1rem; }
-            .upload-area select { width: auto; font-size: 0.75rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .question-options { grid-template-columns: 1fr; }
+            .action-btn, .theme-toggle { width: 40px; height: 40px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -143,6 +185,7 @@
                 <div class="logo-text">Milk Coffee</div>
             </div>
             <div class="header-actions">
+                <button class="theme-toggle" id="themeToggleBtn"><i class="fas fa-moon"></i></button>
                 <div class="action-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></div>
             </div>
         </div>
@@ -150,6 +193,7 @@
 
     <div class="nav-menu">
         <div class="nav-container">
+            <div class="nav-item" data-tab="exams">📝 Quản lý đề thi</div>
             <div class="nav-item active" data-tab="library">📚 Quản lý thư viện</div>
             <div class="nav-item" data-tab="users">👥 Quản lý người dùng</div>
             <div class="nav-item" data-tab="stats">📊 Thống kê</div>
@@ -159,124 +203,89 @@
 
     <div class="container">
         <div class="admin-profile">
-            <div class="admin-cover" id="adminCover">
-                <div class="edit-cover-badge"><i class="fas fa-camera"></i> Đổi ảnh bìa</div>
-            </div>
+            <div class="admin-cover" id="adminCover"><div class="edit-cover-badge"><i class="fas fa-camera"></i> Đổi ảnh bìa</div></div>
             <div class="admin-avatar-wrapper">
-                <div class="admin-avatar" id="adminAvatar">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <div class="admin-info">
-                    <span><i class="fas fa-user-cog"></i> Quản trị viên</span>
-                </div>
+                <div class="admin-avatar" id="adminAvatar"><i class="fas fa-user-shield"></i></div>
+                <div class="admin-info"><span><i class="fas fa-user-cog"></i> Quản trị viên</span></div>
             </div>
         </div>
 
-        <div id="libraryTab" class="tab-content">
+        <!-- Tab Quản lý đề thi -->
+        <div id="examsTab" class="tab-content" style="display: none;">
             <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="fas fa-file-alt"></i>
-                    <div class="number" id="totalExams">0</div>
-                    <div class="label">Tổng đề thi</div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="number" id="totalTheories">0</div>
-                    <div class="label">Tổng tài liệu</div>
-                </div>
+                <div class="stat-card"><i class="fas fa-file-alt"></i><div class="number" id="totalExamsCount">0</div><div class="label">Tổng đề thi</div></div>
+                <div class="stat-card"><i class="fas fa-question-circle"></i><div class="number" id="totalQuestionsCount">0</div><div class="label">Tổng câu hỏi</div></div>
             </div>
 
-            <div class="library-2cols">
-                <div class="library-col">
-                    <div class="library-col-header">
-                        <h3><i class="fas fa-file-alt"></i> Đề thi & Bài tập</h3>
+            <div class="exam-manager">
+                <div class="exam-manager-header"><h3><i class="fas fa-plus-circle"></i> Tạo đề thi mới</h3></div>
+                <div class="exam-form">
+                    <div class="form-row">
+                        <div class="form-group"><label>Tên đề thi</label><input type="text" id="examTitle" class="form-control" placeholder="VD: Đề thi Toán lớp 10 - Học kỳ 1"></div>
+                        <div class="form-group"><label>Lớp</label><select id="examGrade" class="form-control"><option value="10">Lớp 10</option><option value="11">Lớp 11</option><option value="12">Lớp 12</option><option value="thpt">Ôn thi THPT</option></select></div>
+                        <div class="form-group"><label>Môn học</label><select id="examSubject" class="form-control"><option value="toan">Toán</option><option value="van">Văn</option><option value="anh">Anh</option><option value="ly">Lý</option><option value="hoa">Hóa</option><option value="sinh">Sinh</option><option value="su">Sử</option><option value="dia">Địa</option></select></div>
                     </div>
-                    <div class="library-col-body">
-                        <div id="examList"></div>
-                        <div id="examUploadArea" class="upload-area">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Tải đề thi lên (PDF, DOC, DOCX, ZIP, tối đa 10MB)</p>
-                            <div style="display: flex; gap: 10px; margin: 12px 0; justify-content: center; flex-wrap: wrap;">
-                                <select id="uploadExamGrade" style="padding: 8px 16px; border-radius: 30px; border: 1px solid #D0D0D0; background: white; cursor: pointer;">
-                                    <option value="10">📚 Lớp 10</option>
-                                    <option value="11">📚 Lớp 11</option>
-                                    <option value="12">📚 Lớp 12</option>
-                                </select>
-                                <select id="uploadExamSubject" style="padding: 8px 16px; border-radius: 30px; border: 1px solid #D0D0D0; background: white; cursor: pointer;">
-                                    <option value="toan">📐 Toán</option>
-                                    <option value="van">📖 Văn</option>
-                                    <option value="anh">🇬🇧 Anh</option>
-                                    <option value="ly">⚡ Lý</option>
-                                    <option value="hoa">🧪 Hóa</option>
-                                    <option value="sinh">🔬 Sinh</option>
-                                    <option value="su">📜 Sử</option>
-                                    <option value="dia">🌏 Địa</option>
-                                </select>
-                            </div>
-                            <input type="file" id="examFileInput" accept=".pdf,.doc,.docx,.zip" style="display: none;">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="library-col">
-                    <div class="library-col-header">
-                        <h3><i class="fas fa-file-pdf"></i> Tài liệu lý thuyết</h3>
-                    </div>
-                    <div class="library-col-body">
-                        <div id="theoryList"></div>
-                        <div id="theoryUploadArea" class="upload-area">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Tải tài liệu lý thuyết lên (PDF, DOC, DOCX, tối đa 10MB)</p>
-                            <div style="display: flex; gap: 10px; margin: 12px 0; justify-content: center; flex-wrap: wrap;">
-                                <select id="uploadTheoryGrade" style="padding: 8px 16px; border-radius: 30px; border: 1px solid #D0D0D0; background: white; cursor: pointer;">
-                                    <option value="10">📚 Lớp 10</option>
-                                    <option value="11">📚 Lớp 11</option>
-                                    <option value="12">📚 Lớp 12</option>
-                                </select>
-                                <select id="uploadTheorySubject" style="padding: 8px 16px; border-radius: 30px; border: 1px solid #D0D0D0; background: white; cursor: pointer;">
-                                    <option value="toan">📐 Toán</option>
-                                    <option value="van">📖 Văn</option>
-                                    <option value="anh">🇬🇧 Anh</option>
-                                    <option value="ly">⚡ Lý</option>
-                                    <option value="hoa">🧪 Hóa</option>
-                                    <option value="sinh">🔬 Sinh</option>
-                                    <option value="su">📜 Sử</option>
-                                    <option value="dia">🌏 Địa</option>
-                                </select>
-                            </div>
-                            <input type="file" id="theoryFileInput" accept=".pdf,.doc,.docx" style="display: none;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="usersTab" class="tab-content" style="display: none;">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div class="number" id="totalUsers">0</div>
-                    <div class="label">Tổng số người dùng</div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-user-check"></i>
-                    <div class="number" id="activeUsers">0</div>
-                    <div class="label">Người dùng hoạt động</div>
+                    <div class="questions-container" id="questionsContainer"></div>
+                    <button class="btn-add-question" id="addQuestionBtn"><i class="fas fa-plus"></i> Thêm câu hỏi</button>
+                    <button class="btn-submit-exam" id="saveExamBtn"><i class="fas fa-save"></i> Lưu đề thi</button>
                 </div>
             </div>
 
             <div class="table-container">
-                <div class="table-header">
-                    <h3><i class="fas fa-list"></i> Danh sách tài khoản</h3>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+                <div class="table-header"><h3><i class="fas fa-list"></i> Danh sách đề thi</h3><div class="search-box"><i class="fas fa-search"></i><input type="text" id="examSearchInput" placeholder="Tìm kiếm..."></div></div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>STT</th><th>Tên đề thi</th><th>Lớp</th><th>Môn</th><th>Số câu</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+                        <tbody id="examTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Quản lý thư viện -->
+        <div id="libraryTab" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card"><i class="fas fa-file-alt"></i><div class="number" id="totalExams">0</div><div class="label">Tổng đề thi</div></div>
+                <div class="stat-card"><i class="fas fa-file-pdf"></i><div class="number" id="totalTheories">0</div><div class="label">Tổng tài liệu</div></div>
+            </div>
+            <div class="library-2cols">
+                <div class="library-col">
+                    <div class="library-col-header"><h3><i class="fas fa-file-alt"></i> Đề thi & Bài tập</h3></div>
+                    <div class="library-col-body">
+                        <div id="examList"></div>
+                        <div id="examUploadArea" class="upload-area"><i class="fas fa-cloud-upload-alt"></i><p>Tải đề thi lên (PDF, DOC, DOCX, ZIP, tối đa 10MB)</p><div style="display: flex; gap: 10px; margin: 12px 0; justify-content: center; flex-wrap: wrap;"><select id="uploadExamGrade"><option value="10">📚 Lớp 10</option><option value="11">📚 Lớp 11</option><option value="12">📚 Lớp 12</option></select><select id="uploadExamSubject"><option value="toan">📐 Toán</option><option value="van">📖 Văn</option><option value="anh">🇬🇧 Anh</option><option value="ly">⚡ Lý</option><option value="hoa">🧪 Hóa</option><option value="sinh">🔬 Sinh</option><option value="su">📜 Sử</option><option value="dia">🌏 Địa</option></select></div><input type="file" id="examFileInput" accept=".pdf,.doc,.docx,.zip" style="display: none;"></div>
                     </div>
                 </div>
+                <div class="library-col">
+                    <div class="library-col-header"><h3><i class="fas fa-file-pdf"></i> Tài liệu lý thuyết</h3></div>
+                    <div class="library-col-body">
+                        <div id="theoryList"></div>
+                        <div id="theoryUploadArea" class="upload-area"><i class="fas fa-cloud-upload-alt"></i><p>Tải tài liệu lý thuyết lên (PDF, DOC, DOCX, tối đa 10MB)</p><div style="display: flex; gap: 10px; margin: 12px 0; justify-content: center; flex-wrap: wrap;"><select id="uploadTheoryGrade"><option value="10">📚 Lớp 10</option><option value="11">📚 Lớp 11</option><option value="12">📚 Lớp 12</option></select><select id="uploadTheorySubject"><option value="toan">📐 Toán</option><option value="van">📖 Văn</option><option value="anh">🇬🇧 Anh</option><option value="ly">⚡ Lý</option><option value="hoa">🧪 Hóa</option><option value="sinh">🔬 Sinh</option><option value="su">📜 Sử</option><option value="dia">🌏 Địa</option></select></div><input type="file" id="theoryFileInput" accept=".pdf,.doc,.docx" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Quản lý người dùng -->
+        <div id="usersTab" class="tab-content" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card"><i class="fas fa-users"></i><div class="number" id="totalUsers">0</div><div class="label">Tổng số người dùng</div></div>
+                <div class="stat-card"><i class="fas fa-user-check"></i><div class="number" id="activeUsers">0</div><div class="label">Người dùng hoạt động</div></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-list"></i> Danh sách tài khoản</h3><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Tìm kiếm..."></div></div>
                 <div style="overflow-x: auto;">
                     <table>
                         <thead>
-                            <tr><th>STT</th><th>Avatar</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Giới tính</th><th>Thao tác</th></tr>
+                            <tr>
+                                <th><button class="sort-btn" data-sort="id">STT</button></th>
+                                <th>Avatar</th>
+                                <th><button class="sort-btn" data-sort="username">Tên tài khoản</button></th>
+                                <th><button class="sort-btn" data-sort="displayName">Tên hiển thị</button></th>
+                                <th>Giới tính</th>
+                                <th><button class="sort-btn" data-sort="stats.score">Điểm tích lũy</button></th>
+                                <th>Thao tác</th>
+                            </tr>
                         </thead>
                         <tbody id="userTableBody"></tbody>
                     </table>
@@ -284,6 +293,7 @@
             </div>
         </div>
 
+        <!-- Tab Thống kê -->
         <div id="statsTab" class="tab-content" style="display: none;">
             <div class="stats-grid">
                 <div class="stat-card"><i class="fas fa-calendar-alt"></i><div class="number" id="statTotalUsers">0</div><div class="label">Tổng người dùng</div></div>
@@ -292,32 +302,23 @@
                 <div class="stat-card"><i class="fas fa-star"></i><div class="number" id="statTotalScore">0</div><div class="label">Tổng điểm tích lũy</div></div>
             </div>
             <div class="table-container">
-                <div class="table-header"><h3><i class="fas fa-chart-simple"></i> Chi tiết hoạt động người dùng</h3></div>
+                <div class="table-header"><h3><i class="fas fa-chart-simple"></i> Bảng xếp hạng người dùng</h3></div>
                 <div style="overflow-x: auto;">
                     <table>
-                        <thead>
-                            <tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr>
-                        </thead>
+                        <thead><tr><th>STT</th><th>Tên tài khoản</th><th>Tên hiển thị</th><th>Điểm tích lũy</th><th>Giờ học</th><th>Tiến độ (%)</th><th>Xếp hạng</th></tr></thead>
                         <tbody id="statsTableBody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
+        <!-- Tab Cài đặt -->
         <div id="settingsTab" class="tab-content" style="display: none;">
             <div class="table-container">
                 <div class="table-header"><h3><i class="fas fa-database"></i> Quản lý dữ liệu</h3></div>
                 <div style="padding: 24px;">
-                    <div style="margin-bottom: 24px;">
-                        <h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-trash-alt"></i> Xóa dữ liệu</h4>
-                        <p style="color: #6f7c8f; margin-bottom: 16px;">Xóa tất cả dữ liệu người dùng, sự kiện, tin tức. Hành động này không thể hoàn tác!</p>
-                        <button id="clearAllDataBtn" class="btn-save btn-danger" style="width: auto; padding: 10px 24px;"><i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu</button>
-                    </div>
-                    <div style="border-top: 1px solid #e8ecef; padding-top: 24px;">
-                        <h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-download"></i> Xuất dữ liệu</h4>
-                        <p style="color: #6f7c8f; margin-bottom: 16px;">Xuất danh sách người dùng ra file Excel.</p>
-                        <button id="exportDataBtn" class="btn-save" style="width: auto; padding: 10px 24px;"><i class="fas fa-file-excel"></i> Xuất Excel</button>
-                    </div>
+                    <div style="margin-bottom: 24px;"><h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-trash-alt"></i> Xóa dữ liệu</h4><p style="color: #6f7c8f; margin-bottom: 16px;">Xóa tất cả dữ liệu người dùng, sự kiện, tin tức. Hành động này không thể hoàn tác!</p><button id="clearAllDataBtn" class="btn-save btn-danger" style="width: auto; padding: 10px 24px;"><i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu</button></div>
+                    <div style="border-top: 1px solid #e8ecef; padding-top: 24px;"><h4 style="color: #1565C0; margin-bottom: 12px;"><i class="fas fa-download"></i> Xuất dữ liệu</h4><p style="color: #6f7c8f; margin-bottom: 16px;">Xuất danh sách người dùng ra file Excel.</p><button id="exportDataBtn" class="btn-save" style="width: auto; padding: 10px 24px;"><i class="fas fa-file-excel"></i> Xuất Excel</button></div>
                 </div>
             </div>
         </div>
@@ -336,7 +337,6 @@
     </div>
 </div>
 
-<div id="userDetailModal" class="modal"><div class="modal-content"><div class="modal-header"><span><i class="fas fa-user-circle"></i> Chi tiết người dùng</span><button class="close-modal" id="closeDetailModalBtn">&times;</button></div><div id="userDetailContent"></div></div></div>
 <div id="editUserModal" class="modal"><div class="modal-content"><div class="modal-header"><span>✏️ Chỉnh sửa người dùng</span><button class="close-modal" id="closeEditModalBtn">&times;</button></div><div class="form-group"><label>Tên hiển thị</label><input type="text" id="editDisplayName" class="form-control"></div><div class="form-group"><label>Mật khẩu mới (để trống nếu không đổi)</label><input type="password" id="editPassword" class="form-control" placeholder="Nhập mật khẩu mới"></div><div class="form-group"><label>Giới tính</label><select id="editGender" class="form-control"><option value="Nam">Nam</option><option value="Nữ">Nữ</option><option value="Khác">Khác</option></select></div><button id="saveEditBtn" class="btn-save">Lưu thay đổi</button></div></div>
 <div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
 
@@ -348,8 +348,9 @@
     let users = [];
     let currentEditUser = null;
     let deleteFileId = null;
-    let itemToDelete = null;
-    let deleteType = null;
+    let exams = [];
+    let currentQuestions = [];
+    let currentSort = { field: 'id', order: 'asc' };
     
     const MAX_FILE_SIZE = 10 * 1024 * 1024;
     
@@ -357,7 +358,7 @@
         const toast = document.createElement('div');
         toast.className = 'toast-message';
         toast.style.background = isSuccess ? '#1565C0' : '#e64949';
-        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        toast.textContent = message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
     }
@@ -376,13 +377,13 @@
         const headers = { 'Content-Type': 'application/json', ...options.headers };
         const token = localStorage.getItem('admin_token');
         if (token) headers['Authorization'] = `Bearer ${token}`;
-        
         const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
         return data;
     }
     
+    // ========== ADMIN PROFILE ==========
     async function loadAdminProfile() {
         try {
             const token = localStorage.getItem('admin_token');
@@ -392,21 +393,17 @@
             });
             if (!response.ok) return;
             const profile = await response.json();
-            
             if (profile.avatar) {
                 document.getElementById('adminAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
             } else {
                 document.getElementById('adminAvatar').innerHTML = '<i class="fas fa-user-shield"></i>';
             }
-            
             if (profile.cover) {
                 document.getElementById('adminCover').style.backgroundImage = `url(${profile.cover}?t=${Date.now()})`;
                 document.getElementById('adminCover').style.backgroundSize = 'cover';
                 document.getElementById('adminCover').style.backgroundPosition = 'center';
             }
-        } catch (error) {
-            console.error('Lỗi tải admin profile:', error);
-        }
+        } catch (error) { console.error('Lỗi tải admin profile:', error); }
     }
     
     async function uploadAdminAvatar(file) {
@@ -436,232 +433,68 @@
     function setupAdminImageUpload() {
         const adminAvatar = document.getElementById('adminAvatar');
         const adminCover = document.getElementById('adminCover');
-        
         const avatarInput = document.createElement('input');
         avatarInput.type = 'file';
         avatarInput.accept = 'image/*';
         avatarInput.onchange = async (e) => {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast("⚠️ Ảnh quá lớn! Dưới 5MB", false);
-                    return;
-                }
+                if (file.size > 5 * 1024 * 1024) { showToast("Ảnh quá lớn! Dưới 5MB", false); return; }
                 try {
                     const result = await uploadAdminAvatar(file);
                     if (result.success && result.avatarUrl) {
                         adminAvatar.innerHTML = `<img src="${result.avatarUrl}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;">`;
-                        showToast("✅ Đã cập nhật ảnh đại diện!");
+                        showToast("Đã cập nhật ảnh đại diện!");
                     }
-                } catch (error) {
-                    showToast(error.message, false);
-                }
+                } catch (error) { showToast(error.message, false); }
             }
         };
         adminAvatar.style.cursor = 'pointer';
         adminAvatar.addEventListener('click', (e) => { e.stopPropagation(); avatarInput.click(); });
-        
         const coverInput = document.createElement('input');
         coverInput.type = 'file';
         coverInput.accept = 'image/*';
         coverInput.onchange = async (e) => {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast("⚠️ Ảnh quá lớn! Dưới 5MB", false);
-                    return;
-                }
+                if (file.size > 5 * 1024 * 1024) { showToast("Ảnh quá lớn! Dưới 5MB", false); return; }
                 try {
                     const result = await uploadAdminCover(file);
                     if (result.success && result.coverUrl) {
                         adminCover.style.backgroundImage = `url(${result.coverUrl}?t=${Date.now()})`;
                         adminCover.style.backgroundSize = 'cover';
                         adminCover.style.backgroundPosition = 'center';
-                        showToast("✅ Đã cập nhật ảnh bìa!");
+                        showToast("Đã cập nhật ảnh bìa!");
                     }
-                } catch (error) {
-                    showToast(error.message, false);
-                }
+                } catch (error) { showToast(error.message, false); }
             }
         };
         adminCover.style.cursor = 'pointer';
         adminCover.addEventListener('click', (e) => { e.stopPropagation(); coverInput.click(); });
     }
     
-    async function getAdminUsers() {
-        return await apiRequest('/admin/users');
-    }
-    
-    async function deleteUserAPI(userId) {
-        return await apiRequest(`/admin/users/${userId}`, { method: 'DELETE' });
-    }
-    
-    async function getLibraryFilesAPI() {
-        const token = localStorage.getItem('admin_token');
-        const response = await fetch(`${API_URL}/library`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-        return data;
-    }
-    
-    async function uploadLibraryFile(file, type, grade, subject) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('type', type);
-        formData.append('grade', grade);
-        formData.append('subject', subject);
-        const token = localStorage.getItem('admin_token');
-        const response = await fetch(`${API_URL}/library`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-        return data;
-    }
-    
-    async function deleteLibraryFileAPI(fileId) {
-        return await apiRequest(`/library/${fileId}`, { method: 'DELETE' });
-    }
-    
-    function downloadFile(file) {
-        if (file && file.filePath) {
-            window.open(file.filePath, '_blank');
-            showToast("✅ Đang tải file: " + file.name);
-        }
-    }
-    
-    async function loadLibraryFiles() {
-        try {
-            libraryFiles = await getLibraryFilesAPI();
-            const exams = libraryFiles.filter(f => f.type === 'exam');
-            const theories = libraryFiles.filter(f => f.type === 'theory');
-            
-            document.getElementById('totalExams').innerText = exams.length;
-            document.getElementById('totalTheories').innerText = theories.length;
-            
-            const examContainer = document.getElementById('examList');
-            if (exams.length === 0) {
-                examContainer.innerHTML = `<div class="empty-library"><i class="fas fa-file-alt"></i><p>Chưa có đề thi nào</p><p style="font-size:0.75rem;">Hãy tải lên để chia sẻ với học viên</p></div>`;
-            } else {
-                examContainer.innerHTML = exams.map(file => `
-                    <div class="file-item">
-                        <div class="file-info">
-                            <div class="file-name">📄 ${escapeHtml(file.name)}</div>
-                            <div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')} | Lớp ${file.grade || '10'} | Môn: ${file.subject || 'toan'}</div>
-                        </div>
-                        <div class="file-actions">
-                            <button class="file-btn download" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button>
-                            <button class="file-btn delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            const theoryContainer = document.getElementById('theoryList');
-            if (theories.length === 0) {
-                theoryContainer.innerHTML = `<div class="empty-library"><i class="fas fa-file-pdf"></i><p>Chưa có tài liệu nào</p><p style="font-size:0.75rem;">Hãy tải lên để chia sẻ với học viên</p></div>`;
-            } else {
-                theoryContainer.innerHTML = theories.map(file => `
-                    <div class="file-item">
-                        <div class="file-info">
-                            <div class="file-name">📄 ${escapeHtml(file.name)}</div>
-                            <div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')} | Lớp ${file.grade || '10'} | Môn: ${file.subject || 'toan'}</div>
-                        </div>
-                        <div class="file-actions">
-                            <button class="file-btn download" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button>
-                            <button class="file-btn delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        } catch (error) {
-            console.error('Lỗi tải thư viện:', error);
-        }
-    }
-    
-    window.downloadFileById = (fileId) => {
-        const file = libraryFiles.find(f => f.id === fileId);
-        if (file) downloadFile(file);
-    };
-    
-    window.deleteFileById = (fileId) => {
-        deleteFileId = fileId;
-        document.getElementById('confirmDeleteModal').style.display = 'flex';
-    };
-    
-    async function confirmDeleteFile() {
-        if (deleteFileId) {
-            try {
-                await deleteLibraryFileAPI(deleteFileId);
-                await loadLibraryFiles();
-                showToast("🗑️ Đã xóa file thành công!");
-            } catch (error) {
-                showToast(error.message, false);
-            }
-            deleteFileId = null;
-        }
-    }
-    
-    function setupFileUpload() {
-        const examUploadArea = document.getElementById('examUploadArea');
-        const examFileInput = document.getElementById('examFileInput');
-        if (examUploadArea) {
-            examUploadArea.onclick = () => examFileInput.click();
-            examFileInput.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    if (file.size > MAX_FILE_SIZE) {
-                        showToast(`⚠️ File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false);
-                        return;
-                    }
-                    const grade = document.getElementById('uploadExamGrade')?.value || '10';
-                    const subject = document.getElementById('uploadExamSubject')?.value || 'toan';
-                    try {
-                        await uploadLibraryFile(file, 'exam', grade, subject);
-                        await loadLibraryFiles();
-                        showToast("✅ Đã thêm đề thi: " + file.name);
-                    } catch (error) {
-                        showToast(error.message, false);
-                    }
-                    examFileInput.value = '';
-                }
-            };
-        }
-        
-        const theoryUploadArea = document.getElementById('theoryUploadArea');
-        const theoryFileInput = document.getElementById('theoryFileInput');
-        if (theoryUploadArea) {
-            theoryUploadArea.onclick = () => theoryFileInput.click();
-            theoryFileInput.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    if (file.size > MAX_FILE_SIZE) {
-                        showToast(`⚠️ File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false);
-                        return;
-                    }
-                    const grade = document.getElementById('uploadTheoryGrade')?.value || '10';
-                    const subject = document.getElementById('uploadTheorySubject')?.value || 'toan';
-                    try {
-                        await uploadLibraryFile(file, 'theory', grade, subject);
-                        await loadLibraryFiles();
-                        showToast("✅ Đã thêm tài liệu: " + file.name);
-                    } catch (error) {
-                        showToast(error.message, false);
-                    }
-                    theoryFileInput.value = '';
-                }
-            };
-        }
-    }
+    // ========== QUẢN LÝ NGƯỜI DÙNG ==========
+    async function getAdminUsers() { return await apiRequest('/admin/users'); }
+    async function deleteUserAPI(userId) { return await apiRequest(`/admin/users/${userId}`, { method: 'DELETE' }); }
+    async function updateUserAPI(userId, data) { return await apiRequest(`/admin/users/${userId}`, { method: 'PUT', body: JSON.stringify(data) }); }
     
     async function renderUserTable(searchTerm = "") {
         try {
-            const usersList = await getAdminUsers();
+            let usersList = await getAdminUsers();
             users = usersList;
+            
+            // Sắp xếp
+            users.sort((a, b) => {
+                let aVal, bVal;
+                if (currentSort.field === 'id') { aVal = a.id; bVal = b.id; }
+                else if (currentSort.field === 'username') { aVal = a.username; bVal = b.username; }
+                else if (currentSort.field === 'displayName') { aVal = a.displayName || ''; bVal = b.displayName || ''; }
+                else if (currentSort.field === 'stats.score') { aVal = a.stats?.score || 0; bVal = b.stats?.score || 0; }
+                else { aVal = a[currentSort.field]; bVal = b[currentSort.field]; }
+                if (currentSort.order === 'asc') return aVal > bVal ? 1 : -1;
+                return aVal < bVal ? 1 : -1;
+            });
+            
             document.getElementById('totalUsers').innerText = users.length;
             document.getElementById('activeUsers').innerText = users.length;
             
@@ -675,7 +508,7 @@
             
             const tbody = document.getElementById('userTableBody');
             if (filteredUsers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br>Không có người dùng nào</td></tr>`;
+                tbody.innerHTML = `<table><td colspan="7" class="empty-state">Không có người dùng nào</td></tr>`;
                 return;
             }
             
@@ -683,39 +516,20 @@
             filteredUsers.forEach((user, i) => {
                 const row = tbody.insertRow();
                 row.insertCell(0).innerText = i + 1;
-                row.insertCell(1).innerHTML = user.avatar ? `<img src="${user.avatar}" class="user-avatar-table" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : `<i class="fas fa-user-circle" style="font-size: 40px; color: #1565C0;"></i>`;
+                row.insertCell(1).innerHTML = user.avatar ? `<img src="${user.avatar}" class="user-avatar-table">` : `<i class="fas fa-user-circle" style="font-size: 40px; color: #1565C0;"></i>`;
                 row.insertCell(2).innerHTML = `<strong>${escapeHtml(user.username)}</strong> ${user.role === 'admin' ? '<span class="badge badge-admin">Admin</span>' : ''}`;
                 row.insertCell(3).innerText = user.displayName || user.username;
                 row.insertCell(4).innerText = user.gender || 'Chưa cập nhật';
-                row.insertCell(5).innerHTML = `
+                row.insertCell(5).innerText = user.stats?.score || 0;
+                row.insertCell(6).innerHTML = `
                     <div class="action-buttons">
-                        <button class="btn-icon view" onclick="viewUserDetail('${user.id}')" title="Xem chi tiết"><i class="fas fa-eye"></i></button>
                         <button class="btn-icon edit" onclick="editUser('${user.id}')" title="Chỉnh sửa"><i class="fas fa-edit"></i></button>
                         ${user.role !== 'admin' ? `<button class="btn-icon delete" onclick="deleteUserById('${user.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button>` : ''}
                     </div>
                 `;
             });
-        } catch (error) {
-            console.error('Lỗi tải user:', error);
-        }
+        } catch (error) { console.error('Lỗi tải user:', error); }
     }
-    
-    window.viewUserDetail = async (userId) => {
-        const user = users.find(u => u.id == userId);
-        if (!user) return;
-        const content = document.getElementById('userDetailContent');
-        content.innerHTML = `
-            <div style="text-align: center; margin-bottom: 20px;">
-                ${user.avatar ? `<img src="${user.avatar}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #1565C0;">` : `<i class="fas fa-user-circle" style="font-size: 80px; color: #1565C0;"></i>`}
-                <h3 style="margin-top: 10px; color: #182b47;">${escapeHtml(user.displayName || user.username)}</h3>
-                <p style="color: #6f7c8f;">@${escapeHtml(user.username)}</p>
-            </div>
-            <div class="form-group"><label>Giới tính</label><p>${user.gender || 'Chưa cập nhật'}</p></div>
-            <div class="form-group"><label>Thống kê</label><p>📊 Điểm tích lũy: <strong>${user.stats?.score || 0}</strong></p><p>📈 Tiến độ: <strong>${user.stats?.progress || 0}%</strong></p><p>🏆 Xếp hạng: <strong>#${user.stats?.rank || 100}</strong></p></div>
-            <div class="form-group"><label>Ngày tạo</label><p>${user.createdAt ? new Date(user.createdAt).toLocaleString('vi-VN') : 'Chưa rõ'}</p></div>
-        `;
-        document.getElementById('userDetailModal').style.display = 'flex';
-    };
     
     window.editUser = (userId) => {
         const user = users.find(u => u.id == userId);
@@ -730,52 +544,290 @@
     document.getElementById('saveEditBtn').onclick = async () => {
         if (!currentEditUser) return;
         try {
-            await apiRequest(`/users/profile`, {
-                method: 'PUT',
-                body: JSON.stringify({ 
-                    displayName: document.getElementById('editDisplayName').value,
-                    gender: document.getElementById('editGender').value
-                })
+            await updateUserAPI(currentEditUser.id, {
+                displayName: document.getElementById('editDisplayName').value,
+                gender: document.getElementById('editGender').value,
+                password: document.getElementById('editPassword').value || undefined
             });
             document.getElementById('editUserModal').style.display = 'none';
             await renderUserTable(document.getElementById('searchInput')?.value || '');
-            showToast("✅ Đã cập nhật thông tin người dùng");
-        } catch (error) {
-            showToast(error.message, false);
-        }
+            showToast("Đã cập nhật thông tin người dùng");
+        } catch (error) { showToast(error.message, false); }
     };
     
     window.deleteUserById = async (userId) => {
         if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
-            try {
-                await deleteUserAPI(userId);
-                await renderUserTable(document.getElementById('searchInput')?.value || '');
-                showToast("✅ Đã xóa tài khoản");
-            } catch (error) {
-                showToast(error.message, false);
-            }
+            try { await deleteUserAPI(userId); await renderUserTable(document.getElementById('searchInput')?.value || ''); showToast("Đã xóa tài khoản"); } 
+            catch (error) { showToast(error.message, false); }
         }
     };
     
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.onclick = () => {
+            const field = btn.dataset.sort;
+            currentSort.order = (currentSort.field === field && currentSort.order === 'asc') ? 'desc' : 'asc';
+            currentSort.field = field;
+            renderUserTable(document.getElementById('searchInput')?.value || '');
+        };
+    });
+    
+    // ========== QUẢN LÝ ĐỀ THI ==========
+    async function loadExams() {
+        try {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/exams`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                exams = await response.json();
+                renderExamTable();
+                updateExamStats();
+            }
+        } catch (error) { console.error('Lỗi tải đề thi:', error); }
+    }
+    
+    function updateExamStats() {
+        document.getElementById('totalExamsCount').innerText = exams.length;
+        let totalQuestions = 0;
+        exams.forEach(e => totalQuestions += e.questions.length);
+        document.getElementById('totalQuestionsCount').innerText = totalQuestions;
+    }
+    
+    function getSubjectName(subject) {
+        const names = { toan: 'Toán', van: 'Văn', anh: 'Anh', ly: 'Lý', hoa: 'Hóa', sinh: 'Sinh', su: 'Sử', dia: 'Địa' };
+        return names[subject] || subject;
+    }
+    
+    function renderExamTable() {
+        const tbody = document.getElementById('examTableBody');
+        if (!tbody) return;
+        const searchTerm = document.getElementById('examSearchInput')?.value.toLowerCase() || '';
+        let filtered = exams.filter(e => e.title.toLowerCase().includes(searchTerm));
+        if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Chưa có đề thi nào</td></tr>`; return; }
+        tbody.innerHTML = '';
+        filtered.forEach((exam, idx) => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = idx + 1;
+            row.insertCell(1).innerHTML = `<strong>${escapeHtml(exam.title)}</strong>`;
+            row.insertCell(2).innerText = exam.grade === 'thpt' ? 'Ôn thi THPT' : `Lớp ${exam.grade}`;
+            row.insertCell(3).innerText = getSubjectName(exam.subject);
+            row.insertCell(4).innerText = `${exam.questions.length} câu`;
+            row.insertCell(5).innerText = new Date(exam.createdAt).toLocaleDateString('vi-VN');
+            row.insertCell(6).innerHTML = `<div class="action-buttons"><button class="btn-icon edit" onclick="editExam('${exam.id}')" title="Sửa"><i class="fas fa-edit"></i></button><button class="btn-icon delete" onclick="deleteExam('${exam.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button></div>`;
+        });
+    }
+    
+    function renderQuestionsList() {
+        const container = document.getElementById('questionsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        currentQuestions.forEach((q, idx) => {
+            const div = document.createElement('div');
+            div.className = 'question-card';
+            div.innerHTML = `
+                <div class="question-header"><strong>Câu ${idx + 1}</strong><button class="btn-remove-question" onclick="removeQuestion(${idx})"><i class="fas fa-trash"></i> Xóa</button></div>
+                <textarea class="form-control question-text" data-idx="${idx}" placeholder="Nhập nội dung câu hỏi" rows="2">${escapeHtml(q.text)}</textarea>
+                <div class="question-options">
+                    <div class="option-input"><span>A.</span><input type="text" class="option-a" data-idx="${idx}" value="${escapeHtml(q.options[0])}" placeholder="Đáp án A"></div>
+                    <div class="option-input"><span>B.</span><input type="text" class="option-b" data-idx="${idx}" value="${escapeHtml(q.options[1])}" placeholder="Đáp án B"></div>
+                    <div class="option-input"><span>C.</span><input type="text" class="option-c" data-idx="${idx}" value="${escapeHtml(q.options[2])}" placeholder="Đáp án C"></div>
+                    <div class="option-input"><span>D.</span><input type="text" class="option-d" data-idx="${idx}" value="${escapeHtml(q.options[3])}" placeholder="Đáp án D"></div>
+                </div>
+                <div class="question-level">
+                    <span>Mức độ:</span>
+                    <select class="level-select" data-idx="${idx}">
+                        <option value="Cực dễ" ${q.level === 'Cực dễ' ? 'selected' : ''}>Cực dễ</option>
+                        <option value="Trung bình" ${q.level === 'Trung bình' ? 'selected' : ''}>Trung bình</option>
+                        <option value="Khá" ${q.level === 'Khá' ? 'selected' : ''}>Khá</option>
+                        <option value="Khó" ${q.level === 'Khó' ? 'selected' : ''}>Khó</option>
+                        <option value="Cực khó" ${q.level === 'Cực khó' ? 'selected' : ''}>Cực khó</option>
+                        <option value="Vận dụng cao" ${q.level === 'Vận dụng cao' ? 'selected' : ''}>Vận dụng cao</option>
+                    </select>
+                    <span>Đáp án đúng:</span>
+                    <select class="correct-select" data-idx="${idx}">
+                        <option value="0" ${q.correct === 0 ? 'selected' : ''}>A</option>
+                        <option value="1" ${q.correct === 1 ? 'selected' : ''}>B</option>
+                        <option value="2" ${q.correct === 2 ? 'selected' : ''}>C</option>
+                        <option value="3" ${q.correct === 3 ? 'selected' : ''}>D</option>
+                    </select>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+        
+        document.querySelectorAll('.question-text').forEach(el => {
+            el.addEventListener('change', (e) => { const idx = parseInt(e.target.dataset.idx); if (!isNaN(idx)) currentQuestions[idx].text = e.target.value; });
+        });
+        document.querySelectorAll('.option-a, .option-b, .option-c, .option-d').forEach(el => {
+            el.addEventListener('change', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                if (!isNaN(idx)) {
+                    const map = { 'option-a': 0, 'option-b': 1, 'option-c': 2, 'option-d': 3 };
+                    const optIdx = map[e.target.className];
+                    if (optIdx !== undefined) currentQuestions[idx].options[optIdx] = e.target.value;
+                }
+            });
+        });
+        document.querySelectorAll('.level-select').forEach(el => {
+            el.addEventListener('change', (e) => { const idx = parseInt(e.target.dataset.idx); if (!isNaN(idx)) currentQuestions[idx].level = e.target.value; });
+        });
+        document.querySelectorAll('.correct-select').forEach(el => {
+            el.addEventListener('change', (e) => { const idx = parseInt(e.target.dataset.idx); if (!isNaN(idx)) currentQuestions[idx].correct = parseInt(e.target.value); });
+        });
+    }
+    
+    window.removeQuestion = (idx) => { currentQuestions.splice(idx, 1); renderQuestionsList(); };
+    
+    document.getElementById('addQuestionBtn')?.addEventListener('click', () => {
+        currentQuestions.push({ text: 'Câu hỏi mới', options: ['Đáp án A', 'Đáp án B', 'Đáp án C', 'Đáp án D'], correct: 0, level: 'Trung bình' });
+        renderQuestionsList();
+    });
+    
+    document.getElementById('saveExamBtn')?.addEventListener('click', async () => {
+        const title = document.getElementById('examTitle').value.trim();
+        const grade = document.getElementById('examGrade').value;
+        const subject = document.getElementById('examSubject').value;
+        if (!title) { showToast('Vui lòng nhập tên đề thi!', false); return; }
+        if (currentQuestions.length === 0) { showToast('Vui lòng thêm ít nhất 1 câu hỏi!', false); return; }
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch(`${API_URL}/exams`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ title, grade, subject, questions: currentQuestions })
+        });
+        if (response.ok) { showToast('Đã thêm đề thi thành công!'); document.getElementById('examTitle').value = ''; currentQuestions = []; renderQuestionsList(); await loadExams(); } 
+        else { const error = await response.json(); showToast(error.error || 'Có lỗi xảy ra', false); }
+    });
+    
+    window.editExam = async (examId) => {
+        const exam = exams.find(e => e.id === examId);
+        if (!exam) return;
+        document.getElementById('examTitle').value = exam.title;
+        document.getElementById('examGrade').value = exam.grade;
+        document.getElementById('examSubject').value = exam.subject;
+        currentQuestions = exam.questions.map(q => ({ ...q }));
+        renderQuestionsList();
+        const saveBtn = document.getElementById('saveExamBtn');
+        const originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<i class="fas fa-edit"></i> Cập nhật đề thi';
+        const originalClick = saveBtn.onclick;
+        saveBtn.onclick = async () => {
+            const token = localStorage.getItem('admin_token');
+            const response = await fetch(`${API_URL}/exams/${examId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ title: document.getElementById('examTitle').value, grade: document.getElementById('examGrade').value, subject: document.getElementById('examSubject').value, questions: currentQuestions })
+            });
+            if (response.ok) { showToast('Đã cập nhật đề thi!'); document.getElementById('examTitle').value = ''; currentQuestions = []; renderQuestionsList(); saveBtn.innerHTML = originalText; saveBtn.onclick = originalClick; await loadExams(); } 
+            else { const error = await response.json(); showToast(error.error || 'Có lỗi xảy ra', false); }
+        };
+    };
+    
+    window.deleteExam = async (examId) => {
+        if (!confirm('Bạn có chắc chắn muốn xóa đề thi này?')) return;
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch(`${API_URL}/exams/${examId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+        if (response.ok) { showToast('Đã xóa đề thi!'); await loadExams(); } 
+        else { showToast('Có lỗi xảy ra', false); }
+    };
+    
+    document.getElementById('examSearchInput')?.addEventListener('input', () => renderExamTable());
+    
+    // ========== QUẢN LÝ THƯ VIỆN ==========
+    async function getLibraryFilesAPI() {
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch(`${API_URL}/library`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function uploadLibraryFile(file, type, grade, subject) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', type);
+        formData.append('grade', grade);
+        formData.append('subject', subject);
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch(`${API_URL}/library`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function deleteLibraryFileAPI(fileId) { return await apiRequest(`/library/${fileId}`, { method: 'DELETE' }); }
+    
+    function downloadFile(file) { if (file && file.filePath) { window.open(file.filePath, '_blank'); showToast("Đang tải file: " + file.name); } }
+    
+    async function loadLibraryFiles() {
+        try {
+            libraryFiles = await getLibraryFilesAPI();
+            const exams = libraryFiles.filter(f => f.type === 'exam');
+            const theories = libraryFiles.filter(f => f.type === 'theory');
+            document.getElementById('totalExams').innerText = exams.length;
+            document.getElementById('totalTheories').innerText = theories.length;
+            const examContainer = document.getElementById('examList');
+            examContainer.innerHTML = exams.length === 0 ? `<div class="empty-library"><i class="fas fa-file-alt"></i><p>Chưa có đề thi nào</p></div>` : exams.map(file => `<div class="file-item"><div class="file-info"><div class="file-name">📄 ${escapeHtml(file.name)}</div><div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')} | Lớp ${file.grade || '10'} | Môn: ${file.subject || 'toan'}</div></div><div class="file-actions"><button class="btn-icon" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button><button class="btn-icon delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button></div></div>`).join('');
+            const theoryContainer = document.getElementById('theoryList');
+            theoryContainer.innerHTML = theories.length === 0 ? `<div class="empty-library"><i class="fas fa-file-pdf"></i><p>Chưa có tài liệu nào</p></div>` : theories.map(file => `<div class="file-item"><div class="file-info"><div class="file-name">📄 ${escapeHtml(file.name)}</div><div class="file-meta">Đăng bởi: ${escapeHtml(file.uploadedBy || 'admin')} | ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')} | Lớp ${file.grade || '10'} | Môn: ${file.subject || 'toan'}</div></div><div class="file-actions"><button class="btn-icon" onclick="downloadFileById('${file.id}')" title="Tải xuống"><i class="fas fa-download"></i></button><button class="btn-icon delete" onclick="deleteFileById('${file.id}')" title="Xóa"><i class="fas fa-trash-alt"></i></button></div></div>`).join('');
+        } catch (error) { console.error('Lỗi tải thư viện:', error); }
+    }
+    
+    window.downloadFileById = (fileId) => { const file = libraryFiles.find(f => f.id === fileId); if (file) downloadFile(file); };
+    window.deleteFileById = (fileId) => { deleteFileId = fileId; document.getElementById('confirmDeleteModal').style.display = 'flex'; };
+    
+    async function confirmDeleteFile() {
+        if (deleteFileId) { try { await deleteLibraryFileAPI(deleteFileId); await loadLibraryFiles(); showToast("Đã xóa file thành công!"); } catch (error) { showToast(error.message, false); } deleteFileId = null; }
+    }
+    
+    function setupFileUpload() {
+        const examUploadArea = document.getElementById('examUploadArea');
+        const examFileInput = document.getElementById('examFileInput');
+        if (examUploadArea) {
+            examUploadArea.onclick = () => examFileInput.click();
+            examFileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > MAX_FILE_SIZE) { showToast(`File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false); return; }
+                    const grade = document.getElementById('uploadExamGrade')?.value || '10';
+                    const subject = document.getElementById('uploadExamSubject')?.value || 'toan';
+                    try { await uploadLibraryFile(file, 'exam', grade, subject); await loadLibraryFiles(); showToast("Đã thêm đề thi: " + file.name); } catch (error) { showToast(error.message, false); }
+                    examFileInput.value = '';
+                }
+            };
+        }
+        const theoryUploadArea = document.getElementById('theoryUploadArea');
+        const theoryFileInput = document.getElementById('theoryFileInput');
+        if (theoryUploadArea) {
+            theoryUploadArea.onclick = () => theoryFileInput.click();
+            theoryFileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > MAX_FILE_SIZE) { showToast(`File quá lớn! Tối đa ${MAX_FILE_SIZE / (1024*1024)}MB`, false); return; }
+                    const grade = document.getElementById('uploadTheoryGrade')?.value || '10';
+                    const subject = document.getElementById('uploadTheorySubject')?.value || 'toan';
+                    try { await uploadLibraryFile(file, 'theory', grade, subject); await loadLibraryFiles(); showToast("Đã thêm tài liệu: " + file.name); } catch (error) { showToast(error.message, false); }
+                    theoryFileInput.value = '';
+                }
+            };
+        }
+    }
+    
+    // ========== THỐNG KÊ ==========
     async function renderStatsTable() {
         try {
             const usersList = await getAdminUsers();
             const tbody = document.getElementById('statsTableBody');
             document.getElementById('statTotalUsers').innerText = usersList.length;
-            
             let totalScore = 0;
             usersList.forEach(u => { totalScore += u.stats?.score || 0; });
             document.getElementById('statTotalScore').innerText = totalScore;
             document.getElementById('statTotalEvents').innerText = "0";
             document.getElementById('statTotalNews').innerText = "0";
-            
-            if (usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="empty-state"><i class="fas fa-chart-line"></i><br>Chưa có dữ liệu thống kê</td></tr>`;
-                return;
-            }
-            
+            if (usersList.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Chưa có dữ liệu thống kê</td></tr>`; return; }
             tbody.innerHTML = '';
-            usersList.forEach((user, i) => {
+            const sortedUsers = [...usersList].sort((a, b) => (b.stats?.score || 0) - (a.stats?.score || 0));
+            sortedUsers.forEach((user, i) => {
                 const row = tbody.insertRow();
                 row.insertCell(0).innerText = i + 1;
                 row.insertCell(1).innerHTML = `<strong>${escapeHtml(user.username)}</strong>`;
@@ -785,11 +837,10 @@
                 row.insertCell(5).innerText = user.stats?.progress || 0;
                 row.insertCell(6).innerText = '#' + (user.stats?.rank || 100);
             });
-        } catch (error) {
-            console.error('Lỗi tải stats:', error);
-        }
+        } catch (error) { console.error('Lỗi tải stats:', error); }
     }
     
+    // ========== CHUYỂN TAB ==========
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
         document.getElementById(`${tabId}Tab`).style.display = 'block';
@@ -798,50 +849,25 @@
         if (tabId === 'library') loadLibraryFiles();
         if (tabId === 'users') renderUserTable();
         if (tabId === 'stats') renderStatsTable();
+        if (tabId === 'exams') loadExams();
     }
     
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.onclick = () => { if (isAdminLoggedIn) switchTab(item.dataset.tab); };
-    });
-    
-    document.getElementById('searchInput')?.addEventListener('input', (e) => {
-        if (isAdminLoggedIn) renderUserTable(e.target.value);
-    });
-    
+    document.querySelectorAll('.nav-item').forEach(item => { item.onclick = () => { if (isAdminLoggedIn) switchTab(item.dataset.tab); }; });
+    document.getElementById('searchInput')?.addEventListener('input', (e) => { if (isAdminLoggedIn) renderUserTable(e.target.value); });
     document.getElementById('closeEditModalBtn').onclick = () => document.getElementById('editUserModal').style.display = 'none';
-    document.getElementById('closeDetailModalBtn').onclick = () => document.getElementById('userDetailModal').style.display = 'none';
-    document.getElementById('closeConfirmModalBtn').onclick = () => {
-        document.getElementById('confirmDeleteModal').style.display = 'none';
-        deleteFileId = null;
-    };
-    document.getElementById('cancelDeleteBtn').onclick = () => {
-        document.getElementById('confirmDeleteModal').style.display = 'none';
-        deleteFileId = null;
-    };
-    document.getElementById('confirmDeleteBtn').onclick = async () => {
-        await confirmDeleteFile();
-        document.getElementById('confirmDeleteModal').style.display = 'none';
-    };
+    document.getElementById('closeConfirmModalBtn').onclick = () => { document.getElementById('confirmDeleteModal').style.display = 'none'; deleteFileId = null; };
+    document.getElementById('cancelDeleteBtn').onclick = () => { document.getElementById('confirmDeleteModal').style.display = 'none'; deleteFileId = null; };
+    document.getElementById('confirmDeleteBtn').onclick = async () => { await confirmDeleteFile(); document.getElementById('confirmDeleteModal').style.display = 'none'; };
     
-    window.onclick = (e) => {
-        if (e.target === document.getElementById('editUserModal')) document.getElementById('editUserModal').style.display = 'none';
-        if (e.target === document.getElementById('userDetailModal')) document.getElementById('userDetailModal').style.display = 'none';
-        if (e.target === document.getElementById('confirmDeleteModal')) document.getElementById('confirmDeleteModal').style.display = 'none';
-    };
+    window.onclick = (e) => { if (e.target === document.getElementById('editUserModal')) document.getElementById('editUserModal').style.display = 'none'; if (e.target === document.getElementById('confirmDeleteModal')) document.getElementById('confirmDeleteModal').style.display = 'none'; };
     
-    document.getElementById('clearAllDataBtn').onclick = () => {
-        if (confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa TẤT CẢ dữ liệu. Bạn có chắc chắn?")) {
-            showToast("Tính năng đang phát triển", false);
-        }
-    };
+    document.getElementById('clearAllDataBtn').onclick = () => { if (confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa TẤT CẢ dữ liệu. Bạn có chắc chắn?")) { showToast("Tính năng đang phát triển", false); } };
     
     document.getElementById('exportDataBtn').onclick = async () => {
         try {
             const usersList = await getAdminUsers();
             let csvContent = "STT,Tên tài khoản,Tên hiển thị,Giới tính,Điểm tích lũy,Ngày tạo\n";
-            usersList.forEach((user, index) => {
-                csvContent += `${index + 1},"${user.username}","${user.displayName || user.username}","${user.gender || 'Chưa cập nhật'}","${user.stats?.score || 0}","${user.createdAt || ''}"\n`;
-            });
+            usersList.forEach((user, index) => { csvContent += `${index + 1},"${user.username}","${user.displayName || user.username}","${user.gender || 'Chưa cập nhật'}","${user.stats?.score || 0}","${user.createdAt || ''}"\n`; });
             const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
@@ -851,54 +877,35 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
-            showToast("✅ Đã xuất dữ liệu thành công!");
-        } catch (error) {
-            showToast(error.message, false);
-        }
+            showToast("Đã xuất dữ liệu thành công!");
+        } catch (error) { showToast(error.message, false); }
     };
     
+    // ========== ĐĂNG NHẬP ADMIN ==========
     async function handleAdminLogin() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
         const errorDiv = document.getElementById('loginError');
-        
-        if (!username || !password) {
-            errorDiv.innerText = 'Vui lòng nhập đầy đủ thông tin!';
-            errorDiv.classList.add('show');
-            return;
-        }
-        
+        if (!username || !password) { errorDiv.innerText = 'Vui lòng nhập đầy đủ thông tin!'; errorDiv.classList.add('show'); return; }
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+            const response = await fetch(`${API_URL}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
             const result = await response.json();
-            
             if (!response.ok) throw new Error(result.error || 'Đăng nhập thất bại');
-            
             if (result.success && result.user.role === 'admin') {
                 localStorage.setItem('admin_token', result.token);
                 localStorage.setItem('admin_user', JSON.stringify(result.user));
                 isAdminLoggedIn = true;
                 document.getElementById('loginModal').style.display = 'none';
-                showToast("✅ Đăng nhập thành công! Chào mừng quản trị viên.");
-                
+                showToast("Đăng nhập thành công! Chào mừng quản trị viên.");
                 await loadAdminProfile();
                 await loadLibraryFiles();
                 await renderUserTable();
                 await renderStatsTable();
+                await loadExams();
                 setupFileUpload();
                 setupAdminImageUpload();
-            } else {
-                errorDiv.innerText = 'Bạn không có quyền truy cập Admin!';
-                errorDiv.classList.add('show');
-            }
-        } catch (error) {
-            errorDiv.innerText = error.message;
-            errorDiv.classList.add('show');
-        }
+            } else { errorDiv.innerText = 'Bạn không có quyền truy cập Admin!'; errorDiv.classList.add('show'); }
+        } catch (error) { errorDiv.innerText = error.message; errorDiv.classList.add('show'); }
     }
     
     document.getElementById('loginSubmitBtn').onclick = handleAdminLogin;
@@ -906,11 +913,33 @@
     document.getElementById('loginUsername').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAdminLogin(); });
     
     document.getElementById('logoArea').onclick = () => { window.location.href = 'trangchu.html'; };
-    document.getElementById('logoutBtn').onclick = () => {
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_user');
-        window.location.href = 'dndk.html';
-    };
+    document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem('admin_token'); localStorage.removeItem('admin_user'); window.location.href = 'dndk.html'; };
+    
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+    
+    function toggleTheme() {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            document.body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    }
+    
+    initTheme();
+    document.getElementById('themeToggleBtn').onclick = toggleTheme;
     
     if (localStorage.getItem('admin_token')) {
         isAdminLoggedIn = true;
@@ -919,6 +948,7 @@
         loadLibraryFiles();
         renderUserTable();
         renderStatsTable();
+        loadExams();
         setupFileUpload();
         setupAdminImageUpload();
     }

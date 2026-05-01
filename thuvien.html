@@ -10,7 +10,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Light Theme */
         body {
             background-color: #F2F2F2;
             font-family: 'Inter', sans-serif;
@@ -20,13 +19,11 @@
             transition: background-color 0.2s ease, color 0.2s ease;
         }
         
-        /* Dark Theme */
         body.dark {
             background: radial-gradient(ellipse at 30% 40%, #0B0A2A, #02010A);
             color: #e0e0e0;
         }
         
-        /* Universe cho dark mode */
         .universe {
             position: fixed;
             top: 0;
@@ -59,7 +56,6 @@
         .shooting-star { position: absolute; width: 2.5px; height: 2.5px; background: linear-gradient(135deg, #ffffff, #ffdd99, #ffaa66); border-radius: 50%; box-shadow: 0 0 10px #ffaa66; pointer-events: none; will-change: transform; z-index: 10; }
         .shooting-star::before { content: ''; position: absolute; top: 0; left: -70px; width: 70px; height: 1.5px; background: linear-gradient(90deg, rgba(255,220,100,0.9), rgba(255,180,80,0.4), transparent); border-radius: 2px; }
         
-        /* Header */
         .main-header { background: #182b47; position: sticky; top: 0; z-index: 100; padding: 14px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         body.dark .main-header { background: rgba(5, 5, 20, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(139, 92, 246, 0.4); }
         .header-inner { max-width: 1600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
@@ -75,15 +71,11 @@
         body.dark .action-btn:hover { background: #8B5CF6; box-shadow: 0 0 15px #A78BFA; }
         .badge-notify { position: absolute; top: -5px; right: -5px; background: #e64949; color: white; border-radius: 50%; min-width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 5px; }
         
-        /* KHÔNG CÓ MENU NGANG PHÍA DƯỚI HEADER */
-        
-        /* 3 cột */
         .three-columns { max-width: 1600px; margin: 32px auto; padding: 0 32px; display: flex; gap: 32px; }
         .left-col { flex: 1; max-width: 320px; position: sticky; top: 90px; height: fit-content; }
         .center-col { flex: 3; min-width: 0; }
         .right-col { flex: 1; max-width: 360px; position: sticky; top: 90px; height: fit-content; }
         
-        /* Profile Summary */
         .profile-summary { padding: 24px 20px; text-align: center; cursor: pointer; border-radius: 28px; transition: background 0.2s; margin-bottom: 12px; }
         .profile-summary:hover { background: #FFFFFF; }
         body.dark .profile-summary { background: rgba(15, 20, 45, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); }
@@ -93,7 +85,6 @@
         .left-name { font-size: 1.4rem; font-weight: 700; color: #3B5998; cursor: pointer; }
         body.dark .left-name { background: linear-gradient(135deg, #FFFFFF, #C4B5FD); -webkit-background-clip: text; background-clip: text; color: transparent; }
         
-        /* Menu Item */
         .menu-item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; font-weight: 500; font-size: 1rem; color: #414141; cursor: pointer; border-radius: 16px; margin: 2px 8px; transition: all 0.2s; position: relative; overflow: hidden; }
         .menu-item i { width: 28px; color: #1565C0; font-size: 1.2rem; }
         .menu-item.active { background: #FFFFFF; color: #1565C0; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -108,17 +99,23 @@
         .apps-title { font-size: 0.75rem; text-transform: uppercase; color: #8a99b0; padding: 16px 20px 8px 20px; letter-spacing: 0.8px; font-weight: 600; }
         body.dark .apps-title { color: #A78BFA; }
         
-        /* Page Title */
         .page-title { font-size: 1.6rem; font-weight: 700; color: #1565C0; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
         body.dark .page-title { color: #C4B5FD; }
         
-        /* Library Navigation Buttons - Dark mode support */
-        .grade-nav, .subject-nav { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-        .grade-btn, .subject-btn { padding: 10px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
-        .subject-btn { padding: 8px 18px; font-size: 0.9rem; font-weight: 500; }
-        .grade-btn:hover, .subject-btn:hover { transform: translateY(-2px); }
+        .grade-nav { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .grade-btn { padding: 10px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; background: #e8ecef; color: #414141; }
+        .grade-btn.active { background: #1565C0; color: white; }
+        .grade-btn:hover { transform: translateY(-2px); }
+        body.dark .grade-btn { background: rgba(15,20,45,0.6); color: #E0E7FF; border: 1px solid rgba(139,92,246,0.3); }
+        body.dark .grade-btn.active { background: #8B5CF6; color: white; border: none; }
         
-        /* Library Grid */
+        .subject-nav { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+        .subject-btn { padding: 8px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; background: #e8ecef; color: #6f7c8f; }
+        .subject-btn.active { background: #1565C0; color: white; }
+        .subject-btn:hover { transform: translateY(-2px); }
+        body.dark .subject-btn { background: rgba(15,20,45,0.6); color: #E0E7FF; border: 1px solid rgba(139,92,246,0.3); }
+        body.dark .subject-btn.active { background: #8B5CF6; color: white; border: none; }
+        
         .library-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 20px; }
         .library-card { background: white; border-radius: 20px; border: 1px solid #e8ecef; overflow: hidden; transition: all 0.4s; cursor: pointer; position: relative; }
         .library-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
@@ -136,12 +133,9 @@
         .download-btn { background: #1565C0; color: white; border: none; padding: 8px 0; width: 100%; border-radius: 30px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; overflow: hidden; }
         .download-btn:hover { background: #0f4d96; transform: scale(1.02); }
         body.dark .download-btn { background: #8B5CF6; }
-        body.dark .download-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
-        body.dark .download-btn:hover::before { left: 100%; }
         .download-btn.disabled { background: #ccc; cursor: not-allowed; }
         .download-btn.disabled:hover { transform: none; background: #ccc; }
         
-        /* Right Block */
         .right-block { margin-bottom: 28px; background: white; border-radius: 24px; padding: 20px; border: 1px solid #D0D0D0; }
         body.dark .right-block { background: rgba(15, 20, 45, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.3); }
         .card-header-custom { font-weight: 700; color: #1565C0; padding: 0 0 12px 0; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
@@ -149,8 +143,6 @@
         .calendar-trigger, .add-news-btn { background: #1565C0; color: white; border: none; padding: 8px 18px; border-radius: 40px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 500; position: relative; overflow: hidden; }
         .calendar-trigger:hover, .add-news-btn:hover { background: #0f4d96; transform: scale(1.02); }
         body.dark .calendar-trigger, body.dark .add-news-btn { background: #8B5CF6; }
-        body.dark .calendar-trigger::before, body.dark .add-news-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.4s ease; pointer-events: none; will-change: left; }
-        body.dark .calendar-trigger:hover::before, body.dark .add-news-btn:hover::before { left: 100%; }
         
         .event-list, .news-content { display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto; }
         .event-item-custom, .news-item-custom { background: white; padding: 14px 18px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border: 1px solid #e8ecef; }
@@ -167,7 +159,6 @@
         body.dark .delete-event-btn, body.dark .delete-news-btn { color: #FF6B6B; }
         body.dark .delete-event-btn:hover, body.dark .delete-news-btn:hover { background: rgba(255,107,107,0.2); }
         
-        /* Footer */
         .footer-note { background: #182b47; color: #a0b3d0; text-align: center; padding: 32px; font-size: 0.85rem; margin-top: auto; }
         body.dark .footer-note { background: rgba(2, 1, 10, 0.85); border-top: 1px solid #8B5CF6; }
         .footer-links { max-width: 1600px; margin: 0 auto 20px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
@@ -176,8 +167,7 @@
         body.dark .footer-links a { color: #CBD5E1; }
         body.dark .footer-links a:hover { color: #C4B5FD; }
         
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; border-radius: 36px; width: 90%; max-width: 450px; padding: 32px; }
         body.dark .modal-content { background: #0F172A; border: 1px solid #8B5CF6; }
         .modal-header { font-size: 1.4rem; font-weight: 700; color: #1565C0; margin-bottom: 20px; display: flex; justify-content: space-between; }
@@ -199,7 +189,6 @@
         .confirm-cancel-btn:hover { background: #D0D0D0; }
         body.dark .confirm-cancel-btn { background: #334155; color: white; }
         
-        /* Toast Message - KHÔNG ICON */
         .toast-message { 
             position: fixed; 
             bottom: 30px; 
@@ -260,7 +249,8 @@
             .action-btn { width: 40px; height: 40px; font-size: 1rem; }
             .footer-links { gap: 20px; }
             .footer-links a { font-size: 0.7rem; }
-            .grade-btn, .subject-btn { font-size: 0.8rem; padding: 6px 14px; }
+            .grade-btn { padding: 6px 16px; font-size: 0.8rem; }
+            .subject-btn { padding: 5px 12px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -288,8 +278,6 @@
         </div>
     </div>
 
-    <!-- ĐÃ BỎ MENU NGANG PHÍA DƯỚI HEADER -->
-
     <div class="three-columns">
         <div class="left-col">
             <div class="profile-summary" id="leftProfile">
@@ -311,21 +299,21 @@
             <div class="page-title"><i class="fas fa-book-open"></i> Thư viện tài nguyên</div>
             
             <div class="grade-nav" id="gradeNav">
-                <button class="grade-btn" data-grade="10" style="background: #1565C0; color: white;">Lớp 10</button>
-                <button class="grade-btn" data-grade="11" style="background: #e8ecef; color: #414141;">Lớp 11</button>
-                <button class="grade-btn" data-grade="12" style="background: #e8ecef; color: #414141;">Lớp 12</button>
+                <button class="grade-btn" data-grade="10">Lớp 10</button>
+                <button class="grade-btn" data-grade="11">Lớp 11</button>
+                <button class="grade-btn" data-grade="12">Lớp 12</button>
             </div>
             
             <div class="subject-nav" id="subjectNav">
-                <button class="subject-btn" data-subject="all" style="background: #1565C0; color: white;">Tất cả</button>
-                <button class="subject-btn" data-subject="toan" style="background: none; color: #6f7c8f;">📐 Toán</button>
-                <button class="subject-btn" data-subject="van" style="background: none; color: #6f7c8f;">📖 Văn</button>
-                <button class="subject-btn" data-subject="anh" style="background: none; color: #6f7c8f;">🇬🇧 Anh</button>
-                <button class="subject-btn" data-subject="ly" style="background: none; color: #6f7c8f;">⚡ Lý</button>
-                <button class="subject-btn" data-subject="hoa" style="background: none; color: #6f7c8f;">🧪 Hóa</button>
-                <button class="subject-btn" data-subject="sinh" style="background: none; color: #6f7c8f;">🔬 Sinh</button>
-                <button class="subject-btn" data-subject="su" style="background: none; color: #6f7c8f;">📜 Sử</button>
-                <button class="subject-btn" data-subject="dia" style="background: none; color: #6f7c8f;">🌏 Địa</button>
+                <button class="subject-btn" data-subject="all">Tất cả</button>
+                <button class="subject-btn" data-subject="toan">📐 Toán</button>
+                <button class="subject-btn" data-subject="van">📖 Văn</button>
+                <button class="subject-btn" data-subject="anh">🇬🇧 Anh</button>
+                <button class="subject-btn" data-subject="ly">⚡ Lý</button>
+                <button class="subject-btn" data-subject="hoa">🧪 Hóa</button>
+                <button class="subject-btn" data-subject="sinh">🔬 Sinh</button>
+                <button class="subject-btn" data-subject="su">📜 Sử</button>
+                <button class="subject-btn" data-subject="dia">🌏 Địa</button>
             </div>
 
             <div id="libraryGrid" class="library-grid"></div>
@@ -363,20 +351,308 @@
 <div id="pageTransition" class="page-transition"><div class="transition-loader"><i class="fas fa-sync-alt fa-spin"></i> Du hành vũ trụ...</div></div>
 
 <script>
-    // ==================== ÁP DỤNG THEME NGAY LẬP TỨC ====================
-    (function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-            document.body.classList.add('dark');
-        }
-    })();
+    // ==================== API CONFIG ====================
+    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
+    const getToken = () => localStorage.getItem('token');
     
-    // Tạo sao nền
+    function showToast(message, isSuccess = true) { 
+        const toast = document.createElement('div'); 
+        toast.className = 'toast-message' + (isSuccess ? '' : ' error'); 
+        toast.textContent = message;
+        document.body.appendChild(toast); 
+        setTimeout(() => toast.remove(), 2500); 
+    }
+    
+    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+    
+    function navigate(url) { 
+        let overlay = document.getElementById('pageTransition'); 
+        overlay.classList.add('active'); 
+        setTimeout(() => { window.location.href = url; }, 150); 
+    }
+    
+    // ==================== API CALLS ====================
+    async function apiRequest(endpoint, options = {}) {
+        const headers = { 'Content-Type': 'application/json', ...options.headers };
+        const token = getToken();
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
+        return data;
+    }
+    
+    async function getProfile() { return await apiRequest('/users/profile'); }
+    async function getEvents() { return await apiRequest('/events'); }
+    async function addEventAPI(title, date) { return await apiRequest('/events', { method: 'POST', body: JSON.stringify({ title, date }) }); }
+    async function deleteEventAPI(eventId) { return await apiRequest(`/events/${eventId}`, { method: 'DELETE' }); }
+    async function addActivityAPI(title, score) { return await apiRequest('/activities', { method: 'POST', body: JSON.stringify({ title, score }) }); }
+    
+    // ==================== THƯ VIỆN API ====================
+    async function getLibraryFiles() { 
+        const token = getToken();
+        const response = await fetch(`${API_URL}/library`, { 
+            headers: { 'Authorization': `Bearer ${token}` } 
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function uploadLibraryFile(file, type, grade, subject) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', type);
+        formData.append('grade', grade);
+        formData.append('subject', subject);
+        const token = getToken();
+        const response = await fetch(`${API_URL}/library`, { 
+            method: 'POST', 
+            headers: { 'Authorization': `Bearer ${token}` }, 
+            body: formData 
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+    }
+    
+    async function deleteLibraryFileAPI(fileId) { 
+        return await apiRequest(`/library/${fileId}`, { method: 'DELETE' }); 
+    }
+    
+    // ==================== GLOBAL VARIABLES ====================
+    let currentAccount = null, currentUserName = null;
+    let events = [], newsItems = [];
+    let allFiles = [], filteredFiles = [];
+    let currentGrade = '10', currentSubject = 'all';
+    let itemToDelete = null, deleteType = null;
+    
+    function formatDisplayFull(dateObj) { 
+        if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ"; 
+        let d = dateObj.getDate().toString().padStart(2,'0'); 
+        let m = (dateObj.getMonth()+1).toString().padStart(2,'0'); 
+        let y = dateObj.getFullYear(); 
+        let h = dateObj.getHours().toString().padStart(2,'0'); 
+        let min = dateObj.getMinutes().toString().padStart(2,'0'); 
+        return `${d}/${m}/${y} - ${h}:${min}`; 
+    }
+    
+    function getFileIcon(fileType) {
+        if (fileType === 'pdf') return '<i class="fas fa-file-pdf"></i>';
+        if (fileType === 'doc' || fileType === 'docx') return '<i class="fas fa-file-word"></i>';
+        if (fileType === 'zip' || fileType === 'rar') return '<i class="fas fa-file-archive"></i>';
+        return '<i class="fas fa-file-alt"></i>';
+    }
+    
+    function filterFiles() {
+        let result = [...allFiles];
+        if (currentGrade !== 'all') result = result.filter(f => f.grade == currentGrade);
+        if (currentSubject !== 'all') result = result.filter(f => f.subject === currentSubject);
+        filteredFiles = result;
+        renderLibraryGrid();
+    }
+    
+    function renderLibraryGrid() {
+        const container = document.getElementById('libraryGrid');
+        if (!container) return;
+        const itemsPerRow = 3;
+        const totalItems = filteredFiles.length;
+        const remainingSlots = (itemsPerRow - (totalItems % itemsPerRow)) % itemsPerRow;
+        let html = '';
+        
+        filteredFiles.forEach(file => {
+            const fileType = file.fileType || (file.name.split('.').pop().toLowerCase());
+            const color1 = file.color || '#1565C0';
+            const color2 = file.color2 || '#42a5f5';
+            html += `<div class="library-card"><div class="card-preview" style="background: linear-gradient(135deg, ${color1}, ${color2});">${getFileIcon(fileType)}<span class="file-type-badge">${(fileType || 'FILE').toUpperCase()}</span></div><div class="card-info"><div class="card-title">📄 ${escapeHtml(file.name)}</div><div class="card-meta"><span><i class="fas fa-user"></i> ${escapeHtml(file.uploadedBy || 'admin')}</span><span><i class="far fa-calendar-alt"></i> ${file.uploadedAt ? new Date(file.uploadedAt).toLocaleDateString('vi-VN') : '---'}</span></div><button class="download-btn" onclick="downloadFile('${file.id}')"><i class="fas fa-download"></i> Tải xuống</button></div></div>`;
+        });
+        
+        for (let i = 0; i < remainingSlots; i++) {
+            html += `<div class="library-card empty-card"><div class="card-preview empty"><i class="fas fa-plus-circle"></i></div><div class="card-info"><div class="card-title" style="color: #aaa;">Sắp có tài liệu mới</div><div class="card-meta"><span>--</span><span>--</span></div><button class="download-btn disabled" disabled><i class="fas fa-download"></i> Chưa có</button></div></div>`;
+        }
+        
+        if (totalItems === 0) {
+            html = '';
+            for (let i = 0; i < 3; i++) {
+                html += `<div class="library-card empty-card"><div class="card-preview empty"><i class="fas fa-folder-open"></i></div><div class="card-info"><div class="card-title" style="color: #aaa;">Chưa có tài liệu</div><div class="card-meta"><span>Lớp ${currentGrade}</span><span>${currentSubject === 'all' ? 'Tất cả môn' : currentSubject}</span></div><button class="download-btn disabled" disabled><i class="fas fa-download"></i> Chưa có</button></div></div>`;
+            }
+        }
+        container.innerHTML = html;
+    }
+    
+    window.downloadFile = (fileId) => {
+        const file = allFiles.find(f => f.id === fileId);
+        if (file && file.filePath) { 
+            window.open(file.filePath, '_blank'); 
+            showToast("Đang tải file: " + file.name); 
+        } else { 
+            showToast("Không tìm thấy file!", false); 
+        }
+    };
+    
+    async function loadLibraryFiles() { 
+        try { 
+            allFiles = await getLibraryFiles(); 
+            filterFiles(); 
+        } catch (error) { 
+            console.error('Lỗi tải thư viện:', error); 
+            allFiles = []; 
+            filterFiles(); 
+        } 
+    }
+    
+    // ==================== SỰ KIỆN & TIN TỨC ====================
+    async function addActivityLocal(title, score) { 
+        try { await addActivityAPI(title, score); } catch (error) { console.error(error); } 
+    }
+    
+    async function addEventLocal(title, dateTimeStr) { 
+        let eventDate = new Date(dateTimeStr); 
+        if (isNaN(eventDate)) { showToast("Ngày giờ không hợp lệ!", false); return; } 
+        try { 
+            const result = await addEventAPI(title, dateTimeStr); 
+            events.push({ id: result.event.id, title, date: eventDate }); 
+            events.sort((a,b) => a.date - b.date); 
+            renderEvents(); 
+            updateNotificationBadge(); 
+            showToast("Đã thêm sự kiện thành công!"); 
+            await addActivityLocal(`Đã thêm sự kiện: ${title}`, 15); 
+        } catch (error) { showToast(error.message, false); } 
+    }
+    
+    async function deleteEventLocal(eventId) { 
+        try { 
+            await deleteEventAPI(eventId); 
+            events = events.filter(ev => ev.id !== eventId); 
+            renderEvents(); 
+            updateNotificationBadge(); 
+            showToast("Đã xóa sự kiện"); 
+        } catch (error) { showToast(error.message, false); } 
+    }
+    
+    function renderEvents() { 
+        const container = document.getElementById('eventListContainer'); 
+        if (!container) return; 
+        if (events.length === 0) { 
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-alt"></i><br>Chưa có sự kiện nào</div>`; 
+            return; 
+        } 
+        container.innerHTML = ''; 
+        events.slice(0, 10).forEach(ev => { 
+            const div = document.createElement('div'); 
+            div.className = 'event-item-custom'; 
+            div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`; 
+            container.appendChild(div); 
+        }); 
+        document.querySelectorAll('.delete-event-btn').forEach(btn => { 
+            btn.addEventListener('click', (e) => { 
+                e.stopPropagation(); 
+                itemToDelete = parseInt(btn.dataset.id); 
+                deleteType = 'event'; 
+                document.getElementById('confirmDeleteModal').style.display = 'flex'; 
+            }); 
+        }); 
+    }
+    
+    function renderNews() { 
+        const container = document.getElementById('newsListContainer'); 
+        if (!container) return; 
+        if (newsItems.length === 0) { 
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-newspaper"></i><br>Chưa có tin tức</div>`; 
+            return; 
+        } 
+        container.innerHTML = ''; 
+        newsItems.slice(0, 10).forEach(item => { 
+            const div = document.createElement('div'); 
+            div.className = 'news-item-custom'; 
+            div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`; 
+            container.appendChild(div); 
+        }); 
+        document.querySelectorAll('.delete-news-btn').forEach(btn => { 
+            btn.addEventListener('click', (e) => { 
+                e.stopPropagation(); 
+                itemToDelete = parseInt(btn.dataset.id); 
+                deleteType = 'news'; 
+                document.getElementById('confirmDeleteModal').style.display = 'flex'; 
+            }); 
+        }); 
+    }
+    
+    async function addNewsItem(title, date) { 
+        newsItems.unshift({ id: Date.now(), title: title, date: date }); 
+        renderNews(); 
+        showToast("Đã thêm tin tức mới!"); 
+        await addActivityLocal(`Đã thêm tin mới: ${title.substring(0, 30)}...`, 10); 
+    }
+    
+    async function deleteNewsItem(newsId) { 
+        newsItems = newsItems.filter(item => item.id !== newsId); 
+        renderNews(); 
+        showToast("Đã xóa tin tức"); 
+    }
+    
+    function getUpcomingEvents() { 
+        const now = new Date(); 
+        const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000); 
+        return events.filter(ev => ev.date && ev.date > now && ev.date <= fifteenMinutesLater); 
+    }
+    
+    function updateNotificationBadge() { 
+        const upcoming = getUpcomingEvents(); 
+        const badge = document.getElementById('notificationBadge'); 
+        if (upcoming.length > 0) { 
+            badge.style.display = 'flex'; 
+            badge.innerText = upcoming.length; 
+        } else { 
+            badge.style.display = 'none'; 
+        } 
+    }
+    
+    function showNotificationModal() { 
+        const upcoming = getUpcomingEvents(); 
+        const notiList = document.getElementById('notificationList'); 
+        if (upcoming.length === 0) notiList.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo</div>'; 
+        else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join(''); 
+        document.getElementById('notificationModal').style.display = 'flex'; 
+    }
+    
+    async function loadPersonalEvents() { 
+        try { 
+            const eventsData = await getEvents(); 
+            events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime())); 
+            events.sort((a,b) => a.date - b.date); 
+            renderEvents(); 
+            updateNotificationBadge(); 
+        } catch (error) { console.error(error); } 
+    }
+    
+    async function loadAvatarAndName() { 
+        try { 
+            const profile = await getProfile(); 
+            currentAccount = profile.username; 
+            currentUserName = profile.displayName || profile.username;
+            document.getElementById('leftName').innerText = currentUserName; 
+            if (profile.avatar) { 
+                document.getElementById('leftAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; 
+            } 
+        } catch (error) { 
+            console.error(error); 
+            if (error.message.includes('token')) { 
+                setTimeout(() => navigate('dndk.html'), 1500); 
+            } 
+        } 
+    }
+    
+    function logout() { 
+        localStorage.removeItem('token'); 
+        showToast("Đã đăng xuất!"); 
+        setTimeout(() => navigate('trangchu.html'), 500); 
+    }
+    
+    // ==================== THEME ====================
     const universe = document.querySelector('.universe');
-    let starsCreated = false;
     function createStars() {
-        if (starsCreated || !universe) return;
+        if (!universe) return;
         for (let i = 0; i < 120; i++) {
             let star = document.createElement('div');
             star.classList.add('star');
@@ -400,58 +676,32 @@
             star.style.animationDelay = Math.random() * 4 + 's';
             universe.appendChild(star);
         }
-        starsCreated = true;
     }
     
-    function createShootingStar() {
-        if (!document.body.classList.contains('dark')) return;
-        let meteor = document.createElement('div');
-        meteor.classList.add('shooting-star');
-        meteor.style.left = (Math.random() * 70 + 10) + '%';
-        meteor.style.top = (Math.random() * 25 + 5) + '%';
-        universe.appendChild(meteor);
-        let deltaX = (Math.random() * 55 + 45);
-        let deltaY = (Math.random() * 35 + 15);
-        let duration = Math.random() * 0.8 + 0.6;
-        meteor.style.transition = `transform ${duration}s cubic-bezier(0.2, 0.9, 0.4, 1)`;
-        meteor.offsetHeight;
-        meteor.style.transform = `translateX(${deltaX}vw) translateY(${deltaY}vh)`;
-        meteor.style.opacity = '0';
-        setTimeout(() => { if (meteor && meteor.remove) meteor.remove(); }, duration * 1000 + 100);
-    }
-    
-    // Theme
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
             createStars();
-            setInterval(() => { if(document.body.classList.contains('dark')) createShootingStar(); }, 8000);
-            // Cập nhật màu cho grade và subject buttons
-            document.querySelectorAll('.grade-btn, .subject-btn').forEach(btn => {
-                if (btn.classList.contains('active')) {
-                    btn.style.background = '#8B5CF6';
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = 'rgba(15,20,45,0.6)';
-                    btn.style.color = '#E0E7FF';
-                    btn.style.border = '1px solid rgba(139,92,246,0.3)';
-                }
-            });
+            setInterval(() => { if(document.body.classList.contains('dark')) {
+                let meteor = document.createElement('div');
+                meteor.classList.add('shooting-star');
+                meteor.style.left = (Math.random() * 70 + 10) + '%';
+                meteor.style.top = (Math.random() * 25 + 5) + '%';
+                universe.appendChild(meteor);
+                let deltaX = (Math.random() * 55 + 45);
+                let deltaY = (Math.random() * 35 + 15);
+                let duration = Math.random() * 0.8 + 0.6;
+                meteor.style.transition = `transform ${duration}s cubic-bezier(0.2, 0.9, 0.4, 1)`;
+                meteor.offsetHeight;
+                meteor.style.transform = `translateX(${deltaX}vw) translateY(${deltaY}vh)`;
+                meteor.style.opacity = '0';
+                setTimeout(() => { if (meteor && meteor.remove) meteor.remove(); }, duration * 1000 + 100);
+            } }, 8000);
         } else {
             document.body.classList.remove('dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-            document.querySelectorAll('.grade-btn, .subject-btn').forEach(btn => {
-                if (btn.classList.contains('active')) {
-                    btn.style.background = '#1565C0';
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = '#e8ecef';
-                    btn.style.color = '#414141';
-                    btn.style.border = 'none';
-                }
-            });
         }
     }
     
@@ -460,143 +710,22 @@
             document.body.classList.remove('dark');
             localStorage.setItem('theme', 'light');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
-            document.querySelectorAll('.grade-btn, .subject-btn').forEach(btn => {
-                if (btn.classList.contains('active')) {
-                    btn.style.background = '#1565C0';
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = '#e8ecef';
-                    btn.style.color = '#414141';
-                    btn.style.border = 'none';
-                }
-            });
         } else {
             document.body.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
             createStars();
-            document.querySelectorAll('.grade-btn, .subject-btn').forEach(btn => {
-                if (btn.classList.contains('active')) {
-                    btn.style.background = '#8B5CF6';
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = 'rgba(15,20,45,0.6)';
-                    btn.style.color = '#E0E7FF';
-                    btn.style.border = '1px solid rgba(139,92,246,0.3)';
-                }
-            });
         }
     }
     
-    const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
-    const getToken = () => localStorage.getItem('token');
-    
-    async function apiRequest(endpoint, options = {}) {
-        const headers = { 'Content-Type': 'application/json', ...options.headers };
-        const token = getToken();
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Có lỗi xảy ra');
-        return data;
-    }
-    
-    async function getProfile() { return await apiRequest('/users/profile'); }
-    async function getEvents() { return await apiRequest('/events'); }
-    async function addEventAPI(title, date) { return await apiRequest('/events', { method: 'POST', body: JSON.stringify({ title, date }) }); }
-    async function deleteEventAPI(eventId) { return await apiRequest(`/events/${eventId}`, { method: 'DELETE' }); }
-    async function addActivityAPI(title, score) { return await apiRequest('/activities', { method: 'POST', body: JSON.stringify({ title, score }) }); }
-    async function getLibraryFiles() { 
-        const response = await fetch(`${API_URL}/library`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-        return data;
-    }
-    
-    let currentAccount = null, currentUserName = null, events = [], newsItems = [], allFiles = [], filteredFiles = [], currentGrade = '10', currentSubject = 'all', itemToDelete = null, deleteType = null;
-    
-    function showToast(message, isSuccess = true) { 
-        const toast = document.createElement('div'); 
-        toast.className = 'toast-message' + (isSuccess ? '' : ' error'); 
-        toast.textContent = message;
-        document.body.appendChild(toast); 
-        setTimeout(() => toast.remove(), 2500); 
-    }
-    
-    function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-    function formatDisplayFull(dateObj) { if (!dateObj || isNaN(dateObj.getTime())) return "Ngày không hợp lệ"; let d = dateObj.getDate().toString().padStart(2,'0'); let m = (dateObj.getMonth()+1).toString().padStart(2,'0'); let y = dateObj.getFullYear(); let h = dateObj.getHours().toString().padStart(2,'0'); let min = dateObj.getMinutes().toString().padStart(2,'0'); return `${d}/${m}/${y} - ${h}:${min}`; }
-    
-    function getFileIcon(type) {
-        if (type === 'pdf') return '<i class="fas fa-file-pdf"></i>';
-        if (type === 'doc' || type === 'docx') return '<i class="fas fa-file-word"></i>';
-        if (type === 'zip' || type === 'rar') return '<i class="fas fa-file-archive"></i>';
-        return '<i class="fas fa-file-alt"></i>';
-    }
-    
-    function filterFiles() {
-        let result = [...allFiles];
-        if (currentGrade !== 'all') result = result.filter(f => f.grade === currentGrade);
-        if (currentSubject !== 'all') result = result.filter(f => f.subject === currentSubject);
-        filteredFiles = result;
-        renderLibraryGrid();
-    }
-    
-    function renderLibraryGrid() {
-        const container = document.getElementById('libraryGrid');
-        if (!container) return;
-        const itemsPerRow = 3;
-        const totalItems = filteredFiles.length;
-        const remainingSlots = (itemsPerRow - (totalItems % itemsPerRow)) % itemsPerRow;
-        let html = '';
-        filteredFiles.forEach(file => {
-            html += `<div class="library-card"><div class="card-preview" style="background: linear-gradient(135deg, ${file.color || '#1565C0'}, ${file.color2 || '#42a5f5'});">${getFileIcon(file.fileType || 'file')}<span class="file-type-badge">${(file.fileType || 'FILE').toUpperCase()}</span></div><div class="card-info"><div class="card-title">📄 ${escapeHtml(file.name)}</div><div class="card-meta"><span><i class="fas fa-user"></i> ${escapeHtml(file.uploadedBy || 'admin')}</span><span><i class="far fa-calendar-alt"></i> ${new Date(file.uploadedAt).toLocaleDateString('vi-VN')}</span></div><button class="download-btn" onclick="downloadFile('${file.id}')"><i class="fas fa-download"></i> Tải xuống</button></div></div>`;
-        });
-        for (let i = 0; i < remainingSlots; i++) {
-            html += `<div class="library-card empty-card"><div class="card-preview empty"><i class="fas fa-plus-circle"></i></div><div class="card-info"><div class="card-title" style="color: #aaa;">Sắp có tài liệu mới</div><div class="card-meta"><span>--</span><span>--</span></div><button class="download-btn disabled" disabled><i class="fas fa-download"></i> Chưa có</button></div></div>`;
-        }
-        if (totalItems === 0) {
-            html = '';
-            for (let i = 0; i < 3; i++) {
-                html += `<div class="library-card empty-card"><div class="card-preview empty"><i class="fas fa-folder-open"></i></div><div class="card-info"><div class="card-title" style="color: #aaa;">Chưa có tài liệu</div><div class="card-meta"><span>${currentGrade === 'all' ? 'Lớp ' + currentGrade : 'Lớp ' + currentGrade}</span><span>${currentSubject === 'all' ? 'Tất cả môn' : currentSubject}</span></div><button class="download-btn disabled" disabled><i class="fas fa-download"></i> Chưa có</button></div></div>`;
-            }
-        }
-        container.innerHTML = html;
-    }
-    
-    window.downloadFile = (fileId) => {
-        const file = allFiles.find(f => f.id === fileId);
-        if (file && file.filePath) { window.open(file.filePath, '_blank'); showToast("Đang tải file: " + file.name); }
-        else showToast("Không tìm thấy file!", false);
-    };
-    
-    async function loadLibraryFiles() { try { allFiles = await getLibraryFiles(); filterFiles(); } catch (error) { console.error('Lỗi tải thư viện:', error); allFiles = []; filterFiles(); } }
-    
-    async function addActivityLocal(title, score) { try { await addActivityAPI(title, score); } catch (error) { console.error(error); } }
-    async function addEventLocal(title, dateTimeStr) { let eventDate = new Date(dateTimeStr); if (isNaN(eventDate)) { showToast("Ngày giờ không hợp lệ!", false); return; } try { const result = await addEventAPI(title, dateTimeStr); events.push({ id: result.event.id, title, date: eventDate }); events.sort((a,b) => a.date - b.date); renderEvents(); updateNotificationBadge(); showToast("Đã thêm sự kiện thành công!"); await addActivityLocal(`Đã thêm sự kiện: ${title}`, 15); } catch (error) { showToast(error.message, false); } }
-    async function deleteEventLocal(eventId) { const deletedEvent = events.find(ev => ev.id === eventId); try { await deleteEventAPI(eventId); events = events.filter(ev => ev.id !== eventId); renderEvents(); updateNotificationBadge(); showToast("Đã xóa sự kiện"); } catch (error) { showToast(error.message, false); } }
-    
-    function renderEvents() { const container = document.getElementById('eventListContainer'); if (!container) return; if (events.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-alt"></i><br>Chưa có sự kiện nào</div>`; return; } container.innerHTML = ''; events.slice(0, 10).forEach(ev => { const div = document.createElement('div'); div.className = 'event-item-custom'; div.innerHTML = `<div class="event-info"><div class="event-title">📌 ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div><button class="delete-event-btn" data-id="${ev.id}" data-type="event"><i class="fas fa-trash-alt"></i></button>`; container.appendChild(div); }); document.querySelectorAll('.delete-event-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); itemToDelete = parseInt(btn.dataset.id); deleteType = 'event'; document.getElementById('confirmDeleteModal').style.display = 'flex'; }); }); }
-    
-    function renderNews() { const container = document.getElementById('newsListContainer'); if (!container) return; if (newsItems.length === 0) { container.innerHTML = `<div class="empty-state"><i class="fas fa-newspaper"></i><br>Chưa có tin tức</div>`; return; } container.innerHTML = ''; newsItems.slice(0, 10).forEach(item => { const div = document.createElement('div'); div.className = 'news-item-custom'; div.innerHTML = `<div class="news-info"><div class="news-title">📢 ${escapeHtml(item.title)}</div><div class="news-date-custom">📅 ${item.date}</div></div><button class="delete-news-btn" data-id="${item.id}" data-type="news"><i class="fas fa-trash-alt"></i></button>`; container.appendChild(div); }); document.querySelectorAll('.delete-news-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); itemToDelete = parseInt(btn.dataset.id); deleteType = 'news'; document.getElementById('confirmDeleteModal').style.display = 'flex'; }); }); }
-    
-    async function addNewsItem(title, date) { newsItems.unshift({ id: Date.now(), title: title, date: date }); renderNews(); showToast("Đã thêm tin tức mới!"); await addActivityLocal(`Đã thêm tin mới: ${title.substring(0, 30)}...`, 10); }
-    async function deleteNewsItem(newsId) { newsItems = newsItems.filter(item => item.id !== newsId); renderNews(); showToast("Đã xóa tin tức"); }
-    
-    function getUpcomingEvents() { const now = new Date(); const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000); return events.filter(ev => ev.date && ev.date > now && ev.date <= fifteenMinutesLater); }
-    function updateNotificationBadge() { const upcoming = getUpcomingEvents(); const badge = document.getElementById('notificationBadge'); if (upcoming.length > 0) { badge.style.display = 'flex'; badge.innerText = upcoming.length; } else { badge.style.display = 'none'; } }
-    function showNotificationModal() { const upcoming = getUpcomingEvents(); const notiList = document.getElementById('notificationList'); if (upcoming.length === 0) notiList.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><br>Không có thông báo</div>'; else notiList.innerHTML = upcoming.map(ev => `<div class="event-item-custom"><div><div class="event-title">⚠️ ${escapeHtml(ev.title)}</div><div class="event-date-custom">🕒 ${formatDisplayFull(new Date(ev.date))}</div></div></div>`).join(''); document.getElementById('notificationModal').style.display = 'flex'; }
-    
-    function navigate(url) { let overlay = document.getElementById('pageTransition'); overlay.classList.add('active'); setTimeout(() => { window.location.href = url; }, 150); }
-    function logout() { localStorage.removeItem('token'); showToast("Đã đăng xuất!"); setTimeout(() => navigate('trangchu.html'), 500); }
-    
-    async function loadAvatarAndName() { try { const profile = await getProfile(); currentAccount = profile.username; currentUserName = profile.displayName; if (profile.avatar) { document.getElementById('leftAvatar').innerHTML = `<img src="${profile.avatar}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover;" loading="eager">`; } if (profile.displayName) { document.getElementById('leftName').innerText = profile.displayName; } } catch (error) { console.error(error); if (error.message.includes('token')) { setTimeout(() => navigate('dndk.html'), 1500); } } }
-    async function loadPersonalEvents() { try { const eventsData = await getEvents(); events = eventsData.map(ev => ({ ...ev, date: new Date(ev.date) })).filter(ev => ev.date && !isNaN(ev.date.getTime())); events.sort((a,b) => a.date - b.date); renderEvents(); updateNotificationBadge(); } catch (error) { console.error(error); } }
-    
+    // ==================== INIT ====================
     async function init() { 
         const token = localStorage.getItem('token'); 
         if (!token) { navigate('dndk.html'); return; } 
+        
         initTheme();
         document.getElementById('themeToggleBtn').onclick = toggleTheme;
+        
         await loadAvatarAndName(); 
         await loadPersonalEvents(); 
         await loadLibraryFiles(); 
@@ -613,33 +742,102 @@
         document.getElementById('logoArea').onclick = () => navigate('trangchu.html'); 
         document.getElementById('leftProfile').onclick = () => navigate('trangcanhan.html'); 
         
-        document.querySelectorAll('.grade-btn').forEach(btn => { btn.onclick = () => { document.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentGrade = btn.dataset.grade; filterFiles(); renderLibraryGrid(); }; }); document.querySelector('.grade-btn').classList.add('active');
-        document.querySelectorAll('.subject-btn').forEach(btn => { btn.onclick = () => { document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentSubject = btn.dataset.subject; filterFiles(); renderLibraryGrid(); }; }); document.querySelector('.subject-btn').classList.add('active');
+        // ====== BỘ LỌC LỚP ======
+        document.querySelectorAll('.grade-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentGrade = btn.dataset.grade;
+                filterFiles();
+            };
+        });
+        document.querySelector('.grade-btn[data-grade="10"]').classList.add('active');
         
-        const calendarModal = document.getElementById('calendarModal'); const openCalendarBtn = document.getElementById('openCalendarBtn'); const closeModalBtn = document.getElementById('closeModalBtn'); const saveEventBtn = document.getElementById('saveEventBtn');
-        openCalendarBtn.onclick = () => { calendarModal.style.display = 'flex'; }; closeModalBtn.onclick = () => { calendarModal.style.display = 'none'; };
-        saveEventBtn.onclick = async () => { let title = document.getElementById('eventTitleInput').value.trim(); let dateTime = document.getElementById('eventDateTimeInput').value; if (!title) { showToast("Vui lòng nhập tên sự kiện", false); return; } if (!dateTime) { showToast("Vui lòng chọn ngày giờ", false); return; } await addEventLocal(title, dateTime); document.getElementById('eventTitleInput').value = ''; document.getElementById('eventDateTimeInput').value = ''; calendarModal.style.display = 'none'; };
+        // ====== BỘ LỌC MÔN ======
+        document.querySelectorAll('.subject-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSubject = btn.dataset.subject;
+                filterFiles();
+            };
+        });
+        document.querySelector('.subject-btn[data-subject="all"]').classList.add('active');
         
-        const confirmDeleteModal = document.getElementById('confirmDeleteModal'); const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn'); const cancelDeleteBtn = document.getElementById('cancelDeleteBtn'); const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        closeConfirmModalBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; }; cancelDeleteBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; };
-        confirmDeleteBtn.onclick = async () => { if (itemToDelete !== null) { if (deleteType === 'event') await deleteEventLocal(itemToDelete); else if (deleteType === 'news') await deleteNewsItem(itemToDelete); itemToDelete = null; deleteType = null; } confirmDeleteModal.style.display = 'none'; };
+        // ====== MODALS ======
+        const calendarModal = document.getElementById('calendarModal'); 
+        const openCalendarBtn = document.getElementById('openCalendarBtn'); 
+        const closeModalBtn = document.getElementById('closeModalBtn'); 
+        const saveEventBtn = document.getElementById('saveEventBtn'); 
+        openCalendarBtn.onclick = () => { calendarModal.style.display = 'flex'; }; 
+        closeModalBtn.onclick = () => { calendarModal.style.display = 'none'; }; 
+        saveEventBtn.onclick = async () => { 
+            let title = document.getElementById('eventTitleInput').value.trim(); 
+            let dateTime = document.getElementById('eventDateTimeInput').value; 
+            if (!title) { showToast("Vui lòng nhập tên sự kiện", false); return; } 
+            if (!dateTime) { showToast("Vui lòng chọn ngày giờ", false); return; } 
+            await addEventLocal(title, dateTime); 
+            document.getElementById('eventTitleInput').value = ''; 
+            document.getElementById('eventDateTimeInput').value = ''; 
+            calendarModal.style.display = 'none'; 
+        };
         
-        const newsModal = document.getElementById('newsModal'); const addNewsBtn = document.getElementById('addNewsBtn'); const closeNewsModalBtn = document.getElementById('closeNewsModalBtn'); const saveNewsBtn = document.getElementById('saveNewsBtn'); const newsTitleInput = document.getElementById('newsTitleInput'); const newsDateInput = document.getElementById('newsDateInput');
-        addNewsBtn.onclick = () => { newsModal.style.display = 'flex'; }; closeNewsModalBtn.onclick = () => { newsModal.style.display = 'none'; };
-        saveNewsBtn.onclick = async () => { let title = newsTitleInput.value.trim(); let date = newsDateInput.value; if (!title) { showToast("Vui lòng nhập nội dung", false); return; } if (!date) { let today = new Date(); date = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`; } await addNewsItem(title, date.split('-').reverse().join('/')); newsTitleInput.value = ''; newsDateInput.value = ''; newsModal.style.display = 'none'; };
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal'); 
+        const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn'); 
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn'); 
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn'); 
+        closeConfirmModalBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; }; 
+        cancelDeleteBtn.onclick = () => { confirmDeleteModal.style.display = 'none'; itemToDelete = null; deleteType = null; }; 
+        confirmDeleteBtn.onclick = async () => { 
+            if (itemToDelete !== null) { 
+                if (deleteType === 'event') await deleteEventLocal(itemToDelete); 
+                else if (deleteType === 'news') await deleteNewsItem(itemToDelete); 
+                itemToDelete = null; deleteType = null; 
+            } 
+            confirmDeleteModal.style.display = 'none'; 
+        };
         
-        const notificationBtn = document.getElementById('notificationBtn'); const notificationModal = document.getElementById('notificationModal'); const closeNotiModalBtn = document.getElementById('closeNotiModalBtn');
-        notificationBtn.onclick = showNotificationModal; closeNotiModalBtn.onclick = () => { notificationModal.style.display = 'none'; };
+        const newsModal = document.getElementById('newsModal'); 
+        const addNewsBtn = document.getElementById('addNewsBtn'); 
+        const closeNewsModalBtn = document.getElementById('closeNewsModalBtn'); 
+        const saveNewsBtn = document.getElementById('saveNewsBtn'); 
+        const newsTitleInput = document.getElementById('newsTitleInput'); 
+        const newsDateInput = document.getElementById('newsDateInput'); 
+        addNewsBtn.onclick = () => { newsModal.style.display = 'flex'; }; 
+        closeNewsModalBtn.onclick = () => { newsModal.style.display = 'none'; }; 
+        saveNewsBtn.onclick = async () => { 
+            let title = newsTitleInput.value.trim(); 
+            let date = newsDateInput.value; 
+            if (!title) { showToast("Vui lòng nhập nội dung", false); return; } 
+            if (!date) { let today = new Date(); date = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${today.getDate().toString().padStart(2,'0')}`; } 
+            await addNewsItem(title, date.split('-').reverse().join('/')); 
+            newsTitleInput.value = ''; 
+            newsDateInput.value = ''; 
+            newsModal.style.display = 'none'; 
+        };
         
-        document.getElementById('logoutBtn').onclick = logout;
-        window.onclick = (e) => { if (e.target === calendarModal) calendarModal.style.display = 'none'; if (e.target === newsModal) newsModal.style.display = 'none'; if (e.target === notificationModal) notificationModal.style.display = 'none'; if (e.target === confirmDeleteModal) confirmDeleteModal.style.display = 'none'; };
-        setInterval(() => { updateNotificationBadge(); }, 60000);
+        const notificationBtn = document.getElementById('notificationBtn'); 
+        const notificationModal = document.getElementById('notificationModal'); 
+        const closeNotiModalBtn = document.getElementById('closeNotiModalBtn'); 
+        notificationBtn.onclick = showNotificationModal; 
+        closeNotiModalBtn.onclick = () => { notificationModal.style.display = 'none'; }; 
+        
+        document.getElementById('logoutBtn').onclick = logout; 
+        
+        window.onclick = (e) => { 
+            if (e.target === calendarModal) calendarModal.style.display = 'none'; 
+            if (e.target === newsModal) newsModal.style.display = 'none'; 
+            if (e.target === notificationModal) notificationModal.style.display = 'none'; 
+            if (e.target === confirmDeleteModal) confirmDeleteModal.style.display = 'none'; 
+        }; 
+        
+        setInterval(() => { updateNotificationBadge(); }, 60000); 
         
         document.getElementById('footerHome')?.addEventListener('click', () => navigate('trangchu.html')); 
         document.getElementById('footerDashboard')?.addEventListener('click', () => navigate('bangdieukhien.html')); 
         document.getElementById('footerCalendar')?.addEventListener('click', () => navigate('lich.html')); 
         document.getElementById('footerLibrary')?.addEventListener('click', () => navigate('thuvien.html')); 
-        document.getElementById('footerContact')?.addEventListener('click', () => navigate('lienhe.html'));
+        document.getElementById('footerContact')?.addEventListener('click', () => navigate('lienhe.html')); 
     }
     
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
