@@ -189,6 +189,210 @@
         .confirm-cancel-btn:hover { background: #D0D0D0; }
         body.dark .confirm-cancel-btn { background: #334155; color: white; }
         
+        /* Chat AI Styles */
+        .chat-float-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1565C0, #42a5f5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 200;
+            border: none;
+        }
+        .chat-float-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+        body.dark .chat-float-btn {
+            background: linear-gradient(135deg, #8B5CF6, #6B21A5);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        .chat-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 300;
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+            transform-origin: bottom right;
+            pointer-events: none;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        body.dark .chat-modal {
+            background: #0F172A;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+        .chat-modal.open {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #1565C0, #42a5f5);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+        body.dark .chat-header {
+            background: linear-gradient(135deg, #8B5CF6, #6B21A5);
+        }
+        .chat-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .close-chat:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #F8F9FC;
+        }
+        body.dark .chat-messages {
+            background: #0A0A1A;
+        }
+        .message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .message.user {
+            background: #1565C0;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        body.dark .message.user {
+            background: #8B5CF6;
+        }
+        .message.bot {
+            background: #E8ECEF;
+            color: #414141;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        body.dark .message.bot {
+            background: #1E293B;
+            color: #E0E7FF;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 12px;
+            gap: 8px;
+            background: white;
+            border-top: 1px solid #E2E8F0;
+        }
+        body.dark .chat-input-area {
+            background: #0F172A;
+            border-top: 1px solid #334155;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #CBD5E1;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+        }
+        body.dark .chat-input {
+            background: #1E293B;
+            border-color: #475569;
+            color: white;
+        }
+        .chat-input:focus {
+            border-color: #1565C0;
+        }
+        .send-btn {
+            background: #1565C0;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        body.dark .send-btn {
+            background: #8B5CF6;
+        }
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #E8ECEF;
+            border-radius: 20px;
+            width: fit-content;
+            margin-top: 4px;
+        }
+        body.dark .typing-indicator {
+            background: #1E293B;
+        }
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background: #8a99b0;
+            border-radius: 50%;
+            animation: blink 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); } 30% { opacity: 1; transform: scale(1); } }
+        
         .toast-message { 
             position: fixed; 
             bottom: 30px; 
@@ -242,6 +446,7 @@
             .three-columns { flex-direction: column; } 
             .left-col, .right-col { max-width: 100%; position: static; } 
             .library-grid { grid-template-columns: repeat(2, 1fr); }
+            .chat-modal { width: 90vw; right: 5vw; bottom: 90px; height: 60vh; }
         }
         @media (max-width: 768px) { 
             .library-grid { grid-template-columns: 1fr; } 
@@ -343,6 +548,22 @@
     </div>
 </div>
 
+<!-- Chat AI Floating Button & Modal -->
+<button class="chat-float-btn" id="chatFloatBtn"><i class="fas fa-robot"></i></button>
+<div class="chat-modal" id="chatModal">
+    <div class="chat-header">
+        <h3><i class="fas fa-brain"></i> Trợ lý AI - Học tập</h3>
+        <button class="close-chat" id="closeChatBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot">👋 Xin chào! Mình là trợ lý AI. Hãy hỏi mình bất kỳ câu hỏi nào về bài tập, kiến thức lớp 10-12 nhé!</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Hỏi bài, giải thích kiến thức...">
+        <button class="send-btn" id="sendChatBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
 <!-- Modals -->
 <div id="calendarModal" class="modal"><div class="modal-content"><div class="modal-header"><span>📅 Thêm sự kiện mới</span><button class="close-modal" id="closeModalBtn">&times;</button></div><input type="text" id="eventTitleInput" class="date-input" placeholder="Tên sự kiện"><input type="datetime-local" id="eventDateTimeInput" class="date-input"><button id="saveEventBtn" class="add-event-modal-btn">Lưu sự kiện</button></div></div>
 <div id="confirmDeleteModal" class="modal"><div class="modal-content"><div class="modal-header"><span>🗑️ Xác nhận xóa</span><button class="close-modal" id="closeConfirmModalBtn">&times;</button></div><p>Bạn có chắc chắn muốn xóa mục này?</p><div class="confirm-buttons"><button class="confirm-cancel-btn" id="cancelDeleteBtn">Hủy</button><button class="confirm-delete-btn" id="confirmDeleteBtn">Xóa</button></div></div></div>
@@ -353,6 +574,9 @@
 <script>
     // ==================== API CONFIG ====================
     const API_URL = 'https://milkcoffee-backend-production.up.railway.app/api';
+    const DEEPSEEK_API_KEY = 'YOUR_DEEPSEEK_API_KEY'; // <--- THAY API KEY CỦA BẠN VÀO ĐÂY
+    const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+    
     const getToken = () => localStorage.getItem('token');
     
     function showToast(message, isSuccess = true) { 
@@ -393,23 +617,6 @@
         const token = getToken();
         const response = await fetch(`${API_URL}/library`, { 
             headers: { 'Authorization': `Bearer ${token}` } 
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-        return data;
-    }
-    
-    async function uploadLibraryFile(file, type, grade, subject) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('type', type);
-        formData.append('grade', grade);
-        formData.append('subject', subject);
-        const token = getToken();
-        const response = await fetch(`${API_URL}/library`, { 
-            method: 'POST', 
-            headers: { 'Authorization': `Bearer ${token}` }, 
-            body: formData 
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error);
@@ -649,10 +856,98 @@
         setTimeout(() => navigate('trangchu.html'), 500); 
     }
     
+    // ==================== CHAT AI FUNCTION ====================
+    let chatHistory = [{ role: "system", content: "Bạn là trợ lý AI chuyên về giáo dục, giúp học sinh cấp 3 giải đáp bài tập và kiến thức môn học. Trả lời bằng tiếng Việt, thân thiện, dễ hiểu, có ví dụ cụ thể nếu cần." }];
+    let isTyping = false;
+    
+    function addMessageToChat(text, isUser) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+        msgDiv.innerHTML = isUser ? escapeHtml(text) : markedParse(text);
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    function markedParse(text) {
+        if (typeof marked !== 'undefined') return marked.parse(text);
+        return text.replace(/\n/g, '<br>');
+    }
+    
+    function showTypingIndicator() {
+        const messagesDiv = document.getElementById('chatMessages');
+        const indicator = document.createElement('div');
+        indicator.className = 'typing-indicator';
+        indicator.id = 'typingIndicator';
+        indicator.innerHTML = '<span></span><span></span><span></span>';
+        messagesDiv.appendChild(indicator);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+    
+    async function sendToDeepSeek(userMessage) {
+        if (!DEEPSEEK_API_KEY || DEEPSEEK_API_KEY === 'YOUR_DEEPSEEK_API_KEY') {
+            showToast("⚠️ API Key chưa được cấu hình. Vui lòng liên hệ quản trị viên.", false);
+            addMessageToChat("Xin lỗi, hiện tại tôi chưa thể kết nối đến hệ thống AI. Vui lòng thử lại sau nhé!", false);
+            return;
+        }
+        
+        chatHistory.push({ role: "user", content: userMessage });
+        
+        try {
+            const response = await fetch(DEEPSEEK_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: chatHistory,
+                    stream: false,
+                    temperature: 0.7,
+                    max_tokens: 2000
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || `Lỗi API: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const botReply = data.choices[0].message.content;
+            chatHistory.push({ role: "assistant", content: botReply });
+            addMessageToChat(botReply, false);
+        } catch (error) {
+            console.error('DeepSeek API Error:', error);
+            addMessageToChat(`😓 Có lỗi xảy ra: ${error.message}. Vui lòng thử lại sau.`, false);
+        }
+    }
+    
+    async function handleSendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        
+        input.value = '';
+        addMessageToChat(message, true);
+        showTypingIndicator();
+        
+        await sendToDeepSeek(message);
+        removeTypingIndicator();
+    }
+    
     // ==================== THEME ====================
     const universe = document.querySelector('.universe');
     function createStars() {
         if (!universe) return;
+        const existing = universe.querySelectorAll('.star, .star-twinkle');
+        existing.forEach(s => s.remove());
         for (let i = 0; i < 120; i++) {
             let star = document.createElement('div');
             star.classList.add('star');
@@ -742,7 +1037,7 @@
         document.getElementById('logoArea').onclick = () => navigate('trangchu.html'); 
         document.getElementById('leftProfile').onclick = () => navigate('trangcanhan.html'); 
         
-        // ====== BỘ LỌC LỚP ======
+        // BỘ LỌC LỚP
         document.querySelectorAll('.grade-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('active'));
@@ -753,7 +1048,7 @@
         });
         document.querySelector('.grade-btn[data-grade="10"]').classList.add('active');
         
-        // ====== BỘ LỌC MÔN ======
+        // BỘ LỌC MÔN
         document.querySelectorAll('.subject-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
@@ -764,7 +1059,7 @@
         });
         document.querySelector('.subject-btn[data-subject="all"]').classList.add('active');
         
-        // ====== MODALS ======
+        // MODALS
         const calendarModal = document.getElementById('calendarModal'); 
         const openCalendarBtn = document.getElementById('openCalendarBtn'); 
         const closeModalBtn = document.getElementById('closeModalBtn'); 
@@ -838,6 +1133,32 @@
         document.getElementById('footerCalendar')?.addEventListener('click', () => navigate('lich.html')); 
         document.getElementById('footerLibrary')?.addEventListener('click', () => navigate('thuvien.html')); 
         document.getElementById('footerContact')?.addEventListener('click', () => navigate('lienhe.html')); 
+        
+        // CHAT AI INIT
+        const chatFloatBtn = document.getElementById('chatFloatBtn');
+        const chatModal = document.getElementById('chatModal');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const sendChatBtn = document.getElementById('sendChatBtn');
+        const chatInput = document.getElementById('chatInput');
+        
+        chatFloatBtn.onclick = () => {
+            chatModal.classList.toggle('open');
+        };
+        closeChatBtn.onclick = () => {
+            chatModal.classList.remove('open');
+        };
+        sendChatBtn.onclick = handleSendMessage;
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSendMessage();
+        });
+        
+        if (typeof marked !== 'undefined') {
+            marked.setOptions({ breaks: true, gfm: true });
+        } else {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+            document.head.appendChild(script);
+        }
     }
     
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
